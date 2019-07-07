@@ -1,20 +1,24 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import React from "react";
 
-export default class App extends Component {
-  displayName = App.name
+import QuotationList from "./Components/QuotationList";
+import Quotation from "./Components/Quotation";
+import ViewQuotation from "./Components/ViewQuotation";
 
-  render() {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetchdata' component={FetchData} />
-      </Layout>
-    );
-  }
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import { Provider } from "./Context";
+
+function App() {
+  return (
+    <Provider>
+      <Router>
+        <Route exact path="/quotation/:id" component={Quotation} />
+        <Route exact path="/quotation/" component={Quotation} />
+        <Route exact path="/" component={QuotationList} />
+        <Route exact path="/view/:id" component={ViewQuotation} />
+      </Router>
+    </Provider>
+  );
 }
+
+export default App;

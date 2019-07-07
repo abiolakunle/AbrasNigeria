@@ -1,21 +1,28 @@
+using AbrasNigeria.Data.DbContexts;
+using AbrasNigeria.Data.Interfaces;
+using AbrasNigeria.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace AbrasNigeria
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IConfiguration Configuration { get; }
+        private IHostingEnvironment HostingEnvironment { get; }
+        public Startup(IConfiguration config, IHostingEnvironment hostingEnv)
         {
-            Configuration = configuration;
+            Configuration = config;
+            HostingEnvironment = hostingEnv;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -27,6 +34,26 @@ namespace AbrasNigeria
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSingleton<IFileProvider>(
+                new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), HostingEnvironment.WebRootPath)));
+
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+                Configuration["ConnectionStrings:DefaultConnection"]
+                ));
+
+            services.AddDbContext<QuoteDbContext>(options => options.UseSqlServer(
+                Configuration["ConnectionStrings:QuotationConnection"]
+                ));
+
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<IMachineRepository, MachineRepository>();
+            services.AddTransient<ISectionGroupRepository, SectionGroupRepository>();
+            services.AddTransient<ISectionRepository, SectionRepository>();
+            services.AddTransient<IQuotationRepository, QuotationRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

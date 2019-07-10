@@ -34,5 +34,10 @@ namespace AbrasNigeria.Data.Repositories
         {
             return _context.Products.Include(p => p.SectionGroup).Include(p => p.Category);
         }
+
+        public IEnumerable<Product> SearchWithCategory(string searchQuery)
+        {
+            return _context.Products.Where(p => p.PartNumber.Contains(searchQuery)).Include(p => p.Category);
+        }
     }
 }

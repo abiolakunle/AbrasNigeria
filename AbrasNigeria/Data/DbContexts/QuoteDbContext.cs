@@ -18,5 +18,13 @@ namespace AbrasNigeria.Data.DbContexts
 
         public DbSet<Quotation> Quotations { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Quotation>()
+            .Property(q => q.Date)
+            .HasDefaultValueSql("getdate()");
+
+        }
     }
 }

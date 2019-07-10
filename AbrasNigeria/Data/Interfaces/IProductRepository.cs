@@ -11,7 +11,10 @@ namespace AbrasNigeria.Data.Interfaces
 
         IEnumerable<Product> FindWithCategoryAndBrand(Func<Product, bool> predicate);
 
+        IEnumerable<Product> SearchWithCategory(string searchQuery);
+
         IEnumerable<Product> LoadWithCategorySectionGroup();
+
 
     }
 }

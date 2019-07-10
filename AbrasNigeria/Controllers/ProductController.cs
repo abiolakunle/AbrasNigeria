@@ -21,16 +21,28 @@ namespace AbrasNigeria.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> List()
+        public async Task<JsonResult> List()
         {
             var products = await _productRepository.LoadAllWithCategoryAndBrand();
 
-            //return new Json(products, new JsonSerializerSettings()
-            //{
-            //    NullValueHandling = true ? NullValueHandling.Ignore : NullValueHandling.Include,
-            //    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            //});
-            return Json(products);
+            return Json(products, new JsonSerializerSettings()
+            {
+                NullValueHandling = true ? NullValueHandling.Ignore : NullValueHandling.Include,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+           //return Json(products);
+        }
+
+        [HttpGet("[action]")]
+        public JsonResult Search(string searchQuery)
+        {
+            var products = _productRepository.SearchWithCategory(searchQuery);
+
+            return Json(products, new JsonSerializerSettings()
+            {
+                NullValueHandling = true ? NullValueHandling.Ignore : NullValueHandling.Include,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
     }
 }

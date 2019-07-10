@@ -24,8 +24,6 @@ class ViewQuotation extends Component {
       .then(response => {
         const { quoteNo, company, date, table } = response.data;
         this.setState(
-
-          
           Object.keys(response.data).length //check if response contains data
             ? {
                 quoteNo,
@@ -36,6 +34,8 @@ class ViewQuotation extends Component {
               }
             : {}
         );
+
+        console.log(this.state.table);
       });
   }
 

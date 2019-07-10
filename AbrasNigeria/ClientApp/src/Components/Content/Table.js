@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import axios from "axios";
+
 import TableItem from "./TableItem";
 import Summary from "../Content/Summary";
 import { Consumer } from "../../Context";
@@ -7,10 +9,11 @@ import { Consumer } from "../../Context";
 class Table extends Component {
   state = {
     partNumber: "",
+    suggestions: [],
     description: "",
-    quantity: 0,
-    unitPrice: 0,
-    extendedPrice: 0,
+    quantity: null,
+    unitPrice: null,
+    extendedPrice: null,
     newItem: {},
     items: [],
     total: 0
@@ -53,7 +56,7 @@ class Table extends Component {
                   <div className="btn btn-light col-md-6">Back</div>
                   <div
                     className="btn btn-primary col-md-6"
-                    onClick={sendInvoice}
+                    onClick={sendInvoice} //fire sendInvoice function from context state
                   >
                     Create
                   </div>
@@ -66,8 +69,8 @@ class Table extends Component {
     );
   }
 
-  onSubmit = (value, event) => {
-    event.preventDefault();
+  onSubmit = (contextState, event) => {
+    event.preventDefault(); //prevent default behaviour of event
     this.setState(
       Object.assign(this.state.newItem, {
         partNumber: this.state.partNumber,
@@ -78,17 +81,17 @@ class Table extends Component {
       })
     );
 
-    this.addItem(value);
+    this.addItem(contextState);
   };
 
   addItem = contextState => {
-    let tempItems = [...this.state.items];
-    tempItems.push({ ...this.state.newItem });
+    let tempItems = [...this.state.items]; //spread items in state to temporary array
+    tempItems.push({ ...this.state.newItem }); //spread new item into temporary array
 
     this.setState(
       { items: tempItems, total: this.calculateTotal(tempItems) },
 
-      //callback function after state changes, send table data to context
+      //callback function after state changes & send table data to context
       () => {
         const itemsAndTotal = Object.assign(
           {},
@@ -108,6 +111,7 @@ class Table extends Component {
   };
 
   calculateTotal = itemsIn => {
+    //calculate grand total of extended prices and set total in component state
     var total = 0;
     itemsIn.forEach(item => {
       total = total + item.extendedPrice;
@@ -120,77 +124,146 @@ class Table extends Component {
   };
 
   onFormChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
+    //handle change event from add item-line form
+    var eventName = event.target.name;
+    var eventValue = event.target.value;
+    this.setState(
+      {
+        [eventName]: eventValue
+      },
+      () => {
+        if (eventName === "partNumber") {
+          if (eventValue.length === 0) {
+            this.setState({
+              description: ""
+            });
+          }
+          this.loadSuggestions();
+        }
+      }
+    );
+  };
+
+  loadSuggestions = () => {
+    //load suggestions from server and update component state
+    axios
+      .get(
+        `https://localhost:44343/api/product/search?searchQuery=${
+          this.state.partNumber //part number as search query
+        }`
+      )
+      .then(response => {
+        this.setState({
+          suggestions: response.data
+        });
+      })
+      .catch(error => {
+        console.log("axios error", error);
+      });
   };
 
   renderForm(contextState) {
+    //renders for adding items line to table
     return (
-      <form onSubmit={this.onSubmit.bind(this, contextState)}>
-        <div className="form-row align-items-center">
-          <div className="col-auto">
-            <input
-              name="partNumber"
-              value={this.state.partNumber}
-              type="text"
-              className="form-control mb-2"
-              placeholder="Part number"
-              onChange={this.onFormChange}
-            />
-          </div>
-          <div className="col-auto">
-            <input
-              name="description"
-              value={this.state.description}
-              type="text"
-              className="form-control mb-2"
-              placeholder="Description"
-              onChange={this.onFormChange}
-            />
-          </div>
+      <React.Fragment>
+        <form
+          autoComplete="off"
+          onSubmit={this.onSubmit.bind(this, contextState)}
+        >
+          <div className="form-row align-items-center">
+            <div className="col-auto dropdown">
+              <input
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                name="partNumber"
+                value={this.state.partNumber}
+                type="text"
+                className="form-control mb-2 dropdown-toggle"
+                placeholder="Part number"
+                onChange={this.onFormChange}
+              />
+              <div
+                class="dropdown-menu pre-scrollable"
+                aria-labelledby="dropdownMenuButton"
+              >
+                {this.state.suggestions.length === 0 ? (
+                  <button className="dropdown-item">No match found</button>
+                ) : (
+                  this.state.suggestions.map((item, index) => {
+                    //iterate over suggestions and display
+                    return (
+                      <button
+                        key={index}
+                        class="dropdown-item"
+                        onClick={event => {
+                          //set the value from clicked suggestion to inputs
+                          event.preventDefault();
+                          this.setState({
+                            partNumber: item.PartNumber,
+                            description: item.Category.CategoryName
+                          });
+                        }}
+                      >
+                        {item.PartNumber}
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+            <div className="col-auto">
+              <input
+                name="description"
+                value={this.state.description}
+                type="text"
+                className="form-control mb-2"
+                placeholder="Description"
+                onChange={this.onFormChange}
+              />
+            </div>
 
-          <div className="col-auto">
-            <input
-              name="quantity"
-              value={this.state.quantity}
-              type="number"
-              className="form-control mb-2"
-              placeholder="Quantity"
-              step="1"
-              onChange={this.onFormChange}
-            />
-          </div>
+            <div className="col-md-2">
+              <input
+                name="quantity"
+                value={this.state.quantity}
+                type="number"
+                className="form-control mb-2"
+                placeholder="Quantity"
+                step="1"
+                onChange={this.onFormChange}
+              />
+            </div>
 
-          <div className="col-auto">
-            <input
-              name="unitPrice"
-              step="100"
-              value={this.state.unitPrice}
-              type="number"
-              className="form-control mb-2"
-              placeholder="Unit price"
-              onChange={this.onFormChange}
-            />
-          </div>
-          <div className="col-auto">
-            <input
-              name="extendedPrice"
-              value={this.state.unitPrice * this.state.quantity}
-              type="number"
-              className="form-control mb-2"
-              placeholder="Extended price"
-              readOnly
-            />
-          </div>
+            <div className="col-md-2">
+              <input
+                name="unitPrice"
+                value={this.state.unitPrice}
+                type="number"
+                className="form-control mb-2"
+                placeholder="Unit price"
+                onChange={this.onFormChange}
+              />
+            </div>
+            <div className="col-md-2">
+              <input
+                name="extendedPrice"
+                value={this.state.unitPrice * this.state.quantity}
+                type="number"
+                className="form-control mb-2"
+                placeholder="Extended price"
+                readOnly
+              />
+            </div>
 
-          <div className="col-auto">
-            <button type="submit" className="btn btn-primary mb-2">
-              Add
-            </button>
+            <div className="col-auto">
+              <button type="submit" className="btn btn-primary mb-2">
+                Add
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </React.Fragment>
     );
   }
 

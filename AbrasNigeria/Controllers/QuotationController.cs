@@ -34,9 +34,10 @@ namespace AbrasNigeria.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public ActionResult<Quotation> Post([FromBody]Quotation value)
+        public ActionResult<Quotation> Post([FromBody]Quotation quotation)
         {
-            _quotationRepository.Create(value);
+            quotation.QuoteNo = "ANE" + DateTime.Now.ToString("yyMMddHHmmss");
+            _quotationRepository.Create(quotation);
             return Ok();
         }
 

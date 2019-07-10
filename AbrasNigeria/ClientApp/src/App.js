@@ -5,13 +5,14 @@ import Quotation from "./Components/Quotation";
 import ViewQuotation from "./Components/ViewQuotation";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import history from "./history";
 
 import { Provider } from "./Context";
 
 function App() {
   return (
     <Provider>
-      <Router>
+      <Router history={history}>
         <Route exact path="/quotation/:id" component={Quotation} />
         <Route exact path="/quotation/" component={Quotation} />
         <Route exact path="/" component={QuotationList} />

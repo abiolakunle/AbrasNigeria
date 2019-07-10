@@ -31,7 +31,7 @@ export class Provider extends Component {
     info: {},
     table: [],
     total: 0,
-
+    submitted: false,
     dispatch: action => this.setState(state => reducer(state, action))
   };
 
@@ -60,11 +60,11 @@ export class Provider extends Component {
     console.log("New Invoice", invoice);
     axios
       .post("https://localhost:44343/api/Quotation", invoice)
-      .then
-      //res => {
-      //console.log(res.data);
-      //}
-      ()
+      .then(response => {
+        this.setState({
+          submitted: true
+        });
+      })
       .catch(error => {
         console.log(error);
       });

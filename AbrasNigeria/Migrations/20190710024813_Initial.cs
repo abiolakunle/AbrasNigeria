@@ -1,12 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AbrasNigeria.Migrations
 {
-    public partial class QuoteInitial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Quotations",
+                columns: table => new
+                {
+                    QuotationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    QuoteNo = table.Column<string>(nullable: true),
+                    Company = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: true, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Quotations", x => x.QuotationId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "QuotationItems",
                 columns: table => new
@@ -40,6 +56,9 @@ namespace AbrasNigeria.Migrations
         {
             migrationBuilder.DropTable(
                 name: "QuotationItems");
+
+            migrationBuilder.DropTable(
+                name: "Quotations");
         }
     }
 }

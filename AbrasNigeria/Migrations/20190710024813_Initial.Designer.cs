@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AbrasNigeria.Migrations
 {
     [DbContext(typeof(QuoteDbContext))]
-    [Migration("20190707114613_QuoteInitial")]
-    partial class QuoteInitial
+    [Migration("20190710024813_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,9 +29,12 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<string>("Company");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime?>("Date")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("getdate()");
 
-                    b.Property<string>("QuoteNo");
+                    b.Property<string>("QuoteNo")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("QuotationId");
 

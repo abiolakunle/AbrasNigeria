@@ -27,9 +27,12 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<string>("Company");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime?>("Date")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("getdate()");
 
-                    b.Property<string>("QuoteNo");
+                    b.Property<string>("QuoteNo")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("QuotationId");
 

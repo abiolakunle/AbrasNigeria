@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import TableItem from "./TableItem";
-import Summary from "../Content/Summary";
-import { Consumer } from "../../Context";
+import Summary from "./Summary";
+import { Consumer } from "../../../Context";
 
 class Table extends Component {
   state = {

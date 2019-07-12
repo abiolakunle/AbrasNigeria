@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import { Consumer } from "../../Context";
+import { Consumer } from "../../../Context";
 
 class Info extends Component {
   state = {
     company: "",
-    quoteNo: "",
+    docType: "Quotation",
     date: new Date().toISOString().split("T")[0]
     //`${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`
   };
@@ -58,15 +58,19 @@ class Info extends Component {
         </div>
         <div className="col-md-6">
           <div className="form-group row">
-            <label className="col-md-3">Quote No: </label>
+            <label className="col-md-3">Document Type: </label>
             <div className="col-md-9">
-              <input
+              <select
                 type="text"
-                name="quoteNo"
-                value={this.state.quoteNo}
+                name="docType"
+                value={this.state.docType}
                 onChange={this.onFormChange.bind(this, dispatch)}
                 className="form-control"
-              />
+              >
+                <option value="Quotation">Quotation</option>
+                <option value="Invoice">Invoice</option>
+                <option value="Waybill">Waybill</option>
+              </select>
             </div>
           </div>
           <div className="form-group row">

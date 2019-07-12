@@ -17,7 +17,11 @@ namespace AbrasNigeria.Models
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public string QuoteNo { get; set; }
 
+        public string DocType { get; set; }
+
         public string Company { get; set; }
+
+        public string Note { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? Date { get; set; }

@@ -31,8 +31,11 @@ namespace AbrasNigeria.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("getdate()");
 
-                    b.Property<string>("QuoteNo")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<string>("DocType");
+
+                    b.Property<string>("Note");
+
+                    b.Property<string>("QuoteNo");
 
                     b.HasKey("QuotationId");
 

@@ -4,7 +4,7 @@ import Table from "../Content/Table";
 
 import { Redirect } from "react-router";
 
-import { Consumer } from "../../Context";
+import { Consumer } from "../../../Context";
 
 class Main extends Component {
   render() {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AbrasNigeria.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Intital : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,9 @@ namespace AbrasNigeria.Migrations
                     QuotationId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     QuoteNo = table.Column<string>(nullable: true),
+                    DocType = table.Column<string>(nullable: true),
                     Company = table.Column<string>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: true, defaultValueSql: "getdate()")
                 },
                 constraints: table =>

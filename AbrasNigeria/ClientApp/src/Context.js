@@ -14,11 +14,17 @@ const reducer = (state, action) => {
       };
 
     case "TABLE_DATA":
-      console.table(action.payload.items);
       return {
         ...state,
         table: action.payload.items,
         total: action.payload.total
+      };
+
+    case "SUMMARY":
+      console.log(action.payload);
+      return {
+        ...state,
+        note: action.payload
       };
 
     default:
@@ -30,6 +36,7 @@ export class Provider extends Component {
   state = {
     info: {},
     table: [],
+    note: "Note for you",
     total: 0,
     submitted: false,
     dispatch: action => this.setState(state => reducer(state, action))
@@ -53,6 +60,7 @@ export class Provider extends Component {
       {},
       {
         ...this.state.info,
+        note: this.state.note,
         table: [...this.state.table]
       }
     );

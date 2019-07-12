@@ -1,13 +1,13 @@
 import React from "react";
 
 //imported images
-import Cat from "../../Images/c_caterpillar.png";
-import Komatsu from "../../Images/c_komatsu.png";
-import Perkins from "../../Images/c_perkins.png";
-import Cummins from "../../Images/c_cummins.png";
-import Volvo from "../../Images/c_volvo.png";
+import Cat from "../../../Images/c_caterpillar.png";
+import Komatsu from "../../../Images/c_komatsu.png";
+import Perkins from "../../../Images/c_perkins.png";
+import Cummins from "../../../Images/c_cummins.png";
+import Volvo from "../../../Images/c_volvo.png";
 
-import { Consumer } from "../../Context";
+import { Consumer } from "../../../Context";
 
 const Footer = () => {
   return (

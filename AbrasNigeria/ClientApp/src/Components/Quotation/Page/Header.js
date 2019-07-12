@@ -60,7 +60,7 @@ const Header = ({ quoteNumber }) => {
               <p className="row">
                 <span className="font-weight-bold">Email:</span>
                 {"  "}
-                Abrasnigent@gmail.com
+                Abrasnigeriaent@gmail.com
               </p>
             </div>
             <div className="col-md-6">

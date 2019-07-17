@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NumInWords from "../../../Utils/NumInWords";
 
-import { Consumer } from "../../../Context";
+import { DocumentConsumer } from "../../../Contexts/DocumentContext";
 
 class Summary extends Component {
   state = {
@@ -9,7 +9,7 @@ class Summary extends Component {
   };
   render() {
     return (
-      <Consumer>
+      <DocumentConsumer>
         {contextValue => {
           const { contextState } = contextValue;
           return (
@@ -34,7 +34,7 @@ class Summary extends Component {
             </React.Fragment>
           );
         }}
-      </Consumer>
+      </DocumentConsumer>
     );
   }
 

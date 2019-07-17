@@ -3,45 +3,66 @@ import React, { Component } from "react";
 import axios from "axios";
 
 export default class Machines extends Component {
+  state = {
+    machines: []
+  };
+
   render() {
     return (
       <React.Fragment>
-        <h1 class="my-2">Machines</h1>
+        <div className="container my-5">
+          <h1 className="my-2">Machines</h1>
+          <div className="row">
+            {this.state.machines.map(machine => {
+              return this.renderMachine(machine);
+            })}
+          </div>
+        </div>
       </React.Fragment>
     );
   }
 
   componentDidMount() {
-    axios.get();
+    axios.get("https://localhost:44343/api/machine/list").then(response => {
+      this.setState(
+        {
+          machines: response.data
+        },
+        () => {
+          console.log(this.state.machines);
+        }
+      );
+    });
   }
 
-  renderMachine() {
+  renderMachine(machine) {
     return (
       <React.Fragment>
-        <div class="col-md-4 mb-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
+        <div className="col-md-4 mb-3">
+          <div className="card shadow-sm">
+            <div className="card-body">
               <a
                 asp-controller="Machine"
                 asp-action="Machine"
                 asp-route-id="@machine.MachineId"
               >
                 <h5>
-                  <span>@machine.Brand.Name </span>@machine.ModelName
+                  <span>{machine.BrandName} </span>
+                  {machine.MachineName}
                 </h5>
               </a>
               <hr />
-              <p class="mb-1 pb-1">
-                <b>Serial number: </b> @machine.SerialNumber
+              <p className="mb-1 pb-1">
+                <b>Serial number: </b> {machine.SerialNumber}
               </p>
             </div>
-            @*
-            <div class="card-footer">
+            {/* @*
+            <div className="card-footer">
               <a
                 asp-controller="Category"
                 asp-action="Update"
                 asp-route-id="@category.CategoryId"
-                class="btn btn-dark col-md-3"
+                className="btn btn-dark col-md-3"
               >
                 Edit
               </a>
@@ -49,12 +70,12 @@ export default class Machines extends Component {
                 asp-controller="Category"
                 asp-action="Delete"
                 asp-route-id="@category.CategoryId"
-                class="btn btn-primary col-md-3"
+                className="btn btn-primary col-md-3"
               >
                 Delete
               </a>
             </div>
-            *@
+            *@ */}
           </div>
         </div>
       </React.Fragment>

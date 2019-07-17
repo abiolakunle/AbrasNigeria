@@ -7,7 +7,7 @@ namespace AbrasNigeria.Data.Interfaces
 {
     public interface IProductRepository : IRepository<Product>
     {
-        Task<IEnumerable<Product>> LoadAllWithCategoryAndBrand();
+        IEnumerable<Product> LoadAllWithCategoryAndBrand();
 
         IEnumerable<Product> FindWithCategoryAndBrand(Func<Product, bool> predicate);
 

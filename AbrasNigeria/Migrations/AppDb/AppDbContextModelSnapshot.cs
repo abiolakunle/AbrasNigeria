@@ -178,6 +178,36 @@ namespace AbrasNigeria.Migrations.AppDb
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("AbrasNigeria.Models.ProductMachine", b =>
+                {
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("MachineId");
+
+                    b.Property<int>("ProductMachineId");
+
+                    b.HasKey("ProductId", "MachineId");
+
+                    b.HasIndex("MachineId");
+
+                    b.ToTable("ProductMachine");
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.ProductSectionGroup", b =>
+                {
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("SectionGroupId");
+
+                    b.Property<int>("ProductSectionGroupId");
+
+                    b.HasKey("ProductId", "SectionGroupId");
+
+                    b.HasIndex("SectionGroupId");
+
+                    b.ToTable("ProductSectionGroup");
+                });
+
             modelBuilder.Entity("AbrasNigeria.Models.Quotation", b =>
                 {
                     b.Property<int>("QuotationId")
@@ -332,13 +362,39 @@ namespace AbrasNigeria.Migrations.AppDb
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("AbrasNigeria.Models.SectionGroup", "SectionGroup")
+                    b.HasOne("AbrasNigeria.Models.SectionGroup")
                         .WithMany("Products")
                         .HasForeignKey("SectionGroupId");
 
                     b.HasOne("AbrasNigeria.Models.Section", "Section")
                         .WithMany()
                         .HasForeignKey("SectionId");
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.ProductMachine", b =>
+                {
+                    b.HasOne("AbrasNigeria.Models.Machine", "Machine")
+                        .WithMany("ProductMachines")
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.Product", "Product")
+                        .WithMany("ProductMachines")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.ProductSectionGroup", b =>
+                {
+                    b.HasOne("AbrasNigeria.Models.Product", "Product")
+                        .WithMany("ProductSectionGroups")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.SectionGroup", "SectionGroup")
+                        .WithMany("ProductSectionGroups")
+                        .HasForeignKey("SectionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.QuotationItem", b =>

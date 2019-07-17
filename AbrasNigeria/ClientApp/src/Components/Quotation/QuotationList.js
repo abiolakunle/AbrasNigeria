@@ -17,7 +17,7 @@ class QuotationList extends Component {
             className="list-group-item  justify-content-between align-items-center"
           >
             <div className="row">
-              <Link to={`/view/${quotation.quotationId}`}>
+              <Link to={`/quotation/${quotation.quotationId}`}>
                 <div className="col-md-4">
                   <span className="font-weight-bold">Quote Number: </span>
                   {quotation.quoteNo}
@@ -43,8 +43,8 @@ class QuotationList extends Component {
     });
     return (
       <React.Fragment>
-        <Link to="/quotation">
-          <button className="btn btn-primary my-2 ml-5">New Invoice</button>
+        <Link to="/quotation/new">
+          <button className="btn btn-primary my-2 ml-5">New Quotation</button>
         </Link>
         <ul className="list-group">{quotationListItem}</ul>
       </React.Fragment>

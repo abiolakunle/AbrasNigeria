@@ -4,12 +4,12 @@ import Table from "../Content/Table";
 
 import { Redirect } from "react-router";
 
-import { Consumer } from "../../../Context";
+import { DocumentConsumer } from "../../../Contexts/DocumentContext";
 
 class Main extends Component {
   render() {
     return (
-      <Consumer>
+      <DocumentConsumer>
         {contextValue => {
           const { contextState } = contextValue;
           if (contextState.submitted === true) {
@@ -26,7 +26,7 @@ class Main extends Component {
             );
           }
         }}
-      </Consumer>
+      </DocumentConsumer>
     );
   }
 }

@@ -42,10 +42,6 @@ namespace AbrasNigeria
                 Configuration["ConnectionStrings:DefaultConnection"]
                 ));
 
-            services.AddDbContext<QuoteDbContext>(options => options.UseSqlServer(
-                Configuration["ConnectionStrings:QuotationConnection"]
-                ));
-
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();

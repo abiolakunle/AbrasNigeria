@@ -15,5 +15,7 @@ namespace AbrasNigeria.Data.DTO
 
         public IEnumerable<SectionDTO> Sections { get; set; }
 
+        public IEnumerable<ProductDTO> Products { get; set; }
+
     }
 }

@@ -11,7 +11,11 @@ export default class Machine extends Component {
 
   componentDidMount() {
     axios
-      .get("https://localhost:44343/api/machine/machine?id=88")
+      .get(
+        `https://localhost:44343/api/machine/machine?id=${
+          this.props.match.params.id
+        }`
+      )
       .then(response => {
         console.log(response.data);
       })

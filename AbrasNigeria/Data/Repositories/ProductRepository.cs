@@ -18,11 +18,11 @@ namespace AbrasNigeria.Data.Repositories
         public IEnumerable<Product> FindWithCategoryAndBrand(Func<Product, bool> predicate)
         {
             return _context.Products.Include(p => p.Category).Include(p => p.Brand).Where(predicate);
-        }      
+        }
 
-        public async Task<IEnumerable<Product>> LoadAllWithCategoryAndBrand()
+        public IEnumerable<Product> LoadAllWithCategoryAndBrand()
         {
-            return await _context.Products.Include(p => p.Category).Include(p => p.Section).ToListAsync();
+            return _context.Products.Include(p => p.Category).Include(p => p.Section);
         }
 
         public IEnumerable<Product> LoadBySection(Section section)
@@ -32,7 +32,9 @@ namespace AbrasNigeria.Data.Repositories
 
         public IEnumerable<Product> LoadWithCategorySectionGroup()
         {
-            return _context.Products.Include(p => p.SectionGroup).Include(p => p.Category);
+            return _context.Products
+                //.Include(p => p.SectionGroup)
+                .Include(p => p.Category);
         }
 
         public IEnumerable<Product> SearchWithCategory(string searchQuery)

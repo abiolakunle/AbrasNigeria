@@ -1,4 +1,5 @@
 ﻿using AbrasNigeria.Data.Interfaces;
+using AbrasNigeria.Data.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
@@ -21,16 +22,12 @@ namespace AbrasNigeria.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<JsonResult> List()
+        public JsonResult List()
         {
-            var products = await _productRepository.LoadAllWithCategoryAndBrand();
+            var products = _productRepository.LoadAllWithCategoryAndBrand();
 
-            return Json(products, new JsonSerializerSettings()
-            {
-                NullValueHandling = true ? NullValueHandling.Ignore : NullValueHandling.Include,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-           //return Json(products);
+            return Json(products, JsonHelper.SerializerSettings);
+            //return Json(products);
         }
 
         [HttpGet("[action]")]
@@ -38,11 +35,7 @@ namespace AbrasNigeria.Controllers
         {
             var products = _productRepository.SearchWithCategory(searchQuery);
 
-            return Json(products, new JsonSerializerSettings()
-            {
-                NullValueHandling = true ? NullValueHandling.Ignore : NullValueHandling.Include,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+            return Json(products, JsonHelper.SerializerSettings);
         }
     }
 }

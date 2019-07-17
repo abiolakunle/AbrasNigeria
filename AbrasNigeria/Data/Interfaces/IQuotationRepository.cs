@@ -9,8 +9,7 @@ namespace AbrasNigeria.Data.Interfaces
 {
     public interface IQuotationRepository : IRepository<Quotation>
     {
-        IEnumerable<Quotation> GetAll();
-
-        void Create(Quotation quotation);
+        IEnumerable<Quotation> LoadAllWithItems();
+        Quotation LoadWithItems(int id);
     }
 }

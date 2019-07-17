@@ -5,6 +5,7 @@ import GuestHeader from "./Shared/GuestHeader";
 import GuestFooter from "./Shared/GuestFooter";
 import Home from "./Pages/Home";
 import Machines from "./Pages/Machines";
+import Machine from "./Pages/Machine";
 
 class Guest extends Component {
   render() {
@@ -15,6 +16,7 @@ class Guest extends Component {
         <Switch>
           <Route exact path="/guest/home" component={Home} />
           <Route exact path="/guest/machines" component={Machines} />
+          <Route exact path="/guest/machine/:id" component={Machine} />
         </Switch>
 
         <GuestFooter />

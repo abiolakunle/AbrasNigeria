@@ -9,9 +9,7 @@ namespace AbrasNigeria.Models
     {
         public Section()
         {
-            //Machines = new HashSet<Machine>();
             SectionGroups = new HashSet<SectionGroup>();
-            //Products = new HashSet<Product>();
             MachineSections = new HashSet<MachineSection>();
             MachineSectionGroups = new HashSet<MachineSectionGroup>();
         }
@@ -26,13 +24,7 @@ namespace AbrasNigeria.Models
 
         public string ThumbUrl { get; set; }
 
-        //public virtual Machine Machine { get; set; }
-
-        //public virtual ICollection<Machine> Machines { get; set; }
-
-        public virtual ICollection<SectionGroup> SectionGroups { get; set; }
-
-        //public virtual ICollection<Product> Products { get; set; }
+        public ICollection<SectionGroup> SectionGroups { get; set; }
 
         public ICollection<MachineSection> MachineSections { get; set; }
 

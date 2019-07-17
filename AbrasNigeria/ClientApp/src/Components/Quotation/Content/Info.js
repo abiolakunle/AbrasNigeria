@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Consumer } from "../../../Context";
+import { DocumentConsumer } from "../../../Contexts/DocumentContext";
 
 class Info extends Component {
   state = {
@@ -26,7 +26,7 @@ class Info extends Component {
 
   render() {
     return (
-      <Consumer>
+      <DocumentConsumer>
         {contextValue => {
           const { contextState } = contextValue;
           return (
@@ -35,7 +35,7 @@ class Info extends Component {
             </React.Fragment>
           );
         }}
-      </Consumer>
+      </DocumentConsumer>
     );
   }
 

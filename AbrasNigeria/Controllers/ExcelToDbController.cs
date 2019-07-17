@@ -28,6 +28,7 @@ namespace AbrasNigeria.Controllers
         public async Task<IActionResult> UploadExcel([FromForm]IFormFile masterFile)
         {
 
+
             if (masterFile == null || masterFile.Length == 0)
             {
                 return Content("File not selected");
@@ -258,13 +259,50 @@ namespace AbrasNigeria.Controllers
 
                                             section.SectionGroups.Add(sectionGroup);
 
-                                            sectionGroup.Products.Add(product);
+                                            //sectionGroup.Products.Add(product);
+
+
 
 
                                             //Category One to many
                                             category.Products.Add(product);
 
                                             _dbContext.SaveChanges();
+
+
+                                            //ProductMachine relationship
+                                            ProductMachine productMachine = new ProductMachine
+                                            {
+                                                Product = product,
+                                                Machine = machine
+                                            };
+
+                                            ProductMachine dbProductMachine = _dbContext
+                                                .Set<ProductMachine>()
+                                                .Where(pm => pm.ProductId == product.ProductId && pm.MachineId == machine.MachineId)
+                                                .FirstOrDefault();
+
+                                            if (dbProductMachine == null)
+                                            {
+                                                product.ProductMachines.Add(productMachine);
+                                            }
+
+                                            //ProductSectionGroup relationship
+                                            ProductSectionGroup productSectionGroup = new ProductSectionGroup
+                                            {
+                                                Product = product,
+                                                SectionGroup = sectionGroup
+                                            };
+
+                                            ProductSectionGroup dbProductSectionGroup = _dbContext
+                                                .Set<ProductSectionGroup>()
+                                                .Where(psg => psg.SectionGroupId == sectionGroup.SectionGroupId && psg.ProductId == product.ProductId)
+                                                .FirstOrDefault();
+
+                                            if (dbProductSectionGroup == null)
+                                            {
+                                                product.ProductSectionGroups.Add(productSectionGroup);
+                                            }
 
                                             //MachineSection relationship
                                             MachineSection machineSection = new MachineSection

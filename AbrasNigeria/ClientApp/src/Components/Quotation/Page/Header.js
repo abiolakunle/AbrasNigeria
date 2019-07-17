@@ -23,12 +23,12 @@ const Header = ({ quoteNumber }) => {
               <span class="far fa-envelope"> Send via mail</span>
             </div>
           </Link>
-          <Link to="/">
+          <Link to="/quotations">
             <div className="dropdown-item">
               <span>Quotation list</span>
             </div>
           </Link>
-          <Link to="/quotation">
+          <Link to="/quotation/new">
             <div className="dropdown-item">
               <span>New quotation</span>
             </div>

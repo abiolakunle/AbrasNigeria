@@ -4,7 +4,7 @@ import axios from "axios";
 
 import TableItem from "./TableItem";
 import Summary from "./Summary";
-import { Consumer } from "../../../Context";
+import { DocumentConsumer } from "../../../Contexts/DocumentContext";
 
 class Table extends Component {
   state = {
@@ -21,7 +21,7 @@ class Table extends Component {
 
   render() {
     return (
-      <Consumer>
+      <DocumentConsumer>
         {contextValue => {
           const { contextState, sendInvoice } = contextValue;
           return (
@@ -65,7 +65,7 @@ class Table extends Component {
             </React.Fragment>
           );
         }}
-      </Consumer>
+      </DocumentConsumer>
     );
   }
 

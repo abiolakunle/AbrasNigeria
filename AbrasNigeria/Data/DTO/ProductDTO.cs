@@ -9,7 +9,6 @@ namespace AbrasNigeria.Data.DTO
     {
         public string PartNumber { get; set; }
 
-
         public string Category { get; set; }
     }
 }

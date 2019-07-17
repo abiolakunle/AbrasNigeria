@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 
 namespace AbrasNigeria.Models
@@ -17,18 +18,19 @@ namespace AbrasNigeria.Models
         //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int BrandId { get; set; }
 
+        [JsonProperty(PropertyName = "Name")]
         public string Name { get; set; }
 
         public string Description { get; set; }
-        
-        public virtual ICollection<Product> Products { get; set; }
 
-        public virtual ICollection<Category> Categories { get; set; }
+        public ICollection<Product> Products { get; set; }
 
-        public virtual ICollection<Machine> Machines { get; set; }
+        public ICollection<Category> Categories { get; set; }
 
-        public virtual ICollection<Section> Sections { get; set; }
+        public ICollection<Machine> Machines { get; set; }
 
-        public virtual ICollection<SectionGroup> SectionGroups { get; set; }
+        public ICollection<Section> Sections { get; set; }
+
+        public ICollection<SectionGroup> SectionGroups { get; set; }
     }
 }

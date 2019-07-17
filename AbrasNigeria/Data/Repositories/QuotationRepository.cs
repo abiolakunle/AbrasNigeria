@@ -8,66 +8,33 @@ using System.Linq;
 
 namespace AbrasNigeria.Data.Repositories
 {
-    public class QuotationRepository : IQuotationRepository
+    public class QuotationRepository : Repository<Quotation>, IQuotationRepository
     {
-        private readonly QuoteDbContext _quoteDbContext;
+        private readonly AppDbContext _dbContext;
 
-        public QuotationRepository(QuoteDbContext quoteDbContext)
+        public QuotationRepository(AppDbContext dbContext) : base(dbContext)
         {
-            _quoteDbContext = quoteDbContext;
+            _dbContext = dbContext;
         }
 
-        public int Count(Func<Quotation, bool> predicate)
+        public IEnumerable<Quotation> LoadAllWithItems()
         {
-            throw new NotImplementedException();
-        }
-
-        public void Create(Quotation quotation)
-        {
-            _quoteDbContext.Quotations.Add(quotation);
-            _quoteDbContext.SaveChanges();
-        }
-
-        public void Delete(Quotation entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Quotation> Find(Func<Quotation, bool> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Quotation> GetAll()
-        {
-            IEnumerable<Quotation> quotations = _quoteDbContext.Quotations;
+            IEnumerable<Quotation> quotations = _dbContext.Quotations;
             foreach (var quotation in quotations)
             {
-                quotation.Table = _quoteDbContext.QuotationItems
+                quotation.Table = _dbContext.QuotationItems
                     .Where(item => item.QuotationId == quotation.QuotationId).ToList();
             }
 
             return quotations;
         }
 
-        public Quotation GetById(int id)
+        public Quotation LoadWithItems(int id)
         {
-            return _quoteDbContext.Quotations
+            return _dbContext.Quotations
                 .Where(q => q.QuotationId == id)
                 .Include(q => q.Table).FirstOrDefault();
         }
 
-        public Quotation GetQuotation(int quotationId)
-        {
-            Quotation quotation = _quoteDbContext.Quotations
-                .Where(quot => quot.QuotationId == quotationId)
-                .Include(q => q.Table).FirstOrDefault();
-            return quotation;
-        }
-
-        public void Update(Quotation entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -22,14 +22,14 @@ namespace AbrasNigeria.Controllers
         [HttpGet]
         public IEnumerable<Quotation> Get()
         {
-            return _quotationRepository.GetAll();
+            return _quotationRepository.LoadAllWithItems();
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public Quotation Get(int id)
         {
-            return _quotationRepository.GetById(id);
+            return _quotationRepository.LoadWithItems(id);
         }
 
         // POST api/<controller>

@@ -25,15 +25,29 @@ namespace AbrasNigeria.Data.DbContexts
 
         public DbSet<SectionGroup> SectionGroups { get; set; }
 
+        public DbSet<Quotation> Quotations { get; set; }
+
+        public DbSet<QuotationItem> QuotationItems { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Product>().HasOne(s => s.SectionGroup);
+            //modelBuilder.Entity<Machine>().HasOne(m => m.Brand)
+            //    .WithOne()
+            //    .HasForeignKey<Brand>(b => b.BrandId);
+
+            modelBuilder.Entity<ProductSectionGroup>().HasKey(psg => new { psg.ProductId, psg.SectionGroupId });
+
+            modelBuilder.Entity<ProductMachine>().HasKey(pm => new { pm.ProductId, pm.MachineId });
 
             modelBuilder.Entity<MachineSection>().HasKey(ms => new { ms.MachineId, ms.SectionId });
             modelBuilder.Entity<MachineSectionGroup>().HasKey(msg => new { msg.MachineId, msg.SectionGroupId });
+
+            modelBuilder.Entity<Quotation>()
+            .Property(q => q.Date)
+            .HasDefaultValueSql("getdate()");
 
             //modelBuilder.Entity<MachineSection>()
             //    .HasOne(m => m.Machine)
@@ -53,7 +67,7 @@ namespace AbrasNigeria.Data.DbContexts
 
             //modelBuilder.Entity<Machine>().HasMany(m => m.SectionGroups);
 
-            
+
 
         }
     }

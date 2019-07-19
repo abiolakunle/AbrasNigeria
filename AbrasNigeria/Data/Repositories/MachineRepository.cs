@@ -6,6 +6,7 @@ using AbrasNigeria.Models;
 using AbrasNigeria.Data.DbContexts;
 using System.Threading.Tasks;
 using AbrasNigeria.Data.DTO;
+using AbrasNigeria.Data.Extensions;
 
 namespace AbrasNigeria.Data.Repositories
 {
@@ -24,7 +25,11 @@ namespace AbrasNigeria.Data.Repositories
                 {
                     ModelName = m.ModelName,
                     SerialNumber = m.SerialNumber,
-                    BrandName = m.Brand.Name
+                    BrandName = m.Brand.Name,
+                    Products = m.ProductMachines.Select(pm => new ProductDTO
+                    {
+                        PartNumber = pm.Product.PartNumber
+                    })
                 }).ToListAsync();
         }
 
@@ -45,6 +50,11 @@ namespace AbrasNigeria.Data.Repositories
                 ModelName = m.ModelName,
                 SerialNumber = m.SerialNumber,
                 BrandName = m.Brand.Name,
+                Products = m.ProductMachines.Select(pm => new ProductDTO
+                {
+                    PartNumber = pm.Product.PartNumber,
+                    Category = pm.Product.Category.CategoryName
+                }),
                 Sections = m.MachineSections.Where(s => s.MachineId == m.MachineId).Select(s => new SectionDTO
                 {
                     SectionName = s.Section.SectionName,
@@ -54,15 +64,76 @@ namespace AbrasNigeria.Data.Repositories
                     {
                         SectionGroupName = msg.SectionGroup.SectionGroupName,
                         Section = msg.SectionGroup.Section.SectionName,
-                        Products = m.ProductMachines
-                        .Where(pm => pm.MachineId == m.MachineId) //&& pm.Product.Section.SectionId == s.SectionId
-                        .Where(pm => pm.Product.ProductSectionGroups.Any(psg => psg.ProductId == pm.ProductId)
-                        )
-                        .Select(pm => new ProductDTO
+
+                        //this Took me three day to wrap my head around, got solution here https://stackoverflow.com/questions/11285045/intersect-two-lists-with-different-objects/11285117#11285117  Raphaël Althaus
+                        //selecting products that are in this productsection which also belong to this machine
+                        Products = msg.SectionGroup.ProductSectionGroups.Select(psg => psg.Product)
+                        .Where(p => m.ProductMachines.Select(pm => pm.ProductId).Contains(p.ProductId)).Select(pg => new ProductDTO
                         {
-                            PartNumber = pm.Product.PartNumber,
-                            Category = pm.Product.Category.CategoryName
+                            PartNumber = pg.PartNumber,
+                            Category = pg.Category.CategoryName
                         })
+
+
+
+                        //Select(psg => psg.Product).Where(p => msg.SectionGroup.ProductSectionGroups.Select(psg => psg.Product.ProductId)
+                        //.Intersect(m.ProductMachines.Select(pm => pm.ProductMachineId)
+                        //).Contains(p.ProductId)).Select(pm => new ProductDTO
+                        //{
+                        //    PartNumber = pm.PartNumber,
+                        //    Category = pm.Category.CategoryName
+                        //})
+
+                        //.Where(psg => psg.SectionGroup.Section.SectionId == s.SectionId)
+                        //.Where(psg => psg.Product.ProductMachines.Any(pm => pm.MachineId == pm.MachineId))
+
+
+
+
+                        //.Select(psg => new ProductDTO
+                        //{
+                        //    PartNumber = psg.Product.PartNumber,
+                        //    Category = psg.Product.Category.CategoryName
+                        //})
+
+                        //.Join(m.ProductMachines,
+                        //        psg => psg.ProductId,
+                        //        pm => pm.ProductId,
+                        //        (psg, prodG) => new ProductDTO
+                        //        {
+                        //            PartNumber = psg.Product.PartNumber,
+                        //            Category = psg.Product.Category.CategoryName
+                        //        })
+
+
+
+
+
+                        //.Where(psg => psg.SectionGroup.SectionGroupId == msg.SectionGroupId)
+                        //.Select(psg => new ProductDTO
+                        //{
+                        //    PartNumber = psg.Product.PartNumber,
+                        //    Category = psg.Product.Category.CategoryName
+                        //})
+
+                        //m.ProductMachines
+                        //.Where(pm => pm.MachineId == m.MachineId) //&& pm.Product.Section.SectionId == s.SectionId
+                        //.Where(pm => pm.Product.ProductSectionGroups.Any(psg => psg.ProductId == pm.ProductId)
+                        //)
+                        //.Select(pm => new ProductDTO
+                        //{
+                        //    PartNumber = pm.Product.PartNumber,
+                        //    Category = pm.Product.Category.CategoryName
+                        //})
+
+
+                        //m.ProductMachines.Where(pm => pm.MachineId == m.MachineId).Select(p => new ProductDTO
+                        //{
+                        //    PartNumber = p.Product.PartNumber
+                        //})
+
+
+
                     })
                 })
             }).FirstOrDefault();

@@ -25,10 +25,9 @@ namespace AbrasNigeria.Controllers
             _dbContext = dbContext;
         }
 
-        public async Task<IActionResult> UploadExcel([FromForm]IFormFile masterFile)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UploadExcel(IFormFile masterFile)
         {
-
-
             if (masterFile == null || masterFile.Length == 0)
             {
                 return Content("File not selected");
@@ -44,7 +43,7 @@ namespace AbrasNigeria.Controllers
                 //return View();
             }
 
-            //Generate full filpath and save file
+            //Generate full filepath and save file
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), _environment.WebRootPath, "uploads/" + masterFile.FileName);
 
             using (var bits = new FileStream(filePath, FileMode.Create))
@@ -108,6 +107,8 @@ namespace AbrasNigeria.Controllers
 
 
                 }
+
+                file.Delete();
 
 
                 int count = 0;
@@ -353,6 +354,15 @@ namespace AbrasNigeria.Controllers
 
                 return Ok();
             }
+        }
+    }
+
+    public class FileLogger
+    {
+        public static void Log(string logInfo, IHostingEnvironment environment, string fileName)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), environment.WebRootPath, "uploads/" + fileName + "log");
+            File.AppendAllText(filePath, logInfo);
         }
     }
 }

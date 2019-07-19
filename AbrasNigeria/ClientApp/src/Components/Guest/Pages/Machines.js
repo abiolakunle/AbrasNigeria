@@ -10,14 +10,14 @@ export default class Machines extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="container my-5">
+        <main className="container my-5">
           <h1 className="my-2">Machines</h1>
           <div className="row">
             {this.state.machines.map(machine => {
               return this.renderMachine(machine);
             })}
           </div>
-        </div>
+        </main>
       </React.Fragment>
     );
   }
@@ -37,7 +37,7 @@ export default class Machines extends Component {
 
   renderMachine(machine) {
     return (
-      <React.Fragment>
+      <React.Fragment key={machine.modelName}>
         <div className="col-md-4 mb-3">
           <div className="card shadow-sm">
             <div className="card-body">
@@ -47,13 +47,13 @@ export default class Machines extends Component {
                 asp-route-id="@machine.MachineId"
               >
                 <h5>
-                  <span>{machine.BrandName} </span>
-                  {machine.MachineName}
+                  <span>{machine.brandName} </span>
+                  {machine.modelName}
                 </h5>
               </a>
               <hr />
               <p className="mb-1 pb-1">
-                <b>Serial number: </b> {machine.SerialNumber}
+                <b>Serial number: </b> {machine.serialNumber}
               </p>
             </div>
             {/* @*

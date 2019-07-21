@@ -20,7 +20,12 @@ namespace AbrasNigeria.Data.Repositories
         {
             return _context.Products
                 .Where(p => p.Category.CategoryName.Contains(query.Category))
-                .Where(p => p.PartNumber.Contains(query.PartNumber)).Include(p => p.Category);
+                .Where(p => p.PartNumber.Contains(query.PartNumber))
+                .Where(p => p.Section.SectionName.Contains(query.Section))
+                .Where(p => p.ProductSectionGroups
+                             .Contains(p.ProductSectionGroups
+                             .Where(psg => psg.SectionGroup.SectionGroupName.Contains(query.SectionGroup)).FirstOrDefault()))
+                .Include(p => p.Category);
         }
 
         public IEnumerable<Product> FindWithCategoryAndBrand(Func<Product, bool> predicate)

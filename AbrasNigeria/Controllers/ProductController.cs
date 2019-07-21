@@ -46,7 +46,6 @@ namespace AbrasNigeria.Controllers
         {
             IEnumerable<Product> products = _productRepository.Filter(data);
 
-
             return Json(products, JsonHelper.SerializerSettings);
         }
     }

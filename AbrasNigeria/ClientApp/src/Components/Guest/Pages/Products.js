@@ -9,7 +9,9 @@ export default class products extends Component {
     section: "",
     sectionGroup: "",
     machine: "",
-    filterResult: []
+    filterResult: [],
+
+    partNumberSuggestions: []
   };
 
   render() {
@@ -34,8 +36,27 @@ export default class products extends Component {
       },
       () => {
         console.log(eventName, this.state.partNumber);
+        this.loadSuggestions();
       }
     );
+  };
+
+  loadSuggestions = () => {
+    //load suggestions from server and update component state
+    axios
+      .get(
+        `https://localhost:44343/api/product/search?searchQuery=${
+          this.state.partNumber //part number as search query
+        }`
+      )
+      .then(response => {
+        this.setState({
+          partNumberSuggestions: response.data
+        });
+      })
+      .catch(error => {
+        console.log("axios error", error);
+      });
   };
 
   sendQuery = event => {
@@ -58,19 +79,54 @@ export default class products extends Component {
 
   renderForm() {
     return (
-      <form className="form-inline" onSubmit={this.sendQuery}>
+      <form
+        autoComplete="off"
+        className="form-inline"
+        onSubmit={this.sendQuery}
+      >
         <label className="sr-only" for="inlineFormInputName2">
           Part Number
         </label>
+
         <input
-          type="text"
-          className="form-control mb-2 mr-sm-2"
-          id="inlineFormInputName2"
-          placeholder="Part Number"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
           name="partNumber"
           value={this.state.partNumber}
+          type="text"
+          className="form-control mb-2 mr-sm-2 dropdown-toggle"
+          placeholder="Part number"
           onChange={this.onFormChanged}
         />
+        <div
+          class="dropdown-menu pre-scrollable"
+          aria-labelledby="dropdownMenuButton"
+        >
+          {this.state.partNumberSuggestions.length === 0 ? (
+            <button className="dropdown-item">No match found</button>
+          ) : (
+            this.state.partNumberSuggestions.map((item, index) => {
+              //iterate over suggestions and display
+              return (
+                <button
+                  key={index}
+                  class="dropdown-item"
+                  onClick={event => {
+                    //set the value from clicked suggestion to inputs
+                    event.preventDefault();
+                    this.setState({
+                      // partNumber: item.partNumber,
+                      // description: item.category.categoryName
+                    });
+                  }}
+                >
+                  {item.partNumber}
+                </button>
+              );
+            })
+          )}
+        </div>
 
         <label className="sr-only" for="category">
           Category

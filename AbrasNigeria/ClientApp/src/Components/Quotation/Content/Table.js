@@ -200,12 +200,12 @@ class Table extends Component {
                           //set the value from clicked suggestion to inputs
                           event.preventDefault();
                           this.setState({
-                            partNumber: item.PartNumber,
-                            description: item.Category.CategoryName
+                            partNumber: item.partNumber,
+                            description: item.category.categoryName
                           });
                         }}
                       >
-                        {item.PartNumber}
+                        {item.partNumber}
                       </button>
                     );
                   })

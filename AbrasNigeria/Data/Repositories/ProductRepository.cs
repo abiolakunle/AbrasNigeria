@@ -6,6 +6,7 @@ using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Models;
 using AbrasNigeria.Data.DbContexts;
 using System.Threading.Tasks;
+using AbrasNigeria.Data.DTO;
 
 namespace AbrasNigeria.Data.Repositories
 {
@@ -13,6 +14,13 @@ namespace AbrasNigeria.Data.Repositories
     {
         public ProductRepository(AppDbContext context) : base(context)
         {
+        }
+
+        public IEnumerable<Product> Filter(FilterQueryDTO query)
+        {
+            return _context.Products
+                .Where(p => p.Category.CategoryName.Contains(query.Category))
+                .Where(p => p.PartNumber.Contains(query.PartNumber)).Include(p => p.Category);
         }
 
         public IEnumerable<Product> FindWithCategoryAndBrand(Func<Product, bool> predicate)

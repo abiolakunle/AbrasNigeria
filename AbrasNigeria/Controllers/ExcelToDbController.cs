@@ -70,9 +70,6 @@ namespace AbrasNigeria.Controllers
                     Console.WriteLine("Countering" + i);
                     int next = i + 1;
 
-
-
-
                     bool sectionBool = workSheet.Cells[i, 3].Style.Font.Bold;
                     bool sectionGroupBool = workSheet.Cells[next, 3].Style.Font.Bold;
                     if (sectionBool && sectionGroupBool)
@@ -104,13 +101,10 @@ namespace AbrasNigeria.Controllers
                             Brand = "Komatsu"
                         });
                     }
-
-
                 }
 
+
                 file.Delete();
-
-
                 int count = 0;
 
                 //get data to db
@@ -151,6 +145,7 @@ namespace AbrasNigeria.Controllers
                             {
                                 _dbContext.Machines.Add(machine);
                                 _dbContext.SaveChanges();
+
                             }
 
                             // _dbContext.Upsert(machine).On(m => new { m.ModelName }).Run();
@@ -171,6 +166,7 @@ namespace AbrasNigeria.Controllers
                                 {
                                     _dbContext.Sections.Add(section);
                                     _dbContext.SaveChanges();
+
                                 }
 
                                 //_dbContext.Sections.Upsert(section).On(s => new { s.SectionName }).Run();
@@ -193,13 +189,12 @@ namespace AbrasNigeria.Controllers
                                     {
                                         _dbContext.SectionGroups.Add(sectionGroup);
                                         _dbContext.SaveChanges();
+
                                     }
 
                                     //_dbContext.SectionGroups.Upsert(sectionGroup).On(s => new { s.SectionGroupName }).Run();
                                     Console.WriteLine("Added sectiongroup");
-                                    sectionGroup = _dbContext.SectionGroups.Where(s => s.SectionGroupName == sectionGroup.SectionGroupName).FirstOrDefault();
-
-
+                                    sectionGroup = _dbContext.SectionGroups.Where(sg => sg.SectionGroupName == sectionGroup.SectionGroupName).FirstOrDefault();
 
                                     if (line.PartName != "")
                                     {
@@ -214,16 +209,17 @@ namespace AbrasNigeria.Controllers
                                         {
                                             _dbContext.Categories.Add(category);
                                             _dbContext.SaveChanges();
+
                                         }
 
                                         //_dbContext.Categories.Upsert(category).On(s => new { s.CategoryName }).Run();
                                         Console.WriteLine("Added category");
                                         category = _dbContext.Categories.Where(s => s.CategoryName == category.CategoryName).FirstOrDefault();
 
-                                        brand.Categories.Add(category);
-                                        _dbContext.SaveChanges();
+                                        //brand.Categories.Add(category);
 
-                                        if (line.PartNumber != null)
+
+                                        if (line.PartNumber != "")
                                         {
                                             Product product = new Product
                                             {
@@ -240,11 +236,12 @@ namespace AbrasNigeria.Controllers
                                             {
                                                 _dbContext.Products.Add(product);
                                                 _dbContext.SaveChanges();
+
                                             }
 
                                             //_dbContext.Products.Upsert(product).On(s => new { s.PartNumber }).Run();
                                             Console.WriteLine("Added product");
-                                            product = _dbContext.Products.Where(s => s.PartNumber == line.PartNumber).FirstOrDefault();
+                                            product = _dbContext.Products.Where(p => p.PartNumber == product.PartNumber).FirstOrDefault();
 
                                             //Brand One to many
                                             brand.Categories.Add(category);
@@ -257,36 +254,11 @@ namespace AbrasNigeria.Controllers
 
                                             brand.Sections.Add(section);
 
-
                                             section.SectionGroups.Add(sectionGroup);
 
-                                            //sectionGroup.Products.Add(product);
-
-
-
-
-                                            //Category One to many
                                             category.Products.Add(product);
 
                                             _dbContext.SaveChanges();
-
-
-                                            //ProductMachine relationship
-                                            ProductMachine productMachine = new ProductMachine
-                                            {
-                                                Product = product,
-                                                Machine = machine
-                                            };
-
-                                            ProductMachine dbProductMachine = _dbContext
-                                                .Set<ProductMachine>()
-                                                .Where(pm => pm.ProductId == product.ProductId && pm.MachineId == machine.MachineId)
-                                                .FirstOrDefault();
-
-                                            if (dbProductMachine == null)
-                                            {
-                                                product.ProductMachines.Add(productMachine);
-                                            }
 
                                             //ProductSectionGroup relationship
                                             ProductSectionGroup productSectionGroup = new ProductSectionGroup
@@ -303,6 +275,25 @@ namespace AbrasNigeria.Controllers
                                             if (dbProductSectionGroup == null)
                                             {
                                                 product.ProductSectionGroups.Add(productSectionGroup);
+                                                _dbContext.SaveChanges();
+                                            }
+
+                                            //ProductMachine relationship
+                                            ProductMachine productMachine = new ProductMachine
+                                            {
+                                                Product = product,
+                                                Machine = machine
+                                            };
+
+                                            ProductMachine dbProductMachine = _dbContext
+                                                .Set<ProductMachine>()
+                                                .Where(pm => pm.ProductId == product.ProductId && pm.MachineId == machine.MachineId)
+                                                .FirstOrDefault();
+
+                                            if (dbProductMachine == null)
+                                            {
+                                                product.ProductMachines.Add(productMachine);
+                                                _dbContext.SaveChanges();
                                             }
 
                                             //MachineSection relationship
@@ -320,6 +311,7 @@ namespace AbrasNigeria.Controllers
                                             if (dbMachineSection == null)
                                             {
                                                 machine.MachineSections.Add(machineSection);
+                                                _dbContext.SaveChanges();
                                             }
 
                                             //MachineSectionGroup relationship
@@ -337,21 +329,20 @@ namespace AbrasNigeria.Controllers
                                             if (dbMachineSectionGroup == null)
                                             {
                                                 machine.MachineSectionGroups.Add(machineSectionGroup);
+                                                _dbContext.SaveChanges();
                                             }
-
                                         }
 
                                     }
                                 }
                             }
-
-
                         }
                     }
                     Console.WriteLine("Ended dbOpration");
                 }
                 _dbContext.SaveChanges();
 
+                Console.WriteLine("End of request");
                 return Ok();
             }
         }

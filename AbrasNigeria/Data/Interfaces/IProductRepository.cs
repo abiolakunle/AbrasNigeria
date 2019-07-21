@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Models;
 
 namespace AbrasNigeria.Data.Interfaces
@@ -14,6 +15,8 @@ namespace AbrasNigeria.Data.Interfaces
         IEnumerable<Product> SearchWithCategory(string searchQuery);
 
         IEnumerable<Product> LoadWithCategorySectionGroup();
+
+        IEnumerable<Product> Filter(FilterQueryDTO query);
 
 
     }

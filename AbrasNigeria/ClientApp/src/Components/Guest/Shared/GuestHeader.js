@@ -1,15 +1,23 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
+import AbrasLogo from "../../../Images/Abras logo 2.png";
+
 class GuestHeader extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-2">
         <a
-          className="navbar-brand font-weight-bolder text-primary text-uppercase"
-          href="/"
+          className="navbar-brand font-weight-bolder text-primary text-uppercase "
+          href="/guest/home"
         >
-          Abras
+          <img
+            src={AbrasLogo}
+            alt="Abras"
+            height="30px"
+            className="pr-2 align-middle"
+          />
+          <span className="align-middle">Abras</span>
         </a>
         <button
           className="navbar-toggler"
@@ -33,19 +41,20 @@ class GuestHeader extends Component {
               </NavLink>
             </li>
             <li className="nav-item ">
+              <NavLink exact to="/guest/products" activeClassName="active">
+                <div className="nav-link">
+                  Products <span className="sr-only">(current)</span>
+                </div>
+              </NavLink>
+            </li>
+            <li className="nav-item ">
               <NavLink exact to="/guest/categories" activeClassName="active">
                 <div className="nav-link">
                   Categories <span className="sr-only">(current)</span>
                 </div>
               </NavLink>
             </li>
-            <li className="nav-item ">
-              <NavLink to="/guest/brands" activeClassName="active">
-                <div className="nav-link">
-                  Brands <span className="sr-only">(current)</span>
-                </div>
-              </NavLink>
-            </li>
+
             <li className="nav-item ">
               <NavLink to="/guest/machines" activeClassName="active">
                 <div className="nav-link">

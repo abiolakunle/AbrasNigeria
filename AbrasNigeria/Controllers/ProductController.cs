@@ -1,7 +1,10 @@
-﻿using AbrasNigeria.Data.Interfaces;
+﻿using AbrasNigeria.Data.DTO;
+using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Data.Utils;
+using AbrasNigeria.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AbrasNigeria.Controllers
@@ -34,6 +37,15 @@ namespace AbrasNigeria.Controllers
         public JsonResult Search(string searchQuery)
         {
             var products = _productRepository.SearchWithCategory(searchQuery);
+
+            return Json(products, JsonHelper.SerializerSettings);
+        }
+
+        [HttpPost("[action]")]
+        public JsonResult Filter([FromBody]FilterQueryDTO data)
+        {
+            IEnumerable<Product> products = _productRepository.Filter(data);
+
 
             return Json(products, JsonHelper.SerializerSettings);
         }

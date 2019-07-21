@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { Link } from "react-router-dom";
+
 import axios from "axios";
 
 export default class Machines extends Component {
@@ -10,14 +12,12 @@ export default class Machines extends Component {
   render() {
     return (
       <React.Fragment>
-        <main className="container my-5">
-          <h1 className="my-2">Machines</h1>
-          <div className="row">
-            {this.state.machines.map(machine => {
-              return this.renderMachine(machine);
-            })}
-          </div>
-        </main>
+        <h1 className="my-2">Machines</h1>
+        <div className="row">
+          {this.state.machines.map(machine => {
+            return this.renderMachine(machine);
+          })}
+        </div>
       </React.Fragment>
     );
   }
@@ -41,16 +41,12 @@ export default class Machines extends Component {
         <div className="col-md-4 mb-3">
           <div className="card shadow-sm">
             <div className="card-body">
-              <a
-                asp-controller="Machine"
-                asp-action="Machine"
-                asp-route-id="@machine.MachineId"
-              >
+              <Link to={`/guest/machine/${machine.machineId}`}>
                 <h5>
                   <span>{machine.brandName} </span>
                   {machine.modelName}
                 </h5>
-              </a>
+              </Link>
               <hr />
               <p className="mb-1 pb-1">
                 <b>Serial number: </b> {machine.serialNumber}

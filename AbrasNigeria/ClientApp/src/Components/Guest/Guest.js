@@ -14,8 +14,9 @@ class Guest extends Component {
     return (
       <React.Fragment>
         <GuestHeader />
-        <main className="container my-5">
+        <main className="container py-5">
           <Switch>
+            <Route exact path="/" component={Home} />
             <Route exact path="/guest/home" component={Home} />
             <Route exact path="/guest/machines" component={Machines} />
             <Route exact path="/guest/machine/:id" component={Machine} />

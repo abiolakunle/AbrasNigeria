@@ -16,7 +16,7 @@ namespace AbrasNigeria.Data.Interfaces
 
         IEnumerable<Product> LoadWithCategorySectionGroup();
 
-        IEnumerable<Product> Filter(FilterQueryDTO query);
+        IEnumerable<Product> Filter(FilterProductsDTO query);
 
 
     }

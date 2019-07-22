@@ -20,9 +20,9 @@ export default class Home extends Component {
 
           <section class="services pt-100 pb-50">
             <div class="container-fluid">
-              <div class="row mb-5">
+              <div class="row mb-1">
                 <div class="col-xl-6 mx-auto text-center">
-                  <h4 class="text-uppercase section-title mb-100">
+                  <h4 class="text-uppercase section-title mt-5">
                     We meet your sparepart needs
                   </h4>
                 </div>

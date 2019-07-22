@@ -16,15 +16,16 @@ namespace AbrasNigeria.Data.Repositories
         {
         }
 
-        public IEnumerable<Product> Filter(FilterQueryDTO query)
+        public IEnumerable<Product> Filter(FilterProductsDTO filter)
         {
             return _context.Products
-                .Where(p => p.Category.CategoryName.Contains(query.Category))
-                .Where(p => p.PartNumber.Contains(query.PartNumber))
-                .Where(p => p.Section.SectionName.Contains(query.Section))
+                .Where(p => p.Category.CategoryName.Contains(filter.Category))
+                .Where(p => p.PartNumber.Contains(filter.PartNumber))
+                .Where(p => p.Section.SectionName.Contains(filter.Section))
                 .Where(p => p.ProductSectionGroups
                              .Contains(p.ProductSectionGroups
-                             .Where(psg => psg.SectionGroup.SectionGroupName.Contains(query.SectionGroup)).FirstOrDefault()))
+                             .Where(psg => psg.SectionGroup.SectionGroupName.Contains(filter.SectionGroup)).FirstOrDefault()))
+                             .Where(p => p.ProductMachines.Contains(p.ProductMachines.Where(pm => pm.Machine.ModelName.Contains(filter.Machine)).FirstOrDefault()))
                 .Include(p => p.Category);
         }
 

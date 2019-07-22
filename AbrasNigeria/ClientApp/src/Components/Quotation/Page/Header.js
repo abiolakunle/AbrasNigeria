@@ -40,7 +40,7 @@ const Header = ({ quoteNumber }) => {
           <div className="d-flex justify-content-center mt-3">
             <img src={logo} width="120px" alt="abras" />
           </div>
-          <h1 className="red-text display-5 indigo-text darken-3 text-uppercase font-weight-bolder my-0">
+          <h1 className="d-flex justify-content-center red-text display-5 indigo-text darken-3 text-uppercase font-weight-bolder my-0">
             Abras nigeria enterprises
           </h1>
           <p className="d-flex justify-content-center font-weight-bold mb-3">

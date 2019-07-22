@@ -44,7 +44,7 @@ export default class Machine extends Component {
                         data-parent="#accordion"
                       >
                         <div className="card-body py-0">
-                          <div className=" w-100 badge badge-pill badge-dark p-2">
+                          <div className=" w-100 badge  badge-dark p-2">
                             {sectionGroup.sectionGroupName}
                           </div>
 

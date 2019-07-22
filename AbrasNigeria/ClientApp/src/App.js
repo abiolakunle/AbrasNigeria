@@ -16,6 +16,7 @@ function App() {
     <DocumentProvider>
       <Router>
         <Switch>
+          <Route exact path="/" component={Guest} />
           <Route path="/guest" component={Guest} />
           <Route path="/quotation/new" component={Quotation} />
           <Route path="/quotations" component={QuotationList} />

@@ -1,10 +1,12 @@
 ﻿using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Interfaces;
+using AbrasNigeria.Data.Models;
 using AbrasNigeria.Data.Utils;
 using AbrasNigeria.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AbrasNigeria.Controllers
@@ -42,11 +44,23 @@ namespace AbrasNigeria.Controllers
         }
 
         [HttpPost("[action]")]
-        public JsonResult Filter([FromBody]FilterQueryDTO data)
+        public JsonResult Filter([FromBody]FilterProductsDTO data)
         {
             IEnumerable<Product> products = _productRepository.Filter(data);
 
-            return Json(products, JsonHelper.SerializerSettings);
+            PagingInfo pagingInfo = new PagingInfo
+            {
+                TotalItems = products.Count(),
+                CurrentPage = data.Page
+            };
+
+            IEnumerable<Product> selectedProducts = products
+                .Skip((pagingInfo.CurrentPage - 1) * pagingInfo.ItemsPerPage)
+                .Take(pagingInfo.ItemsPerPage);
+
+            HttpContext.Response.Headers.Add("Paging", JsonConvert.SerializeObject(pagingInfo));
+
+            return Json(selectedProducts, JsonHelper.SerializerSettings);
         }
     }
 }

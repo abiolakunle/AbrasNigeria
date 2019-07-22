@@ -14,7 +14,7 @@ class Main extends Component {
           const { contextState } = contextValue;
           if (contextState.submitted === true) {
             contextState.submitted = false;
-            return <Redirect to="/" />; //handle redirection to list on submit when submitted is true
+            return <Redirect to="/quotations" />; //handle redirection to list on submit when submitted is true
           } else {
             return (
               <React.Fragment>

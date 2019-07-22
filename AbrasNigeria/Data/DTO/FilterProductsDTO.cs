@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AbrasNigeria.Data.DTO
 {
-    public class FilterQueryDTO
+    public class FilterProductsDTO
     {
         public string PartNumber { get; set; }
 
@@ -18,6 +18,7 @@ namespace AbrasNigeria.Data.DTO
 
         public string Machine { get; set; }
 
-        public ProductSectionGroup ProductSectionGroup { get; set; }
+        public int Page { get; set; }
+
     }
 }

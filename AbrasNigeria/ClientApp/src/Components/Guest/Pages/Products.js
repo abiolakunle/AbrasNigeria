@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
 import axios from "axios";
-import { totalmem } from "os";
+
+import Pagination from "../Shared/Pagination";
 
 export default class products extends Component {
   state = {
@@ -29,7 +30,8 @@ export default class products extends Component {
 
         {this.renderForm()}
         {this.renderProductList()}
-        {this.renderPagination(this.state.paging)}
+        <Pagination paging={this.state.paging} querySender={this.sendQuery} />
+        {/* {this.renderPagination(this.state.paging, this.sendQuery)} */}
       </React.Fragment>
     );
   }
@@ -69,10 +71,21 @@ export default class products extends Component {
   sendQuery = page => {
     let apiUrl = "https://localhost:44343/api/product/filter";
 
-    let data = { ...this.state, page };
+    let { partNumber, category, section, sectionGroup, machine } = this.state;
+
+    let queryData = {
+      partNumber,
+      category,
+      section,
+      sectionGroup,
+      machine,
+      page
+    };
+
+    console.log("req", queryData);
 
     axios
-      .post(apiUrl, { ...data })
+      .post(apiUrl, { ...queryData })
       .then(response => {
         let paging = JSON.parse(response.headers.paging);
 
@@ -131,6 +144,7 @@ export default class products extends Component {
                       //set the value from clicked suggestion to inputs
                       event.preventDefault();
                       this.setState({
+                        ...this.state,
                         partNumber: item.partNumber
                       });
                     }}
@@ -236,80 +250,6 @@ export default class products extends Component {
             );
           })}
         </div>
-      </React.Fragment>
-    );
-  };
-
-  renderPagination = ({
-    TotalItems,
-    ItemsPerPage,
-    CurrentPage,
-    TotalPages
-  }) => {
-    let items = [];
-
-    let prev = CurrentPage > 1 ? true : false;
-    let next = CurrentPage === TotalPages ? false : true;
-
-    for (let i = 1; i <= TotalPages; i++) {
-      items.push(
-        <li
-          key={i}
-          class={i === CurrentPage ? "page-item active" : "page-item"}
-          aria-current={i === CurrentPage ? "page" : ""}
-        >
-          <button
-            class={
-              i < CurrentPage + 23 && i > CurrentPage - 5
-                ? "page-link"
-                : "d-none"
-            }
-            href=""
-            onClick={() => {
-              this.sendQuery(i);
-            }}
-          >
-            {i}
-          </button>
-        </li>
-      );
-      console.log("pushed", i);
-    }
-
-    console.log("pushed", TotalItems, ItemsPerPage);
-    return (
-      <React.Fragment>
-        {TotalPages > 1 ? (
-          <nav aria-label="..." className="d-flex justify-content-center">
-            <ul class="pagination d-flex flex-wrap col-md-12">
-              <li class={prev ? "page-item" : "page-item disabled"}>
-                <button
-                  class="page-link"
-                  onClick={() => {
-                    this.sendQuery(CurrentPage - 1);
-                  }}
-                  tabindex="-1"
-                >
-                  Previous
-                </button>
-              </li>
-              {items}
-
-              <li class={next ? "page-item" : "page-item disabled"}>
-                <button
-                  class="page-link"
-                  onClick={() => {
-                    this.sendQuery(CurrentPage + 1);
-                  }}
-                >
-                  Next
-                </button>
-              </li>
-            </ul>
-          </nav>
-        ) : (
-          <div />
-        )}
       </React.Fragment>
     );
   };

@@ -54,13 +54,13 @@ namespace AbrasNigeria.Controllers
                 CurrentPage = data.Page
             };
 
-            IEnumerable<Product> selectedProducts = products
+            products = products
                 .Skip((pagingInfo.CurrentPage - 1) * pagingInfo.ItemsPerPage)
                 .Take(pagingInfo.ItemsPerPage);
 
             HttpContext.Response.Headers.Add("Paging", JsonConvert.SerializeObject(pagingInfo));
 
-            return Json(selectedProducts, JsonHelper.SerializerSettings);
+            return Json(products, JsonHelper.SerializerSettings);
         }
     }
 }

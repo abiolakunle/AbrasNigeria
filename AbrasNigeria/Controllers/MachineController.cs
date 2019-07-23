@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AbrasNigeria.Data.Utils;
 using AbrasNigeria.Data.DTO;
-
+using AbrasNigeria.Data.Models;
 
 namespace AbrasNigeria.Controllers
 {
@@ -23,9 +23,19 @@ namespace AbrasNigeria.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<JsonResult> List()
+        public async Task<JsonResult> List(int page)
         {
             IEnumerable<MachineDTO> machines = await _machineRepository.LoadAllWithBrand();
+
+            PagingInfo pagingInfo = new PagingInfo
+            {
+                CurrentPage = page,
+                TotalItems = machines.Count()
+            };
+
+            machines = machines.Skip((page - 1) * pagingInfo.ItemsPerPage).Take(pagingInfo.ItemsPerPage);
+
+            HttpContext.Response.Headers.Add("Paging", JsonConvert.SerializeObject(pagingInfo));
 
             return Json(machines, JsonHelper.SerializerSettings);
         }
@@ -36,6 +46,14 @@ namespace AbrasNigeria.Controllers
             MachineDTO machine = _machineRepository.LoadWithBrandSection(id);
 
             return Json(machine, JsonHelper.SerializerSettings);
+        }
+
+        [HttpGet("[action]")]
+        public JsonResult Search(string searchQuery)
+        {
+            IEnumerable<MachineDTO> machines = _machineRepository.Search(searchQuery);
+
+            return Json(machines, JsonHelper.SerializerSettings);
         }
     }
 }

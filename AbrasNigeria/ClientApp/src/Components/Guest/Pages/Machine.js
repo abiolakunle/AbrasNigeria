@@ -6,6 +6,11 @@ export default class Machine extends Component {
     machine: {},
     sections: []
   };
+
+  componentDidMount() {
+    this.loadMachine();
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -44,7 +49,7 @@ export default class Machine extends Component {
                         data-parent="#accordion"
                       >
                         <div className="card-body py-0">
-                          <div className=" w-100 badge  badge-dark p-2">
+                          <div className=" w-100 badge badge-dark p-2">
                             {sectionGroup.sectionGroupName}
                           </div>
 
@@ -81,7 +86,8 @@ export default class Machine extends Component {
     );
   }
 
-  componentDidMount() {
+  loadMachine = () => {
+    //loads machine details from server and assign data from response into state
     axios
       .get(
         `https://localhost:44343/api/machine/machine?id=${
@@ -98,5 +104,5 @@ export default class Machine extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
+  };
 }

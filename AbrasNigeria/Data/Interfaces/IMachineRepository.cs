@@ -9,5 +9,6 @@ namespace AbrasNigeria.Data.Interfaces
     {
         Task<IEnumerable<MachineDTO>> LoadAllWithBrand();
         MachineDTO LoadWithBrandSection(int id);
+        IEnumerable<MachineDTO> Search(string searchQuery);
     }
 }

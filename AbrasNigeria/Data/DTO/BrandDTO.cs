@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace AbrasNigeria.Data.DTO
 {
-    public class CategoryDTO
+    public class BrandDTO
     {
-        public string CategoryName { get; set; }
+        public string BrandName { get; set; }
     }
 }

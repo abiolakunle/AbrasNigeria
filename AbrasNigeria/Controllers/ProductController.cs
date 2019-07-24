@@ -2,12 +2,11 @@
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Data.Models;
 using AbrasNigeria.Data.Utils;
-using AbrasNigeria.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace AbrasNigeria.Controllers
 {
@@ -27,9 +26,9 @@ namespace AbrasNigeria.Controllers
         }
 
         [HttpGet("[action]")]
-        public JsonResult List()
+        public JsonResult Product(int productId)
         {
-            var products = _productRepository.LoadAllWithCategoryAndBrand();
+            ProductDTO products = _productRepository.FindWithProp(productId);
 
             return Json(products, JsonHelper.SerializerSettings);
             //return Json(products);
@@ -38,7 +37,7 @@ namespace AbrasNigeria.Controllers
         [HttpGet("[action]")]
         public JsonResult Search(string searchQuery)
         {
-            var products = _productRepository.SearchWithCategory(searchQuery);
+            var products = _productRepository.Search(searchQuery);
 
             return Json(products, JsonHelper.SerializerSettings);
         }
@@ -46,7 +45,7 @@ namespace AbrasNigeria.Controllers
         [HttpPost("[action]")]
         public JsonResult Filter([FromBody]FilterProductsDTO data)
         {
-            IEnumerable<Product> products = _productRepository.Filter(data);
+            IEnumerable<ProductDTO> products = _productRepository.Filter(data);
 
             PagingInfo pagingInfo = new PagingInfo
             {

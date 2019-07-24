@@ -18,6 +18,8 @@ namespace AbrasNigeria.Data.DTO
 
         public string Machine { get; set; }
 
+        public string Brand { get; set; }
+
         public int Page { get; set; }
 
     }

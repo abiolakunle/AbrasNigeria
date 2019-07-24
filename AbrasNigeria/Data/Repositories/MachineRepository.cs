@@ -69,15 +69,24 @@ namespace AbrasNigeria.Data.Repositories
 
         public IEnumerable<MachineDTO> Search(string searchQuery)
         {
+            //return _context.Machines
+            //     .Where(m => m.MachineSectionGroups
+            //     .Contains(m.MachineSectionGroups.Where(ms => ms.Machine.ModelName.Contains(searchQuery)).FirstOrDefault()))
+            //     .Select(m => new MachineDTO
+            //     {
+            //         BrandName = m.Brand.Name,
+            //         ModelName = m.ModelName,
+            //         SerialNumber = m.SerialNumber,
+            //     });
+
             return _context.Machines
-                 .Where(m => m.MachineSectionGroups
-                 .Contains(m.MachineSectionGroups.Where(ms => ms.Machine.ModelName.Contains(searchQuery)).FirstOrDefault()))
-                 .Select(m => new MachineDTO
-                 {
-                     BrandName = m.Brand.Name,
-                     ModelName = m.ModelName,
-                     SerialNumber = m.SerialNumber,
-                 });
+                .Where(m => m.ModelName.Contains(searchQuery))
+                .Select(m => new MachineDTO
+                {
+                    BrandName = m.Brand.Name,
+                    ModelName = m.ModelName,
+                    SerialNumber = m.SerialNumber,
+                }); ;
         }
     }
 }

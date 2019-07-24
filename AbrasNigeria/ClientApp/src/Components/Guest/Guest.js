@@ -8,6 +8,7 @@ import Machines from "./Pages/Machines";
 import Machine from "./Pages/Machine";
 import Contact from "./Pages/Contact";
 import Products from "./Pages/Products";
+import Product from "./Pages/Product";
 
 class Guest extends Component {
   render() {
@@ -22,6 +23,7 @@ class Guest extends Component {
             <Route exact path="/guest/machine/:id" component={Machine} />
             <Route exact path="/guest/contact" component={Contact} />
             <Route exact path="/guest/products" component={Products} />
+            <Route exact path="/guest/product/:id" component={Product} />
           </Switch>
         </main>
         <GuestFooter />

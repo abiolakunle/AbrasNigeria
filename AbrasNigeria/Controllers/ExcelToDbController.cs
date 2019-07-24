@@ -226,6 +226,7 @@ namespace AbrasNigeria.Controllers
                                                 PartNumber = line.PartNumber,
                                                 Brand = brand,
                                                 Category = category,
+                                                Section = section,
                                                 Quantity = line.Quantity,
                                                 Remarks = line.Remarks
                                             };

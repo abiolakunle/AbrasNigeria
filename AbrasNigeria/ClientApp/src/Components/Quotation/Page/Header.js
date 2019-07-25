@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import logo from "../../../Images/Abras logo 2.png";
+import logo from "../../../Images/abrasLogo.png";
 
 const Header = ({ quoteNumber }) => {
   return (

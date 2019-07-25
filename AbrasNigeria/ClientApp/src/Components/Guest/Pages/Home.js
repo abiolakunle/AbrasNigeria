@@ -15,127 +15,125 @@ export default class Home extends Component {
   render() {
     return (
       <React.Fragment>
-        <main id="home" class="body-part ">
-          {this.carousel()}
+        {this.carousel()}
 
-          <section class="services pt-100 pb-50">
-            <div class="container-fluid">
-              <div class="row mb-1">
-                <div class="col-xl-6 mx-auto text-center">
-                  <h4 class="text-uppercase section-title mt-5">
-                    We meet your sparepart needs
-                  </h4>
+        <section class="services pt-100 pb-50">
+          <div class="container-fluid">
+            <div class="row mb-1">
+              <div class="col-xl-6 mx-auto text-center">
+                <h4 class="text-uppercase section-title mt-5">
+                  We meet your sparepart needs
+                </h4>
+              </div>
+            </div>
+            <div class="row row-eq-height">
+              <div class="col-md-4">
+                <div class="card">
+                  <img class="card-img-top" src={Filter} alt="Filters" />
+                  <div class="card-body">
+                    <h5 class="card-title border-bottom pb-3">
+                      Filters
+                      <a href="#" class="float-right d-inline-flex share" />
+                    </h5>
+                    <p class="card-text">
+                      We have a broad and forward-thinking scope of channels
+                      that guarantee solid execution that expands the life of
+                      the segments and frameworks of the different machines.
+                      Notwithstanding channels for extra parts, we also supply
+                      other types of filters of different materials, pressure
+                      filters, return filters and low and high pressure suction
+                      filters.
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="row row-eq-height">
-                <div class="col-md-4">
-                  <div class="card">
-                    <img class="card-img-top" src={Filter} alt="Filters" />
-                    <div class="card-body">
-                      <h5 class="card-title border-bottom pb-3">
-                        Filters
-                        <a href="#" class="float-right d-inline-flex share" />
-                      </h5>
-                      <p class="card-text">
-                        We have a broad and forward-thinking scope of channels
-                        that guarantee solid execution that expands the life of
-                        the segments and frameworks of the different machines.
-                        Notwithstanding channels for extra parts, we also supply
-                        other types of filters of different materials, pressure
-                        filters, return filters and low and high pressure
-                        suction filters.
-                      </p>
-                    </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <img class="card-img-top" src={Engine} alt="Engine" />
+                  <div class="card-body">
+                    <h5 class="card-title border-bottom pb-3">
+                      Engine components
+                      <a href="#" class="float-right d-inline-flex share" />
+                    </h5>
+                    <p class="card-text">
+                      We stock parts for most machine engines in the domestic
+                      market, like chains, rims, chains, chains, links, rollers,
+                      guide wheels, nuts and bolts, bushes, seals, collars,
+                      cylinders, bushings and shafts, injector pumps, engine
+                      heads, crankshafts, liners, racks, brakes, blocks,
+                      connecting rods, pistons, cylinder covers, filters, etc.
+                      Prices and availability of parts upon request.
+                    </p>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <img class="card-img-top" src={Engine} alt="Engine" />
-                    <div class="card-body">
-                      <h5 class="card-title border-bottom pb-3">
-                        Engine components
-                        <a href="#" class="float-right d-inline-flex share" />
-                      </h5>
-                      <p class="card-text">
-                        We stock parts for most machine engines in the domestic
-                        market, like chains, rims, chains, chains, links,
-                        rollers, guide wheels, nuts and bolts, bushes, seals,
-                        collars, cylinders, bushings and shafts, injector pumps,
-                        engine heads, crankshafts, liners, racks, brakes,
-                        blocks, connecting rods, pistons, cylinder covers,
-                        filters, etc. Prices and availability of parts upon
-                        request.
-                      </p>
-                    </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <img class="card-img-top" src={Pump} alt="Pump" />
+                  <div class="card-body">
+                    <h5 class="card-title border-bottom pb-3">
+                      Hydraulic pumps
+                      <a href="#" class="float-right d-inline-flex share" />
+                    </h5>
+                    <p class="card-text">
+                      We have the answer for the most incessant faults in
+                      hydraulic pumps for backhoe and industrial machines. We
+                      have hydraulic pumps in stock for most of the machines in
+                      the national market in a complete offer with various
+                      models of gear pumps and pistons.
+                    </p>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <img class="card-img-top" src={Pump} alt="Pump" />
-                    <div class="card-body">
-                      <h5 class="card-title border-bottom pb-3">
-                        Hydraulic pumps
-                        <a href="#" class="float-right d-inline-flex share" />
-                      </h5>
-                      <p class="card-text">
-                        We have the answer for the most incessant faults in
-                        hydraulic pumps for backhoe and industrial machines. We
-                        have hydraulic pumps in stock for most of the machines
-                        in the national market in a complete offer with various
-                        models of gear pumps and pistons.
-                      </p>
-                    </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <img
+                    class="card-img-top"
+                    src={undercarriage2}
+                    alt="undercarriage"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title border-bottom pb-3">
+                      Undercarriage
+                      <a href="#" class="float-right d-inline-flex share" />
+                    </h5>
+                    <p class="card-text">
+                      We have a huge load of elastic tracks for most machines in
+                      the national market. Elastic tracks, rollers, rippers,
+                      sections and connectors.
+                    </p>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <img
-                      class="card-img-top"
-                      src={undercarriage2}
-                      alt="undercarriage"
-                    />
-                    <div class="card-body">
-                      <h5 class="card-title border-bottom pb-3">
-                        Undercarriage
-                        <a href="#" class="float-right d-inline-flex share" />
-                      </h5>
-                      <p class="card-text">
-                        We have a huge load of elastic tracks for most machines
-                        in the national market. Elastic tracks, rollers,
-                        rippers, sections and connectors.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <img
-                      class="card-img-top"
-                      src={Attachment}
-                      alt="attachments"
-                    />
-                    <div class="card-body">
-                      <h5 class="card-title border-bottom pb-3">
-                        Attachments
-                        <a href="#" class="float-right d-inline-flex share" />
-                      </h5>
-                      <p class="card-text">
-                        Attachments sold by Abras Nigeria Parts incorporate
-                        Buckets, Drills, Forks, Blades and Rippers. These pieces
-                        provided to the measure, are the ones demonstrated to
-                        satisfy your targets. Being this a significant point,
-                        our range of accessories covers various brands of
-                        industrial machines, among them, Caterpillar, Komatsu,
-                        Case, JCB, New Holland and some more.
-                      </p>
-                    </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <img
+                    class="card-img-top"
+                    src={Attachment}
+                    alt="attachments"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title border-bottom pb-3">
+                      Attachments
+                      <a href="#" class="float-right d-inline-flex share" />
+                    </h5>
+                    <p class="card-text">
+                      Attachments sold by Abras Nigeria Parts incorporate
+                      Buckets, Drills, Forks, Blades and Rippers. These pieces
+                      provided to the measure, are the ones demonstrated to
+                      satisfy your targets. Being this a significant point, our
+                      range of accessories covers various brands of industrial
+                      machines, among them, Caterpillar, Komatsu, Case, JCB, New
+                      Holland and some more.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* @*<div class="brands">
+        {/* @*<div class="brands">
      <div class="brand-logo">
          <img src="~/images/brand_logos/c_bomag.png" />
      </div>
@@ -170,7 +168,6 @@ export default class Home extends Component {
          <img src="~/images/brand_logos/c_volvo.png" />
      </div>
  </div>*@ */}
-        </main>
       </React.Fragment>
     );
   }
@@ -212,9 +209,9 @@ export default class Home extends Component {
         <div class="col-md-4 px-0 ">
           <div class="card rounded-0 h-100">
             <div class="card-header bg-light shadow-sm">
-              <h3 class="text-primary text-center font-weight-bolder text-uppercase">
+              <h4 class="text-primary text-center font-weight-bolder text-uppercase">
                 Abras Nigeria Enterprises
-              </h3>
+              </h4>
             </div>
             <div class="card-body px-5 font-italic text-center">
               <p class="">

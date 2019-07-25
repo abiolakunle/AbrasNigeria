@@ -18,23 +18,25 @@ export default class Machine extends Component {
           <h1 className="my-2">
             {this.state.machine.brandName} {this.state.machine.modelName}
           </h1>
+          <hr />
           {this.state.sections.map((section, index) => {
             return (
-              <div Key={index} id="accordion">
+              <div Key={index} id=" accordion">
                 <div className="card shadow-sm" id="headingOne">
-                  <h5 className="mb-0 py-2">
-                    <button
-                      className="btn btn-link"
-                      data-toggle="collapse"
-                      data-target={`.${
-                        section.sectionName.toLowerCase().split(" ")[0]
-                      }`}
-                      aria-expanded="false"
-                      aria-controls={section.sectionName.toLowerCase()}
-                    >
+                  <button
+                    className="btn btn-link"
+                    data-toggle="collapse"
+                    data-target={`.${
+                      section.sectionName.toLowerCase().split(" ")[0]
+                    }`}
+                    aria-expanded="false"
+                    aria-controls={section.sectionName.toLowerCase()}
+                  >
+                    <h5 className="d-flex justify-content-between mb-0 py-2">
                       {section.sectionName}
-                    </button>
-                  </h5>
+                      <span className="fas fa-chevron-down ml-auto m-2" />
+                    </h5>
+                  </button>
                 </div>
                 <div className="list-group list-group-flush">
                   {section.sectionGroups.map((sectionGroup, index) => {

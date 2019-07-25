@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
-import AbrasLogo from "../../../Images/Abras logo 2.png";
-import Header from "../../Quotation/Page/Header";
+import AbrasLogo from "../../../Images/abrasLogo.png";
 
 class GuestHeader extends Component {
   render() {
     return (
       <header>
+        <nav className="navbar navbar-dark bg-dark p-1">
+          <div className="ml-auto badge badge-light mx-1">
+            Call <a href="tel:+1-800-555-5555"> +234 810 652 9289</a>
+          </div>
+          <div className="badge badge-light mx-1">
+            Email{" "}
+            <a href="mailto:Abrasnigent@gmail.com">Abrasnigent@gmail.com</a>
+          </div>
+        </nav>
         <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-2">
           <a
             className="navbar-brand font-weight-bolder text-primary text-uppercase "
@@ -67,12 +75,12 @@ class GuestHeader extends Component {
               <li className="nav-item ">
                 <NavLink to="/guest/contact" activeClassName="active">
                   <div className="nav-link">
-                    Contact <span className="sr-only">(current)</span>
+                    Contact us <span className="sr-only">(current)</span>
                   </div>
                 </NavLink>
               </li>
             </ul>
-            <form className="form-inline my-2 my-lg-0">
+            {/* <form className="form-inline my-2 my-lg-0">
               <input
                 className="form-control mr-sm-2"
                 type="search"
@@ -85,7 +93,7 @@ class GuestHeader extends Component {
               >
                 Search
               </button>
-            </form>
+            </form> */}
           </div>
         </nav>
       </header>

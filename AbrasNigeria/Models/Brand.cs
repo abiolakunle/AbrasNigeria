@@ -18,7 +18,7 @@ namespace AbrasNigeria.Models
         //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int BrandId { get; set; }
 
-        [JsonProperty(PropertyName = "Name")]
+        //[JsonProperty(PropertyName = "Name")]
         public string Name { get; set; }
 
         public string Description { get; set; }

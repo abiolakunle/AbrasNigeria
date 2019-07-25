@@ -18,6 +18,7 @@ export default class Machines extends Component {
     return (
       <React.Fragment>
         <h1 className="my-2">Machines</h1>
+        <hr />
         {this.renderForm()}
         <div className="row">
           {this.state.machines.map(machine => {

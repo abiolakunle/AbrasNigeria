@@ -33,6 +33,7 @@ export default class products extends Component {
         <div className="my-2">
           <h1 className="my-2">Products</h1>
         </div>
+        <hr />
 
         {this.renderForm()}
         {this.renderProductList()}

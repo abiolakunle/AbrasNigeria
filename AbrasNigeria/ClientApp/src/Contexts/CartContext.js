@@ -10,7 +10,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default class PartsContext extends Component {
+export default class CartContext extends Component {
   state = {
     brands: [],
     machines: [],

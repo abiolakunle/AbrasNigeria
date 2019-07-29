@@ -17,25 +17,25 @@ export default class Home extends Component {
       <React.Fragment>
         {this.carousel()}
 
-        <section class="services pt-100 pb-50">
-          <div class="container-fluid">
-            <div class="row mb-1">
-              <div class="col-xl-6 mx-auto text-center">
-                <h4 class="text-uppercase section-title mt-5">
+        <section className="services pt-100 pb-50">
+          <div className="container-fluid">
+            <div className="row mb-1">
+              <div className="col-xl-6 mx-auto text-center">
+                <h4 className="text-uppercase section-title mt-5">
                   We meet your sparepart needs
                 </h4>
               </div>
             </div>
-            <div class="row row-eq-height">
-              <div class="col-md-4">
-                <div class="card">
-                  <img class="card-img-top" src={Filter} alt="Filters" />
-                  <div class="card-body">
-                    <h5 class="card-title border-bottom pb-3">
+            <div className="row row-eq-height">
+              <div className="col-md-4">
+                <div className="card">
+                  <img className="card-img-top" src={Filter} alt="Filters" />
+                  <div className="card-body">
+                    <h5 className="card-title border-bottom pb-3">
                       Filters
-                      <a href="#" class="float-right d-inline-flex share" />
+                      <a href="#" className="float-right d-inline-flex share" />
                     </h5>
-                    <p class="card-text">
+                    <p className="card-text">
                       We have a broad and forward-thinking scope of channels
                       that guarantee solid execution that expands the life of
                       the segments and frameworks of the different machines.
@@ -47,15 +47,15 @@ export default class Home extends Component {
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="card">
-                  <img class="card-img-top" src={Engine} alt="Engine" />
-                  <div class="card-body">
-                    <h5 class="card-title border-bottom pb-3">
+              <div className="col-md-4">
+                <div className="card">
+                  <img className="card-img-top" src={Engine} alt="Engine" />
+                  <div className="card-body">
+                    <h5 className="card-title border-bottom pb-3">
                       Engine components
-                      <a href="#" class="float-right d-inline-flex share" />
+                      <a href="#" className="float-right d-inline-flex share" />
                     </h5>
-                    <p class="card-text">
+                    <p className="card-text">
                       We stock parts for most machine engines in the domestic
                       market, like chains, rims, chains, chains, links, rollers,
                       guide wheels, nuts and bolts, bushes, seals, collars,
@@ -67,15 +67,15 @@ export default class Home extends Component {
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="card">
-                  <img class="card-img-top" src={Pump} alt="Pump" />
-                  <div class="card-body">
-                    <h5 class="card-title border-bottom pb-3">
+              <div className="col-md-4">
+                <div className="card">
+                  <img className="card-img-top" src={Pump} alt="Pump" />
+                  <div className="card-body">
+                    <h5 className="card-title border-bottom pb-3">
                       Hydraulic pumps
-                      <a href="#" class="float-right d-inline-flex share" />
+                      <a href="#" className="float-right d-inline-flex share" />
                     </h5>
-                    <p class="card-text">
+                    <p className="card-text">
                       We have the answer for the most incessant faults in
                       hydraulic pumps for backhoe and industrial machines. We
                       have hydraulic pumps in stock for most of the machines in
@@ -85,19 +85,19 @@ export default class Home extends Component {
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="card">
+              <div className="col-md-4">
+                <div className="card">
                   <img
-                    class="card-img-top"
+                    className="card-img-top"
                     src={undercarriage2}
                     alt="undercarriage"
                   />
-                  <div class="card-body">
-                    <h5 class="card-title border-bottom pb-3">
+                  <div className="card-body">
+                    <h5 className="card-title border-bottom pb-3">
                       Undercarriage
-                      <a href="#" class="float-right d-inline-flex share" />
+                      <a href="#" className="float-right d-inline-flex share" />
                     </h5>
-                    <p class="card-text">
+                    <p className="card-text">
                       We have a huge load of elastic tracks for most machines in
                       the national market. Elastic tracks, rollers, rippers,
                       sections and connectors.
@@ -105,19 +105,19 @@ export default class Home extends Component {
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="card">
+              <div className="col-md-4">
+                <div className="card">
                   <img
-                    class="card-img-top"
+                    className="card-img-top"
                     src={Attachment}
                     alt="attachments"
                   />
-                  <div class="card-body">
-                    <h5 class="card-title border-bottom pb-3">
+                  <div className="card-body">
+                    <h5 className="card-title border-bottom pb-3">
                       Attachments
-                      <a href="#" class="float-right d-inline-flex share" />
+                      <a href="#" className="float-right d-inline-flex share" />
                     </h5>
-                    <p class="card-text">
+                    <p className="card-text">
                       Attachments sold by Abras Nigeria Parts incorporate
                       Buckets, Drills, Forks, Blades and Rippers. These pieces
                       provided to the measure, are the ones demonstrated to
@@ -133,38 +133,38 @@ export default class Home extends Component {
           </div>
         </section>
 
-        {/* @*<div class="brands">
-     <div class="brand-logo">
+        {/* @*<div className="brands">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_bomag.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_caterpillar.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_cummins.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_daewoo.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_dynapac.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_hitachi.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_jcb.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_john-deere.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_komatsu.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_perkins.png" />
      </div>
-     <div class="brand-logo">
+     <div className="brand-logo">
          <img src="~/images/brand_logos/c_volvo.png" />
      </div>
  </div>*@ */}
@@ -174,53 +174,53 @@ export default class Home extends Component {
 
   carousel() {
     return (
-      <div class="row shadow-sm mb-3">
-        <div class="col-md-8 px-0">
-          <div id="demo" class="carousel slide" data-ride="carousel">
+      <div className="row shadow-sm mb-3">
+        <div className="col-md-8 px-0">
+          <div id="demo" className="carousel slide" data-ride="carousel">
             {/* <!-- Indicators --> */}
-            <ul class="carousel-indicators">
-              <li data-target="#demo" data-slide-to="0" class="active" />
+            <ul className="carousel-indicators">
+              <li data-target="#demo" data-slide-to="0" className="active" />
               <li data-target="#demo" data-slide-to="1" />
               <li data-target="#demo" data-slide-to="2" />
             </ul>
 
             {/* <!-- The slideshow --> */}
-            <div class="carousel-inner">
-              <div class="carousel-item active">
+            <div className="carousel-inner">
+              <div className="carousel-item active">
                 <img src={CarouselGrader} alt="grader" />
               </div>
-              <div class="carousel-item">
+              <div className="carousel-item">
                 <img src={CarouselFilters} alt="filters" />
               </div>
-              <div class="carousel-item">
+              <div className="carousel-item">
                 <img src={CarouselExcavator} alt="excavator" />
               </div>
             </div>
 
             {/* <!-- Left and right controls --> */}
-            <a class="carousel-control-prev" href="#demo" data-slide="prev">
-              <span class="carousel-control-prev-icon" />
+            <a className="carousel-control-prev" href="#demo" data-slide="prev">
+              <span className="carousel-control-prev-icon" />
             </a>
-            <a class="carousel-control-next" href="#demo" data-slide="next">
-              <span class="carousel-control-next-icon" />
+            <a className="carousel-control-next" href="#demo" data-slide="next">
+              <span className="carousel-control-next-icon" />
             </a>
           </div>
         </div>
-        <div class="col-md-4 px-0 ">
-          <div class="card rounded-0 h-100">
-            <div class="card-header bg-light shadow-sm">
-              <h4 class="text-primary text-center font-weight-bolder text-uppercase">
+        <div className="col-md-4 px-0 ">
+          <div className="card rounded-0 h-100">
+            <div className="card-header bg-light shadow-sm">
+              <h4 className="text-primary text-center font-weight-bolder text-uppercase">
                 Abras Nigeria Enterprises
               </h4>
             </div>
-            <div class="card-body px-5 font-italic text-center">
-              <p class="">
+            <div className="card-body px-5 font-italic text-center">
+              <p className="">
                 "At the point when your machines quit working, because of
                 glitch, confusion settles in! "
               </p>
-              <p class="">
+              <p className="">
                 "With long stretches of market, and information of the business,{" "}
-                <strong class="text-primary">Abras Nigeria Enterprise</strong>{" "}
+                <strong className="text-primary">Abras Nigeria Enterprise</strong>{" "}
                 is the perfect accomplice, distinguishing and explaining your
                 needs in an auspicious way."
               </p>

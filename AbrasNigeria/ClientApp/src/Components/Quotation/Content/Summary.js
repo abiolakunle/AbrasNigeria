@@ -30,7 +30,18 @@ class Summary extends Component {
                 </div>
               </div>
 
-              <div className="my-5"> {NumInWords(contextState.total)} </div>
+              {contextState.total !== "" ? (
+                <div className="row my-5 text-primary">
+                  <div className="col-md-4 blue darken-4 font-weight-bold py-2">
+                    Amount in words:{" "}
+                  </div>
+                  <div className="col-md-8 blue darken-2 py-2">
+                    {NumInWords(contextState.total)} Naira only
+                  </div>
+                </div>
+              ) : (
+                <div />
+              )}
             </React.Fragment>
           );
         }}

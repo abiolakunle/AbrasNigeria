@@ -21,11 +21,11 @@ const renderPagination = (
     pages.push(
       <li
         key={i}
-        class={i === CurrentPage ? "page-item active" : "page-item"}
+        className={i === CurrentPage ? "page-item active" : "page-item"}
         aria-current={i === CurrentPage ? "page" : ""}
       >
         <button
-          class={
+          className={
             i < CurrentPage + 23 && i > CurrentPage - 5 ? "page-link" : "d-none"
           }
           href=""
@@ -43,10 +43,10 @@ const renderPagination = (
     <React.Fragment>
       {TotalPages > 1 ? (
         <nav aria-label="..." className="d-flex justify-content-center">
-          <ul class="pagination d-flex flex-wrap col-md-12">
-            <li class={prev ? "page-item" : "page-item disabled"}>
+          <ul className="pagination d-flex flex-wrap col-md-12">
+            <li className={prev ? "page-item" : "page-item disabled"}>
               <button
-                class="page-link"
+                className="page-link"
                 onClick={() => {
                   sendQuery(CurrentPage - 1);
                 }}
@@ -57,9 +57,9 @@ const renderPagination = (
             </li>
             {pages}
 
-            <li class={next ? "page-item" : "page-item disabled"}>
+            <li className={next ? "page-item" : "page-item disabled"}>
               <button
-                class="page-link"
+                className="page-link"
                 onClick={() => {
                   sendQuery(CurrentPage + 1);
                 }}

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
+import AddToCartBtn from "../Partials/AddToCartBtn";
+
 export default class Product extends Component {
   state = {
     partNumber: "",
@@ -17,12 +19,14 @@ export default class Product extends Component {
 
   render() {
     const { partNumber, category, brand } = this.state;
+    const product = { partNumber, category };
+
     return (
       <React.Fragment>
         <div>
           <span className="badge badge-dark">Part number</span>
           <h3>{partNumber}</h3>
-
+          <AddToCartBtn product={product} />
           <hr />
           <p>
             <span class="font-weight-bold">Category: </span>

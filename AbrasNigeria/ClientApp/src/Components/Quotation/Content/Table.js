@@ -11,9 +11,9 @@ class Table extends Component {
     partNumber: "",
     suggestions: [],
     description: "",
-    quantity: null,
-    unitPrice: null,
-    extendedPrice: null,
+    quantity: undefined,
+    unitPrice: undefined,
+    extendedPrice: undefined,
     newItem: {},
     items: [],
     total: 0
@@ -184,7 +184,7 @@ class Table extends Component {
                 onChange={this.onFormChange}
               />
               <div
-                class="dropdown-menu pre-scrollable"
+                className="dropdown-menu pre-scrollable"
                 aria-labelledby="dropdownMenuButton"
               >
                 {this.state.suggestions.length === 0 ? (
@@ -195,13 +195,13 @@ class Table extends Component {
                     return (
                       <button
                         key={index}
-                        class="dropdown-item"
+                        className="dropdown-item"
                         onClick={event => {
                           //set the value from clicked suggestion to inputs
                           event.preventDefault();
                           this.setState({
                             partNumber: item.partNumber,
-                            description: item.category.categoryName
+                            description: item.category
                           });
                         }}
                       >

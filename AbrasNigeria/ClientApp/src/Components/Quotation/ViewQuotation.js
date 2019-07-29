@@ -90,7 +90,7 @@ class ViewQuotation extends Component {
             Amount in words:{" "}
           </div>
           <div className="col-md-8 blue darken-2 py-2">
-            {NumInWords(this.state.total)}
+            {NumInWords(this.state.total)} Naira only
           </div>
         </div>
         <Footer />

@@ -6,9 +6,9 @@ import logo from "../../../Images/abrasLogo.png";
 const Header = ({ quoteNumber }) => {
   return (
     <React.Fragment>
-      <div class="dropdown float-left">
+      <div className="dropdown float-left">
         <button
-          class="btn blue-grey lighten-5 "
+          className="btn blue-grey lighten-5 "
           type="button"
           id="dropdownMenuButton"
           data-toggle="dropdown"
@@ -17,10 +17,10 @@ const Header = ({ quoteNumber }) => {
         >
           <span className="fas fa-angle-down " />
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <Link to={`/send/${quoteNumber}`}>
             <div className="dropdown-item">
-              <span class="far fa-envelope"> Send via mail</span>
+              <span className="far fa-envelope"> Send via mail</span>
             </div>
           </Link>
           <Link to="/quotations">
@@ -52,20 +52,20 @@ const Header = ({ quoteNumber }) => {
             <div className="col-md-6">
               <div className="row">
                 <p className="mb-0">
-                  <span className="font-weight-bold">Phone:</span> 08036775192,
-                  08083458300
+                  <span className="font-weight-bold mr-1">Phone:</span>{" "}
+                  08036775192, 08083458300
                 </p>
               </div>
 
               <p className="row">
-                <span className="font-weight-bold">Email:</span>
+                <span className="font-weight-bold mr-1">Email:</span>
                 {"  "}
                 Abrasnigeriaent@gmail.com
               </p>
             </div>
             <div className="col-md-6">
               <div className="row">
-                <div class="col-md-3 font-weight-bold">Addresses:</div>
+                <div className="col-md-3 font-weight-bold">Addresses:</div>
                 <div className="col-md-9">
                   <div className="row">
                     10, Ajiboye Street, Ketu, Alapere, Lagos.

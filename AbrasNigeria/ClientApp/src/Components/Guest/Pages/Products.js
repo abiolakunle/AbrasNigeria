@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import Pagination from "../Shared/Pagination";
+import AddToCartBtn from "../Partials/AddToCartBtn";
+
+import { CartConsumer } from "../../../Contexts/CartContext";
 
 export default class products extends Component {
   state = {
@@ -29,17 +32,27 @@ export default class products extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <div className="my-2">
-          <h1 className="my-2">Products</h1>
-        </div>
-        <hr />
+      <CartConsumer>
+        {contextValue => {
+          const { addToCart, syncWithCart } = contextValue;
 
-        {this.renderForm()}
-        {this.renderProductList()}
-        <Pagination paging={this.state.paging} querySender={this.sendQuery} />
-        {/* {this.renderPagination(this.state.paging, this.sendQuery)} */}
-      </React.Fragment>
+          return (
+            <React.Fragment>
+              <div className="my-2">
+                <h1 className="my-2">Products</h1>
+              </div>
+              <hr />
+
+              {this.renderForm()}
+              {this.renderProductList(addToCart, syncWithCart)}
+              <Pagination
+                paging={this.state.paging}
+                querySender={this.sendQuery}
+              />
+            </React.Fragment>
+          );
+        }}
+      </CartConsumer>
     );
   }
 
@@ -268,7 +281,7 @@ export default class products extends Component {
   renderForm() {
     return (
       <React.Fragment>
-        <div class="badge badge-dark p-2 mb-1">Filter products by: </div>
+        <div className="badge badge-dark p-2 mb-1">Filter products by: </div>
         <form
           autoComplete="off"
           className=" form-inline mb-5"
@@ -402,7 +415,7 @@ export default class products extends Component {
     );
   }
 
-  renderProductList = () => {
+  renderProductList = (addToCart, syncWithCart) => {
     return (
       <React.Fragment>
         <div className="row">
@@ -417,10 +430,17 @@ export default class products extends Component {
                         {product.partNumber}
                       </h5>
                     </Link>
+
                     <hr />
-                    <p className="mb-1 pb-1">
-                      <b>Category: </b> {product.category}
-                    </p>
+                    <div className="d-flex justify-content-between">
+                      <p className="mb-1 pb-1">
+                        <b>Category: </b> {product.category}
+                      </p>
+                    </div>
+
+                    <div className="d-flex justify-content-right">
+                      <AddToCartBtn product={product} />
+                    </div>
                   </div>
                 </div>
               </div>

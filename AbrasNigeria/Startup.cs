@@ -1,8 +1,10 @@
 using AbrasNigeria.Data.DbContexts;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Data.Repositories;
+using AbrasNigeria.Data.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -35,6 +37,9 @@ namespace AbrasNigeria
                 configuration.RootPath = "ClientApp/build";
             });
 
+            services.AddScoped<SessionCart>(sp => new SessionCart(sp));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), HostingEnvironment.WebRootPath)));
 
@@ -50,6 +55,8 @@ namespace AbrasNigeria
             services.AddTransient<ISectionRepository, SectionRepository>();
             services.AddTransient<IQuotationRepository, QuotationRepository>();
 
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +75,7 @@ namespace AbrasNigeria
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

@@ -55,7 +55,7 @@ export default class Machine extends Component {
                             {sectionGroup.sectionGroupName}
                           </div>
 
-                          <table class="table table-sm">
+                          <table className="table table-sm">
                             <thead>
                               <tr>
                                 <th scope="col">#</th>

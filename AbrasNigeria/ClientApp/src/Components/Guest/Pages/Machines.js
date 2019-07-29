@@ -102,7 +102,7 @@ export default class Machines extends Component {
     //renders for filtering list of machines
     return (
       <React.Fragment>
-        <div class="badge badge-dark p-2 mb-1">Search: </div>
+        <div className="badge badge-dark p-2 mb-1">Search: </div>
         <form
           autoComplete="off"
           className=" form-inline mb-5"

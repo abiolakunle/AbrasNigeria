@@ -4,61 +4,61 @@ export default class Contact extends Component {
   render() {
     return (
       <React.Fragment>
-        <div class="row">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                <i class="fa fa-envelope" /> Contact us.
+        <div className="row">
+          <div className="col">
+            <div className="card">
+              <div className="card-header">
+                <i className="fa fa-envelope" /> Contact us.
               </div>
-              <div class="card-body">
+              <div className="card-body">
                 <form>
-                  <div class="form-group">
+                  <div className="form-group">
                     <label for="name">Name</label>
                     <input
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       id="name"
                       aria-describedby="emailHelp"
                       placeholder="Enter name"
                       required
                     />
                   </div>
-                  <div class="form-group">
+                  <div className="form-group">
                     <label for="name">Company Name</label>
                     <input
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       id="company-name"
                       aria-describedby="emailHelp"
                       placeholder="Enter your company name"
                       required
                     />
                   </div>
-                  <div class="form-group">
+                  <div className="form-group">
                     <label for="email">Email address</label>
                     <input
                       type="email"
-                      class="form-control"
+                      className="form-control"
                       id="email"
                       aria-describedby="emailHelp"
                       placeholder="Enter email"
                       required
                     />
-                    <small id="emailHelp" class="form-text text-muted">
+                    <small id="emailHelp" className="form-text text-muted">
                       We'll never share your email with anyone else.
                     </small>
                   </div>
-                  <div class="form-group">
+                  <div className="form-group">
                     <label for="message">Message</label>
                     <textarea
-                      class="form-control"
+                      className="form-control"
                       id="message"
                       rows="6"
                       required
                     />
                   </div>
-                  <div class="mx-auto">
-                    <button type="submit" class="btn btn-primary text-right">
+                  <div className="mx-auto">
+                    <button type="submit" className="btn btn-primary text-right">
                       Submit
                     </button>
                   </div>
@@ -66,14 +66,14 @@ export default class Contact extends Component {
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-4">
-            <div class="card bg-light mb-3">
-              <div class="card-header text-uppercase">
-                <i class="fa fa-home" /> Address
+          <div className="col-12 col-sm-4">
+            <div className="card bg-light mb-3">
+              <div className="card-header text-uppercase">
+                <i className="fa fa-home" /> Address
               </div>
-              <div class="card-body">
+              <div className="card-body">
                 <div className="row">
-                  <div class="col-md-auto font-weight-bold">Addresses:</div>
+                  <div className="col-md-auto font-weight-bold">Addresses:</div>
                   <div className="col-md-auto">
                     <p className="">
                       10, Ajiboye Street, Ketu, Alapere, Lagos.

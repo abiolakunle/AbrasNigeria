@@ -42,16 +42,20 @@ class GuestFooter extends Component {
               <hr className="bg-white mb-2 mt-0 d-inline-block mx-auto w-25" />
               <ul className="list-unstyled">
                 <li>
-                  <i className="fa fa-home mr-2" /> Abras Ngeria Enterprise
+                  <i className="fa fa-home mr-2" /> Abras Ngeria Enterprise |
+                  10, Ajiboye Street, Ketu, Alapere, Lagos.
                 </li>
                 <li>
                   <i className="fa fa-envelope mr-2" />
+                  Email
                   <a href="mailto:Abrasnigent@gmail.com">
                     Abrasnigent@gmail.com
                   </a>
                 </li>
                 <li>
-                  <i className="fa fa-phone mr-2" /> +234 810 652 9289
+                  <i className="fa fa-phone mr-2" />
+                  Call
+                  <a href="tel:+234 810 652 9289"> +234 810 652 9289</a>
                 </li>
               </ul>
             </div>

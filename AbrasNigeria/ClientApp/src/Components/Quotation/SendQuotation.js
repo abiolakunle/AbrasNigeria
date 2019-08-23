@@ -75,7 +75,7 @@ class SendQuotation extends Component {
   getQuotation() {
     axios
       .get(
-        `https://localhost:44343/api/Quotation/${this.props.match.params.id}`
+        `/api/Quotation/${this.props.match.params.id}`
       )
       .then(response => {
         const { quoteNo, date, company } = response.data;
@@ -90,7 +90,7 @@ class SendQuotation extends Component {
   send(props, event) {
     event.preventDefault();
     const id = props.match.params.id;
-    axios.post(`https://localhost:44343/api/Mail/send`, {
+    axios.post(`/api/Mail/send`, {
       attachmentId: id
     });
   }

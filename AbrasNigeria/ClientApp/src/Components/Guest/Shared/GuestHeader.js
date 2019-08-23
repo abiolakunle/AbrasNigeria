@@ -16,7 +16,7 @@ class GuestHeader extends Component {
               <header>
                 <nav className="navbar navbar-dark bg-dark p-1">
                   <div className="ml-auto badge badge-light mx-1">
-                    Call <a href="tel:+234 810 652 9289"> +234 810 652 9289</a>
+                    Call <a href="tel:+234 810 652 9288"> +234 810 652 9288</a>
                   </div>
                   <div className="badge badge-light mx-1">
                     Email{" "}
@@ -56,7 +56,7 @@ class GuestHeader extends Component {
                   >
                     <ul className="navbar-nav ml-auto">
                       <li className="nav-item ">
-                        <NavLink to="/guest/home" activeClassName="active">
+                        <NavLink to="/guest/home" active ClassName="active">
                           <div className="nav-link">
                             Home <span className="sr-only">(current)</span>
                           </div>
@@ -66,7 +66,8 @@ class GuestHeader extends Component {
                         <NavLink
                           exact
                           to="/guest/products"
-                          activeClassName="active"
+                          active
+                          ClassName="active"
                         >
                           <div className="nav-link">
                             Products <span className="sr-only">(current)</span>

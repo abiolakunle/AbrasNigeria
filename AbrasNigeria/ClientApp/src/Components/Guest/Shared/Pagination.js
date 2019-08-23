@@ -8,10 +8,7 @@ export default function Pagination(props) {
   );
 }
 
-const renderPagination = (
-  { TotalItems, ItemsPerPage, CurrentPage, TotalPages },
-  sendQuery
-) => {
+const renderPagination = ({ CurrentPage, TotalPages }, sendQuery) => {
   let pages = [];
   let prev = CurrentPage > 1 ? true : false; //check if current page is first page
   let next = CurrentPage === TotalPages ? false : true; //checks if current page is  last page
@@ -50,7 +47,7 @@ const renderPagination = (
                 onClick={() => {
                   sendQuery(CurrentPage - 1);
                 }}
-                tabindex="-1"
+                tabIndex="-1"
               >
                 Previous
               </button>

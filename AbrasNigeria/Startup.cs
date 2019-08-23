@@ -5,7 +5,7 @@ using AbrasNigeria.Data.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+//using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +54,7 @@ namespace AbrasNigeria
             services.AddTransient<ISectionGroupRepository, SectionGroupRepository>();
             services.AddTransient<ISectionRepository, SectionRepository>();
             services.AddTransient<IQuotationRepository, QuotationRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
 
             services.AddMemoryCache();
             services.AddSession();
@@ -69,10 +70,10 @@ namespace AbrasNigeria
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseSession();
@@ -93,6 +94,10 @@ namespace AbrasNigeria
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            if (HostingEnvironment.IsProduction())
+            {
+                DbInitializer.DoMigration(app);
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace AbrasNigeria.Data.Repositories
 
         }
 
-        public IEnumerable<Category> loadAllWithProducts()
+        public IEnumerable<Category> LoadAllWithProducts()
         {
             return _context.Categories.Include(c => c.Products);
         }

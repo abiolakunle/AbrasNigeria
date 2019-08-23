@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AbrasNigeria.Controllers
 {
+    [Route("api/[controller]")]
     public class CartController : Controller
     {
         private SessionCart _cart;
@@ -17,6 +18,7 @@ namespace AbrasNigeria.Controllers
             _cart = cart;
         }
 
+        [HttpPost("[action]")]
         public ActionResult UpdateCart([FromBody]List<CartItem> cartItems)
         {
             _cart.UpdateCart(cartItems);
@@ -24,11 +26,13 @@ namespace AbrasNigeria.Controllers
             return Ok();
         }
 
-        public JsonResult Cart()
+        [HttpGet("[action]")]
+        public JsonResult GetCart()
         {
             IEnumerable<CartItem> cartItems = _cart.GetCart();
 
             return Json(cartItems, JsonHelper.SerializerSettings);
         }
+
     }
 }

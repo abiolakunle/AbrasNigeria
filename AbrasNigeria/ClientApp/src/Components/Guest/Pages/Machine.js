@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+import AddToCartBtn from "../Partials/AddToCartBtn";
+
 export default class Machine extends Component {
   state = {
     machine: {},
@@ -61,6 +63,7 @@ export default class Machine extends Component {
                                 <th scope="col">#</th>
                                 <th scope="col">Category</th>
                                 <th scope="col">Part Number</th>
+                                <th scope="col">Cart</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -70,6 +73,9 @@ export default class Machine extends Component {
                                     <th scope="row">{index + 1}</th>
                                     <td>{product.category}</td>
                                     <td>{product.partNumber}</td>
+                                    <td>
+                                      <AddToCartBtn product={product} />
+                                    </td>
                                   </tr>
                                 );
                               })}
@@ -91,11 +97,7 @@ export default class Machine extends Component {
   loadMachine = () => {
     //loads machine details from server and assign data from response into state
     axios
-      .get(
-        `https://localhost:44343/api/machine/machine?id=${
-          this.props.match.params.id
-        }`
-      )
+      .get(`/api/machine/machine?id=${this.props.match.params.id}`)
       .then(({ data }) => {
         this.setState({
           machine: data,

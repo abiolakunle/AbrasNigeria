@@ -10,6 +10,7 @@ import Contact from "./Pages/Contact";
 import Products from "./Pages/Products";
 import Product from "./Pages/Product";
 import Cart from "./Pages/Cart";
+import Checkout from "./Pages/CheckOut";
 
 import CartProvider from "../../Contexts/CartContext";
 
@@ -29,6 +30,7 @@ class Guest extends Component {
               <Route exact path="/guest/products" component={Products} />
               <Route exact path="/guest/product/:id" component={Product} />
               <Route exact path="/guest/cart" component={Cart} />
+              <Route exact path="/guest/checkout" component={Checkout} />
             </Switch>
           </main>
           <GuestFooter />

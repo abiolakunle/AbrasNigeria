@@ -1,9 +1,9 @@
 import React from "react";
 import { CartConsumer } from "../../../Contexts/CartContext";
 
-export default function AddToCartBtn(props) {
-  console.log(props);
+const AddToCartBtn = props => {
   const { product } = props;
+
   return (
     <CartConsumer>
       {contextValue => {
@@ -16,13 +16,14 @@ export default function AddToCartBtn(props) {
                 role="link"
                 onClick={() => {
                   addToCart({
+                    productId: product.productId,
                     partNumber: product.partNumber,
                     category: product.category,
                     quantity: 1
                   });
                 }}
               >
-                Add to cart <span class="fas fa-plus-circle" />
+                Add to cart <span className="fas fa-plus-circle" />
               </button>
             ) : (
               <button
@@ -35,7 +36,7 @@ export default function AddToCartBtn(props) {
                   });
                 }}
               >
-                Remove from cart <span class="fas fa-minus-circle" />
+                Remove from cart <span className="fas fa-minus-circle" />
               </button>
             )}
           </div>
@@ -43,4 +44,6 @@ export default function AddToCartBtn(props) {
       }}
     </CartConsumer>
   );
-}
+};
+
+export default AddToCartBtn;

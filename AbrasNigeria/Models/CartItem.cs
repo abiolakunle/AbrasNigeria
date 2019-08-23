@@ -9,6 +9,8 @@ namespace AbrasNigeria.Models
     {
         public int CartItemId { get; set; }
 
+        public int ProductId { get; set; }
+
         public string PartNumber { get; set; }
 
         public string Category { get; set; }

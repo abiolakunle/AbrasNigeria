@@ -21,7 +21,7 @@ class ViewQuotation extends Component {
     //get quotation from api call  with id
     axios
       .get(
-        `https://localhost:44343/api/Quotation/${this.props.match.params.id}`
+        `/api/Quotation/${this.props.match.params.id}`
       )
       .then(response => {
         const { quoteNo, company, date, table, note, docType } = response.data;

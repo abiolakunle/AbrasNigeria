@@ -70,23 +70,19 @@ export default class products extends Component {
   };
 
   loadSuggestions = eventName => {
-    let productsUrl = `https://localhost:44343/api/product/search?searchQuery=${
+    let productsUrl = `/api/product/search?searchQuery=${
       this.state.partNumber
     }`;
 
-    let brandsUrl = `https://localhost:44343/api/brand/search?searchQuery=${
-      this.state.brand
-    }`;
+    let brandsUrl = `/api/brand/search?searchQuery=${this.state.brand}`;
 
-    let categoriesUrl = `https://localhost:44343/api/category/search?searchQuery=${
+    let categoriesUrl = `/api/category/search?searchQuery=${
       this.state.category
     }`;
 
-    let sectionsUrl = `https://localhost:44343/api/section/search?searchQuery=${
-      this.state.section
-    }`;
+    let sectionsUrl = `/api/section/search?searchQuery=${this.state.section}`;
 
-    let sectionGroupsUrl = `https://localhost:44343/api/sectionGroup/search?searchQuery=${
+    let sectionGroupsUrl = `/api/sectionGroup/search?searchQuery=${
       this.state.sectionGroup
     }`;
 
@@ -241,7 +237,7 @@ export default class products extends Component {
   };
 
   sendQuery = page => {
-    let apiUrl = "https://localhost:44343/api/product/filter";
+    let apiUrl = "/api/product/filter";
 
     let {
       partNumber,
@@ -291,9 +287,7 @@ export default class products extends Component {
           }}
         >
           <div className="dropdown">
-            <label className="sr-only" for="inlineFormInputName2">
-              Part Number
-            </label>
+            <label className="sr-only">Part Number</label>
             <input
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -311,9 +305,7 @@ export default class products extends Component {
           </div>
 
           <div className="dropdown">
-            <label className="sr-only" for="category">
-              Category
-            </label>
+            <label className="sr-only">Category</label>
             <input
               type="text"
               placeholder="Category"
@@ -334,9 +326,7 @@ export default class products extends Component {
           </div>
 
           <div className="dropdown">
-            <label className="sr-only" for="section">
-              Section
-            </label>
+            <label className="sr-only">Section</label>
             <input
               type="text"
               placeholder="Section"
@@ -354,9 +344,7 @@ export default class products extends Component {
           </div>
 
           <div className="dropdown">
-            <label className="sr-only" for="sectionGroup">
-              sectionGroup
-            </label>
+            <label className="sr-only">sectionGroup</label>
             <input
               type="text"
               placeholder="sectionGroup"
@@ -377,9 +365,7 @@ export default class products extends Component {
           </div>
 
           <div className="dropdown">
-            <label className="sr-only" for="brand">
-              brand
-            </label>
+            <label className="sr-only">brand</label>
             <input
               id="dropdownMenuButton"
               data-toggle="dropdown"

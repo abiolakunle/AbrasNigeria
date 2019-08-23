@@ -80,7 +80,7 @@ export default class UploadExcel extends Component {
       form.append("masterFile", element);
     }
 
-    let url = "https://localhost:44343/api/ExcelToDb/UploadExcel";
+    let url = "/api/ExcelToDb/UploadExcel";
 
     axios
       .post(url, form)

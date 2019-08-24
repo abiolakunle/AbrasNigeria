@@ -21,7 +21,7 @@ class GuestHeader extends Component {
                   <div className="badge badge-light mx-1">
                     Email{" "}
                     <a href="mailto:Abrasnigent@gmail.com">
-                      Abrasnigent@gmail.com
+                      abrasnigeriaent@gmail.com
                     </a>
                   </div>
                 </nav>

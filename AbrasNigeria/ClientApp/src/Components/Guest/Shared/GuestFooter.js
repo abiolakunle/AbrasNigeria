@@ -48,14 +48,14 @@ class GuestFooter extends Component {
                 <li>
                   <i className="fa fa-envelope mr-2" />
                   Email
-                  <a href="mailto:Abrasnigent@gmail.com">
-                    Abrasnigent@gmail.com
+                  <a href="mailto:abrasnigeriaent@gmail.com">
+                    abrasnigeriaent@gmail.com
                   </a>
                 </li>
                 <li>
                   <i className="fa fa-phone mr-2" />
                   Call
-                  <a href="tel:+234 810 652 9289"> +234 810 652 9289</a>
+                  <a href="tel:+234 810 652 9288"> +234 810 652 9288</a>
                 </li>
               </ul>
             </div>

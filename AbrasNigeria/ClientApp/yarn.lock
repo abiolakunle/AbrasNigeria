@@ -910,31 +910,31 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-9.0.1.tgz#c27b391d8457d1e893f1eddeaf5e5412d12ffbb5"
   integrity sha512-6It2EVfGskxZCQhuykrfnALg7oVeiI6KclWSmGDqB0AiInVrTGB9Jp9i4/Ad21u9Jde/voVQz6eFX/eSg/UsPA==
 
-"@hapi/address@2.x.x":
+"@h/api/address@2.x.x":
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.0.0.tgz#9f05469c88cb2fd3dcd624776b54ee95c312126a"
+  resolved "https://registry.yarnpkg.com/@h/api/address/-/address-2.0.0.tgz#9f05469c88cb2fd3dcd624776b54ee95c312126a"
   integrity sha512-mV6T0IYqb0xL1UALPFplXYQmR0twnXG0M6jUswpquqT2sD12BOiCiLy3EvMp/Fy7s3DZElC4/aPjEjo2jeZpvw==
 
-"@hapi/hoek@6.x.x":
+"@h/api/hoek@6.x.x":
   version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-6.2.1.tgz#d3a66329159af879bfdf0b0cff2229c43c5a3451"
+  resolved "https://registry.yarnpkg.com/@h/api/hoek/-/hoek-6.2.1.tgz#d3a66329159af879bfdf0b0cff2229c43c5a3451"
   integrity sha512-+ryw4GU9pjr1uT6lBuErHJg3NYqzwJTvZ75nKuJijEzpd00Uqi6oiawTGDDf5Hl0zWmI7qHfOtaqB0kpQZJQzA==
 
-"@hapi/joi@^15.0.0":
+"@h/api/joi@^15.0.0":
   version "15.0.2"
-  resolved "https://registry.yarnpkg.com/@hapi/joi/-/joi-15.0.2.tgz#2989041a06ee2941cf6dd247ffff8032640d16bb"
+  resolved "https://registry.yarnpkg.com/@h/api/joi/-/joi-15.0.2.tgz#2989041a06ee2941cf6dd247ffff8032640d16bb"
   integrity sha512-c3NwWBHzUnEavcaCpGaepOcygS17pSnOh5ZYUBz+sfqCP7kC9haLcRnd3U8KFC4TbLFmRwKnmYglsc47m9yapg==
   dependencies:
-    "@hapi/address" "2.x.x"
-    "@hapi/hoek" "6.x.x"
-    "@hapi/topo" "3.x.x"
+    "@h/api/address" "2.x.x"
+    "@h/api/hoek" "6.x.x"
+    "@h/api/topo" "3.x.x"
 
-"@hapi/topo@3.x.x":
+"@h/api/topo@3.x.x":
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@hapi/topo/-/topo-3.1.0.tgz#5c47cd9637c2953db185aa957a27bcb2a8b7a6f8"
+  resolved "https://registry.yarnpkg.com/@h/api/topo/-/topo-3.1.0.tgz#5c47cd9637c2953db185aa957a27bcb2a8b7a6f8"
   integrity sha512-gZDI/eXOIk8kP2PkUKjWu9RW8GGVd2Hkgjxyr/S7Z+JF+0mr7bAlbw+DkTRxnD580o8Kqxlnba9wvqp5aOHBww==
   dependencies:
-    "@hapi/hoek" "6.x.x"
+    "@h/api/hoek" "6.x.x"
 
 "@jest/console@^24.7.1":
   version "24.7.1"
@@ -2307,7 +2307,7 @@ camelcase@^5.0.0, camelcase@^5.2.0, camelcase@^5.3.1:
 
 caniuse-api@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/caniuse-api/-/caniuse-api-3.0.0.tgz#5e4d90e2274961d46291997df599e3ed008ee4c0"
+  resolved "https://registry.yarnpkg.com/caniuse-/api/-/caniuse-api-3.0.0.tgz#5e4d90e2274961d46291997df599e3ed008ee4c0"
   integrity sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==
   dependencies:
     browserslist "^4.0.0"
@@ -6425,7 +6425,7 @@ number-is-nan@^1.0.0:
 
 nwsapi@^2.0.7, nwsapi@^2.1.3:
   version "2.1.4"
-  resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.1.4.tgz#e006a878db23636f8e8a67d33ca0e4edf61a842f"
+  resolved "https://registry.yarnpkg.com/nws/api/-/nwsapi-2.1.4.tgz#e006a878db23636f8e8a67d33ca0e4edf61a842f"
   integrity sha512-iGfd9Y6SFdTNldEy2L0GUhcarIutFmk+MPWIn9dmj8NMIup03G08uUF2KGbbmv/Ux4RT0VZJoP/sVbWA6d/VIw==
 
 oauth-sign@~0.9.0:
@@ -9752,7 +9752,7 @@ workbox-build@^4.2.0:
   integrity sha512-UHdwrN3FrDvicM3AqJS/J07X0KXj67R8Cg0waq1MKEOqzo89ap6zh6LmaLnRAjpB+bDIz+7OlPye9iii9KBnxw==
   dependencies:
     "@babel/runtime" "^7.3.4"
-    "@hapi/joi" "^15.0.0"
+    "@h/api/joi" "^15.0.0"
     common-tags "^1.8.0"
     fs-extra "^4.0.2"
     glob "^7.1.3"

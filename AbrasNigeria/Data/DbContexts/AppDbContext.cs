@@ -29,6 +29,10 @@ namespace AbrasNigeria.Data.DbContexts
 
         public DbSet<QuotationItem> QuotationItems { get; set; }
 
+        public DbSet<CartItem> CartItems { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +52,10 @@ namespace AbrasNigeria.Data.DbContexts
             modelBuilder.Entity<Quotation>()
             .Property(q => q.Date)
             .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Date)
+                .HasDefaultValueSql("getdate()");
 
             //modelBuilder.Entity<MachineSection>()
             //    .HasOne(m => m.Machine)

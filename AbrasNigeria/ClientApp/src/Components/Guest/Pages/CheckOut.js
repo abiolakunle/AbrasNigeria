@@ -12,12 +12,16 @@ export default class CheckOut extends Component {
     city: "",
     cityState: "",
     email: "",
+    phone: "",
     note: ""
   };
 
   render() {
     return (
       <React.Fragment>
+        <h1>Your details</h1>
+        <p>Please enter your details and we will reply in less than 24Hours</p>
+        <hr />
         <div className="form-group row">
           <label className="col-md-3">Name/Company name: </label>
           <input
@@ -26,6 +30,7 @@ export default class CheckOut extends Component {
             type="text"
             value={this.state.companyName}
             onChange={this.onFormChange}
+            required
           />
         </div>
         <div className="form-group row">
@@ -36,6 +41,19 @@ export default class CheckOut extends Component {
             type="text"
             value={this.state.email}
             onChange={this.onFormChange}
+            required
+          />
+        </div>
+
+        <div className="form-group row">
+          <label className="col-md-3">Phone number: </label>
+          <input
+            name="phoneNumber"
+            className="form-control col-md-7"
+            type="text"
+            value={this.state.phoneNumber}
+            onChange={this.onFormChange}
+            required
           />
         </div>
 
@@ -67,6 +85,7 @@ export default class CheckOut extends Component {
             type="text"
             value={this.state.cityState}
             onChange={this.onFormChange}
+            required
           />
         </div>
         <div className="form-group row">
@@ -119,8 +138,6 @@ export default class CheckOut extends Component {
       ...this.state,
       cartItems
     };
-
-    console.log("order", Order);
 
     axios
       .post(apiUrl, Order)

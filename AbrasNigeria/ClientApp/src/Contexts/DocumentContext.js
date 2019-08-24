@@ -67,7 +67,7 @@ export class DocumentProvider extends Component {
 
     console.log("New Invoice", invoice);
     axios
-      .post("https://localhost:44343/api/Quotation", invoice)
+      .post("/api/Quotation", invoice)
       .then(response => {
         this.setState({
           submitted: true

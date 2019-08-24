@@ -39,6 +39,7 @@ namespace AbrasNigeria.Data.Repositories
                 BrandName = m.Brand.Name,
                 Products = m.ProductMachines.Select(pm => new ProductDTO
                 {
+                    ProductId = pm.MachineId,
                     PartNumber = pm.Product.PartNumber,
                     Category = pm.Product.Category.CategoryName
                 }),

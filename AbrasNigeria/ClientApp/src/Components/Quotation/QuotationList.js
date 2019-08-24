@@ -57,7 +57,7 @@ class QuotationList extends Component {
 
   getQuotations() {
     axios
-      .get("https://localhost:44343/api/Quotation")
+      .get("/api/Quotation")
       .then(response => {
         this.setState(
           {

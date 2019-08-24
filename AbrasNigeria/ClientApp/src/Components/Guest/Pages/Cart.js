@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -11,7 +12,8 @@ export default class Cart extends Component {
     partNumber: "",
     category: "",
     suggestions: [],
-    quantity: 1
+    quantity: 1,
+    company: ""
   };
 
   render() {
@@ -23,7 +25,7 @@ export default class Cart extends Component {
             <React.Fragment>
               <h1 className="my-2">Your cart</h1>
 
-              <table class="table table-striped">
+              <table className="table table-striped">
                 <thead>
                   <tr className="row">
                     <th className="col-md-1" scope="col">
@@ -50,6 +52,11 @@ export default class Cart extends Component {
                 </tbody>
               </table>
               {this.renderForm(addToCart)}
+              <div className="row mt-5">
+                <Link to="/guest/checkout">
+                  <button className="btn btn-primary">Request quotation</button>
+                </Link>
+              </div>
             </React.Fragment>
           );
         }}
@@ -145,8 +152,8 @@ export default class Cart extends Component {
 
   onFormChange = event => {
     //handle change event from add item-line form
-    var eventName = event.target.name;
-    var eventValue = event.target.value;
+    let eventName = event.target.name;
+    let eventValue = event.target.value;
     this.setState(
       {
         [eventName]: eventValue
@@ -168,7 +175,7 @@ export default class Cart extends Component {
     //load suggestions from server and update component state
     axios
       .get(
-        `https://localhost:44343/api/product/search?searchQuery=${
+        `/api/product/search?searchQuery=${
           this.state.partNumber //part number as search query
         }`
       )
@@ -189,7 +196,11 @@ export default class Cart extends Component {
           <th className="col-md-1" scope="row">
             {index}
           </th>
-          <td className="col-md-3">{cartItem.partNumber}</td>
+          <td className="col-md-3">
+            <Link to={`/guest/product/${cartItem.productId}`}>
+              {cartItem.partNumber}
+            </Link>{" "}
+          </td>
           <td className="col-md-3">{cartItem.category}</td>
           <td className="col-md-2">
             <input

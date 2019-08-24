@@ -6,7 +6,7 @@ namespace AbrasNigeria.Data.Interfaces
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-        IEnumerable<Category> loadAllWithProducts();
+        IEnumerable<Category> LoadAllWithProducts();
         IEnumerable<CategoryDTO> Search(string searchQuery);
     }
 }

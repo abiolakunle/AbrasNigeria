@@ -6,6 +6,7 @@ import AddToCartBtn from "../Partials/AddToCartBtn";
 
 export default class Product extends Component {
   state = {
+    productId: "",
     partNumber: "",
     category: "",
     brand: "",
@@ -18,8 +19,8 @@ export default class Product extends Component {
   }
 
   render() {
-    const { partNumber, category, brand } = this.state;
-    const product = { partNumber, category };
+    const { productId, partNumber, category, brand } = this.state;
+    const product = { productId, partNumber, category };
 
     return (
       <React.Fragment>
@@ -29,11 +30,11 @@ export default class Product extends Component {
           <AddToCartBtn product={product} />
           <hr />
           <p>
-            <span class="font-weight-bold">Category: </span>
+            <span className="font-weight-bold">Category: </span>
             {category}
           </p>
           <p>
-            <span class="font-weight-bold">Brand: </span>
+            <span className="font-weight-bold">Brand: </span>
             {brand}
           </p>
         </div>
@@ -43,14 +44,13 @@ export default class Product extends Component {
   }
 
   loadProduct = () => {
-    let apiUrl = `https://localhost:44343/api/product/product?productid=${
-      this.props.match.params.id
-    }`;
+    let apiUrl = `/api/product/product?productid=${this.props.match.params.id}`;
 
     axios
       .get(apiUrl)
       .then(response => {
         const {
+          productId,
           partNumber,
           brand,
           category,
@@ -58,18 +58,14 @@ export default class Product extends Component {
           machines
         } = response.data;
 
-        this.setState(
-          {
-            partNumber,
-            brand,
-            category,
-            sectionGroups,
-            machines
-          },
-          () => {
-            console.log(this.state);
-          }
-        );
+        this.setState({
+          productId,
+          partNumber,
+          brand,
+          category,
+          sectionGroups,
+          machines
+        });
       })
       .catch(error => {
         console.error(error);
@@ -79,10 +75,10 @@ export default class Product extends Component {
   renderDetailTab = (machines, sectionGroups) => {
     return (
       <React.Fragment>
-        <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
-          <li class="nav-item">
+        <ul className="nav nav-tabs mt-5" id="myTab" role="tablist">
+          <li className="nav-item">
             <a
-              class="nav-link active"
+              className="nav-link active"
               id="home-tab"
               data-toggle="tab"
               href="#machines"
@@ -93,9 +89,9 @@ export default class Product extends Component {
               Machines
             </a>
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             <a
-              class="nav-link"
+              className="nav-link"
               id="profile-tab"
               data-toggle="tab"
               href="#sectionGroups"
@@ -107,9 +103,9 @@ export default class Product extends Component {
             </a>
           </li>
         </ul>
-        <div class="tab-content mt-3" id="myTabContent">
+        <div className="tab-content mt-3" id="myTabContent">
           <div
-            class="tab-pane fade show active "
+            className="tab-pane fade show active "
             id="machines"
             role="tabpanel"
             aria-labelledby="home-tab"
@@ -126,7 +122,7 @@ export default class Product extends Component {
             })}
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="sectionGroups"
             role="tabpanel"
             aria-labelledby="profile-tab"

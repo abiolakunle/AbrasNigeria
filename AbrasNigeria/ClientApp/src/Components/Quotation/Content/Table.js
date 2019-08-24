@@ -148,7 +148,7 @@ class Table extends Component {
     //load suggestions from server and update component state
     axios
       .get(
-        `https://localhost:44343/api/product/search?searchQuery=${
+        `/api/product/search?searchQuery=${
           this.state.partNumber //part number as search query
         }`
       )

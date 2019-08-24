@@ -81,7 +81,7 @@ export default class Machines extends Component {
   sendQuery = page => {
     //sends search query to api and assigns data from response into state
     axios
-      .get(`https://localhost:44343/api/machine/list?page=${page}`)
+      .get(`/api/machine/list?page=${page}`)
       .then(response => {
         let paging = JSON.parse(response.headers.paging); //convert paging test to Json object
 
@@ -182,7 +182,7 @@ export default class Machines extends Component {
     //load suggestions for form from server and update component state
     axios
       .get(
-        `https://localhost:44343/api/machine/search?searchQuery=${
+        `/api/machine/search?searchQuery=${
           this.state.modelName //part number as search query
         }`
       )

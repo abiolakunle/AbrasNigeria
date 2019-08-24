@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AbrasNigeria.Models
 {
     public class Quotation
     {
+
         public Quotation()
         {
             Date = DateTime.Now;
@@ -26,7 +25,7 @@ namespace AbrasNigeria.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? Date { get; set; }
 
-        public virtual List<QuotationItem> Table { get; set; }
+        public ICollection<QuotationItem> Table { get; set; }
 
     }
 }

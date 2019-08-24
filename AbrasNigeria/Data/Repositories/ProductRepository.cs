@@ -26,7 +26,8 @@ namespace AbrasNigeria.Data.Repositories
                              .Contains(p.ProductSectionGroups
                              .Where(psg => psg.SectionGroup.SectionGroupName.Contains(filter.SectionGroup)).FirstOrDefault()))
                              .Where(p => p.ProductMachines.Contains(p.ProductMachines.Where(pm => pm.Machine.ModelName.Contains(filter.Machine)).FirstOrDefault()))
-                .Include(p => p.Category).Select(p => new ProductDTO
+                //.Include(p => p.Category)
+                .Select(p => new ProductDTO
                 {
                     ProductId = p.ProductId,
                     PartNumber = p.PartNumber,

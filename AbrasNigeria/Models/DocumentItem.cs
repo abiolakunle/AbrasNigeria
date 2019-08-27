@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace AbrasNigeria.Models
 {
-    public class QuotationItem
+    public class DocumentItem
     {
         public int Id { get; set; }
 
-        public int QuotationId { get; set; }
+        public int DocumentId { get; set; }
 
         public string PartNumber { get; set; }
 

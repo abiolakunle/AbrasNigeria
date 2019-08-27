@@ -62,7 +62,7 @@ namespace AbrasNigeria
             services.AddTransient<IMachineRepository, MachineRepository>();
             services.AddTransient<ISectionGroupRepository, SectionGroupRepository>();
             services.AddTransient<ISectionRepository, SectionRepository>();
-            services.AddTransient<IQuotationRepository, QuotationRepository>();
+            services.AddTransient<IDocumentRepository, DocumentRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
 
             services.AddMemoryCache();

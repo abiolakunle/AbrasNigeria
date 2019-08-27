@@ -4,14 +4,16 @@ using AbrasNigeria.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AbrasNigeria.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190825215248_QuotationNowDocument")]
+    partial class QuotationNowDocument
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,7 +102,7 @@ namespace AbrasNigeria.Migrations
 
                     b.HasKey("DocumentId");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Quotations");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.DocumentItem", b =>
@@ -123,7 +125,7 @@ namespace AbrasNigeria.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("DocumentItems");
+                    b.ToTable("QuotationItems");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.Machine", b =>

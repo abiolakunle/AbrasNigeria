@@ -1,4 +1,4 @@
-export default function NumInWords(number) {
+const NumInWords = number => {
   const first = [
     "",
     "one ",
@@ -64,8 +64,10 @@ export default function NumInWords(number) {
         word;
   }
   return capFirstLetter(word);
-}
+};
 
 const capFirstLetter = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+export default NumInWords;

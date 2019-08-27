@@ -25,9 +25,9 @@ namespace AbrasNigeria.Data.DbContexts
 
         public DbSet<SectionGroup> SectionGroups { get; set; }
 
-        public DbSet<Quotation> Quotations { get; set; }
+        public DbSet<Document> Documents { get; set; }
 
-        public DbSet<QuotationItem> QuotationItems { get; set; }
+        public DbSet<DocumentItem> DocumentItems { get; set; }
 
         public DbSet<CartItem> CartItems { get; set; }
 
@@ -49,7 +49,7 @@ namespace AbrasNigeria.Data.DbContexts
             modelBuilder.Entity<MachineSection>().HasKey(ms => new { ms.MachineId, ms.SectionId });
             modelBuilder.Entity<MachineSectionGroup>().HasKey(msg => new { msg.MachineId, msg.SectionGroupId });
 
-            modelBuilder.Entity<Quotation>()
+            modelBuilder.Entity<Document>()
             .Property(q => q.Date)
             .HasDefaultValueSql("getdate()");
 

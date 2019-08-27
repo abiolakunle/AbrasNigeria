@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+import DasboardIndex from "./DashboardIndex";
+
 export default class UploadExcel extends Component {
   state = {
     selectedFile: []
@@ -8,40 +10,42 @@ export default class UploadExcel extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <main id="excel-db" className="container mt-5">
-          <div className="card mx-auto">
-            <h3 className="card-header mb-5">Upload Master Table</h3>
+      <DasboardIndex>
+        <React.Fragment>
+          <main id="excel-db" className="container mt-5">
+            <div className="card mx-auto">
+              <h3 className="card-header mb-5">Upload Master Table</h3>
 
-            <form method="post" className="card-body pl-5">
-              <div className="form-group">
-                <label className="col-md-2 control-label font-weight-bold">
-                  Master Table File
-                </label>
-                <div className="col-md-6">
-                  <input
-                    name="masterFile"
-                    type="file"
-                    className="form-control"
-                    onChange={this.onFileChange}
-                  />
-                  <span className="text-danger" />
+              <form method="post" className="card-body pl-5">
+                <div className="form-group">
+                  <label className="col-md-2 control-label font-weight-bold">
+                    Master Table File
+                  </label>
+                  <div className="col-md-6">
+                    <input
+                      name="masterFile"
+                      type="file"
+                      className="form-control"
+                      onChange={this.onFileChange}
+                    />
+                    <span className="text-danger" />
+                  </div>
                 </div>
-              </div>
-              <div className="form-group">
-                <div className="btn-group col-md-offset-2 col-md-6">
-                  <input
-                    className="btn btn-primary"
-                    type="submit"
-                    value="Upload"
-                    onClick={this.onFormSubmit}
-                  />
+                <div className="form-group">
+                  <div className="btn-group col-md-offset-2 col-md-6">
+                    <input
+                      className="btn btn-primary"
+                      type="submit"
+                      value="Upload"
+                      onClick={this.onFormSubmit}
+                    />
+                  </div>
                 </div>
-              </div>
-            </form>
-          </div>
-        </main>
-      </React.Fragment>
+              </form>
+            </div>
+          </main>
+        </React.Fragment>
+      </DasboardIndex>
     );
   }
 

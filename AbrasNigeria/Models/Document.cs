@@ -4,19 +4,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AbrasNigeria.Models
 {
-    public class Quotation
+    public class Document
     {
 
-        public Quotation()
+        public Document()
         {
             Date = DateTime.Now;
         }
-        public int QuotationId { get; set; }
+        public int DocumentId { get; set; }
 
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public string QuoteNo { get; set; }
+        public string DocumentNo { get; set; }
 
-        public string DocType { get; set; }
+        public string DocumentType { get; set; }
 
         public string Company { get; set; }
 
@@ -25,7 +25,7 @@ namespace AbrasNigeria.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? Date { get; set; }
 
-        public ICollection<QuotationItem> Table { get; set; }
+        public ICollection<DocumentItem> Table { get; set; }
 
     }
 }

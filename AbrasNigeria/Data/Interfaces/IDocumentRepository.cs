@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace AbrasNigeria.Data.Interfaces
 {
-    public interface IQuotationRepository : IRepository<Quotation>
+    public interface IDocumentRepository : IRepository<Document>
     {
-        IEnumerable<Quotation> LoadAllWithItems();
-        Quotation LoadWithItems(int id);
+        IEnumerable<Document> LoadAllWithItems();
+        Document LoadWithItems(int id);
     }
 }

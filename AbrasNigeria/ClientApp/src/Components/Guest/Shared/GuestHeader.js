@@ -70,18 +70,7 @@ class GuestHeader extends Component {
                           ClassName="active"
                         >
                           <div className="nav-link">
-                            Products <span className="sr-only">(current)</span>
-                          </div>
-                        </NavLink>
-                      </li>
-                      <li className="nav-item ">
-                        <NavLink
-                          exact
-                          to="/guest/categories"
-                          activeClassName="active"
-                        >
-                          <div className="nav-link">
-                            Categories{" "}
+                            Find parts{" "}
                             <span className="sr-only">(current)</span>
                           </div>
                         </NavLink>
@@ -90,17 +79,12 @@ class GuestHeader extends Component {
                       <li className="nav-item ">
                         <NavLink to="/guest/machines" activeClassName="active">
                           <div className="nav-link">
-                            Machines <span className="sr-only">(current)</span>
+                            Explore Machines{" "}
+                            <span className="sr-only">(current)</span>
                           </div>
                         </NavLink>
                       </li>
-                      <li className="nav-item ">
-                        <NavLink to="/quotations" activeClassName="active">
-                          <div className="nav-link">
-                            Admin <span className="sr-only">(current)</span>
-                          </div>
-                        </NavLink>
-                      </li>
+
                       <li className="nav-item ">
                         <NavLink to="/guest/contact" activeClassName="active">
                           <div className="nav-link">

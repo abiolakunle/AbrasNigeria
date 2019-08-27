@@ -1,7 +1,10 @@
 using AbrasNigeria.Data.DbContexts;
+using AbrasNigeria.Data.Helpers;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Data.Repositories;
 using AbrasNigeria.Data.Utils;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +15,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AbrasNigeria
 {
@@ -40,6 +46,52 @@ namespace AbrasNigeria
             services.AddScoped<SessionCart>(sp => new SessionCart(sp));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddAutoMapper();
+
+            //configure stringly typed settings object
+            var appSettingsSection = Configuration.GetSection("AppSetting");
+            services.Configure<AppSettings>(appSettingsSection);
+
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(
+                x =>
+                {
+                    x.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            var userServices = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                            var userId = int.Parse(context.Principal.Identity.Name);
+                            var user = userServices.GetById(userId);
+                            if (user == null)
+                            {
+                                //return unauthorized if user no longer exists
+                                context.Fail("Unauthorized");
+                            }
+
+                            return Task.CompletedTask;
+                        }
+
+                    };
+
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    }
+                });
+
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), HostingEnvironment.WebRootPath)));
 
@@ -55,6 +107,8 @@ namespace AbrasNigeria
                 Configuration["ConnectionStrings:RemoteConnection"]
                 ));
             }
+
+            services.AddScoped<IUserService, IUserService>();
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
@@ -81,6 +135,13 @@ namespace AbrasNigeria
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.UseCors(x =>
+                x.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
+
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -19,8 +19,8 @@ namespace AbrasNigeria
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseKestrel()
-            .UseIISIntegration()
+                //.UseKestrel()
+                //.UseIISIntegration()
                 .UseStartup<Startup>();
     }
 }

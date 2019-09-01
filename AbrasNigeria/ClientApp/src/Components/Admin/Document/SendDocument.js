@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import DasboardIndex from "./DashboardIndex";
+import DasboardIndex from "../Shared/AdminNav";
 
 import axios from "axios";
 

@@ -354,6 +354,27 @@ namespace AbrasNigeria.Migrations
                     b.ToTable("SectionGroups");
                 });
 
+            modelBuilder.Entity("AbrasNigeria.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<byte[]>("PasswordHash");
+
+                    b.Property<byte[]>("PasswordSalt");
+
+                    b.Property<string>("UserName");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("AbrasNigeria.Models.CartItem", b =>
                 {
                     b.HasOne("AbrasNigeria.Models.Order")

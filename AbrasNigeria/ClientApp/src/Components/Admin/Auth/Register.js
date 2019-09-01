@@ -1,22 +1,34 @@
 import React, { Component } from "react";
-import AuthIndex from "../Shared/AuthNav";
+import { connect } from "react-redux";
 
-class Login extends Component {
+import AuthIndex from "../Shared/AuthNav";
+import { register } from "../../../Actions/authActions";
+
+class Register extends Component {
+  state = {
+    username: "",
+    password: ""
+  };
+
   render() {
+    const { username, password } = this.state;
     return (
       <AuthIndex>
         <React.Fragment>
-          <form>
+          <form onSubmit={this.handleSubmit}>
             <div class="form-group row">
               <label for="inputEmail3" class="col-sm-2 col-form-label">
                 Username
               </label>
               <div class="col-sm-10">
                 <input
-                  type="email"
+                  type="text"
                   class="form-control"
-                  id="inputEmail3"
-                  placeholder="Email"
+                  id="inputUserName"
+                  placeholder="UserName"
+                  name="username"
+                  value={username}
+                  onChange={this.handleChange}
                 />
               </div>
             </div>
@@ -30,6 +42,9 @@ class Login extends Component {
                   class="form-control"
                   id="inputPassword3"
                   placeholder="Password"
+                  name="password"
+                  value={password}
+                  onChange={this.handleChange}
                 />
               </div>
             </div>
@@ -52,7 +67,7 @@ class Login extends Component {
             <div class="form-group row">
               <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">
-                  Sign in
+                  Register
                 </button>
               </div>
             </div>
@@ -61,6 +76,31 @@ class Login extends Component {
       </AuthIndex>
     );
   }
+
+  handleChange = event => {
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
+
+    this.setState({
+      [eventName]: eventValue
+    });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    const { username, password } = this.state;
+    this.props.register(username, password);
+  };
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    register: (username, password) => dispatch(register(username, password))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Register);

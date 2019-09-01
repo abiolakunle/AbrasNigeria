@@ -2,6 +2,7 @@ using AbrasNigeria.Data.DbContexts;
 using AbrasNigeria.Data.Helpers;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Data.Repositories;
+using AbrasNigeria.Data.Services;
 using AbrasNigeria.Data.Utils;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -49,7 +50,7 @@ namespace AbrasNigeria
             services.AddAutoMapper();
 
             //configure stringly typed settings object
-            var appSettingsSection = Configuration.GetSection("AppSetting");
+            var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
 
@@ -89,7 +90,7 @@ namespace AbrasNigeria
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
                         ValidateAudience = false
-                    }
+                    };
                 });
 
             services.AddSingleton<IFileProvider>(
@@ -108,7 +109,7 @@ namespace AbrasNigeria
                 ));
             }
 
-            services.AddScoped<IUserService, IUserService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect, withRouter } from "react-router-dom";
+import LoadingOverlay from "react-loading-overlay";
 import NumInWords from "../../../Utils/NumInWords";
 
 import {
@@ -8,7 +10,7 @@ import {
 } from "../../../Actions/suggestionActions";
 import { createDocument } from "../../../Actions/documentActions";
 
-import DasboardIndex from "./DashboardIndex";
+import DasboardIndex from "../Shared/AdminNav";
 
 class NewDocument extends Component {
   state = {
@@ -29,21 +31,28 @@ class NewDocument extends Component {
   };
 
   render() {
+    const { isCreated, isCreating } = this.props;
+    if (isCreated === true) {
+      this.props.history.push("/admin/document/list");
+    }
+
     return (
-      <DasboardIndex>
-        <React.Fragment>
-          {this.renderInfoForm()}
-          {this.renderTable()}
-          {this.renderSummary()}
-        </React.Fragment>
-      </DasboardIndex>
+      <React.Fragment>
+        <LoadingOverlay active={isCreating} spinner text="Creating document">
+          <DasboardIndex>
+            {this.renderInfoForm()}
+            {this.renderTable()}
+            {this.renderSummary()}
+          </DasboardIndex>
+        </LoadingOverlay>
+      </React.Fragment>
     );
   }
 
   handleChange = event => {
     //handle change event from add item-line form
-    var eventName = event.target.name;
-    var eventValue = event.target.value;
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
 
     this.setState(
       {
@@ -352,9 +361,14 @@ class NewDocument extends Component {
   };
 }
 
-const mapStateToProps = ({ suggestionReducer }) => {
+const mapStateToProps = state => {
+  console.log(state);
+  const { suggestionReducer, documentReducer } = state;
   return {
-    partNoSuggestions: suggestionReducer.partNoSuggestions
+    partNoSuggestions: suggestionReducer.partNoSuggestions,
+    isCreated: documentReducer.isCreated,
+    isCreating: documentReducer.isCreating,
+    error: documentReducer.error
   };
 };
 
@@ -369,4 +383,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NewDocument);
+)(withRouter(NewDocument));

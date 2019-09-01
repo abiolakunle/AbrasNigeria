@@ -5,6 +5,7 @@ using AbrasNigeria.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -25,15 +26,15 @@ namespace AbrasNigeria.Controllers
         private readonly AppSettings _appSettings;
 
 
-        public UserController(IUserService userService, IMapper mapper, AppSettings appSettings)
+        public UserController(IUserService userService, IMapper mapper, IOptions<AppSettings> appSettings)
         {
             _userService = userService;
             _mapper = mapper;
-            _appSettings = appSettings;
+            _appSettings = appSettings.Value;
         }
 
         [AllowAnonymous]
-        [Route("authenticate")]
+        [HttpPost("[action]")]
         public IActionResult Authenticate([FromBody] UserDto userDto)
         {
             User user = _userService.Authenticate(userDto.UserName, userDto.Password);
@@ -71,7 +72,7 @@ namespace AbrasNigeria.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("register")]
+        [HttpPut("[action]")]
         public IActionResult Register([FromBody]UserDto userDto)
         {
             // map dto to entity

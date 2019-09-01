@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import DasboardIndex from "./DashboardIndex";
+import DasboardIndex from "../Shared/AdminNav";
 
 export default class UploadExcel extends Component {
   state = {

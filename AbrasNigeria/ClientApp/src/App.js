@@ -1,5 +1,6 @@
 import React from "react";
 
+import Dashboard from "./Components/Admin/Dashboard/Dasboard";
 import DocumentList from "./Components/Admin/Document/DocumentList";
 import NewDocument from "./Components/Admin/Document/NewDocument";
 import ViewDocument from "./Components/Admin/Document/ViewDocument";
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/guest" component={Guest} />
           <Route path="/admin/auth/login" component={Login} />
           <Route path="/admin/auth/register" component={Register} />
+          <PrivateRoute path="/admin/dashboard" component={Dashboard} />
           <PrivateRoute path="/admin/document/new" component={NewDocument} />
           <PrivateRoute path="/admin/document/list" component={DocumentList} />
           <PrivateRoute path="/admin/document/:id" component={ViewDocument} />

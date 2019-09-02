@@ -24,26 +24,49 @@ export const login = (username, password) => {
   return dispatch => {
     dispatch(request());
 
-    userService.login(username, password);
+    userService
+      .login(username, password)
+      .then(({ data }) => {
+        localStorage.setItem("user", JSON.stringify(data));
+        console.log("LOGINED", data);
+        dispatch(success());
+      })
+      .catch(error => {
+        dispatch(failure());
+        console.error("Login error", error);
+      });
   };
 };
 
-export const register = (username, password) => {
+export const register = user => {
   const request = () => {
-    return { type: LOGIN_REQUEST };
+    return { type: REGISTER_REQUEST };
   };
 
   const success = () => {
-    return { type: LOGIN_SUCCESS };
+    return { type: REGISTER_SUCCESS };
   };
 
   const failure = () => {
-    return { type: LOGIN_FAILURE };
+    return { type: REGISTER_FAILURE };
   };
 
   return dispatch => {
     dispatch(request());
 
-    userService.register({ username, password });
+    userService
+      .register(user)
+      .then(response => {
+        dispatch(success());
+        console.log("register", response);
+      })
+      .catch(error => {
+        dispatch(failure());
+        console.error("register error", error);
+      });
   };
+};
+
+export const logout = () => {
+  userService.logout();
 };

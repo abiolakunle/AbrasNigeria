@@ -1,14 +1,20 @@
 import {
   CREATE_DOC_SUCCESS,
   CREATE_DOC_FAILURE,
-  CREATE_DOC_REQUEST
+  CREATE_DOC_REQUEST,
+  GET_DOC_REQUEST,
+  GET_DOC_SUCCESS,
+  GET_DOC_FAILURE
 } from "../Constants/documentConstants";
 
 const initialState = {
   isCreating: false,
   isCreated: false,
   error: false,
-  message: null
+  message: null,
+  isLoading: false,
+  isLoaded: false,
+  documents: []
 };
 
 const documentReducer = (state = initialState, action) => {
@@ -33,6 +39,25 @@ const documentReducer = (state = initialState, action) => {
         isCreated: false,
         error: true,
         message: action.payload
+      };
+
+    case GET_DOC_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case GET_DOC_SUCCESS:
+      return {
+        ...state,
+        isLoaded: true,
+        isLoading: false,
+        documents: action.payload
+      };
+
+    case GET_DOC_FAILURE:
+      return {
+        ...state,
+        error: true
       };
     default:
       return state;

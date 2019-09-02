@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { useAlert } from "react-alert";
+import { logout } from "../../../Actions/authActions";
 
 import logo from "../../../Images/abrasLogo.png";
 import "./AdminNav.css";
@@ -19,6 +19,9 @@ const DashboardIndex = ({ children }) => {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/admin/dashboard">Dashboard</NavLink>
+            </li>
+            <li>
               <NavLink to="/admin/document/list">Document list</NavLink>
             </li>
             <li>
@@ -28,7 +31,9 @@ const DashboardIndex = ({ children }) => {
               <NavLink to="/admin/document/list">Manage Stock</NavLink>
             </li>
             <li>
-              <NavLink to="/auth/login">Login</NavLink>
+              <button className="btn btn-secondary" onClick={logout}>
+                Logout
+              </button>
             </li>
           </ul>
         </div>

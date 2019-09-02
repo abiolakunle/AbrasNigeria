@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import LoadingOverlay from "react-loading-overlay";
 import NumInWords from "../../../Utils/NumInWords";
 

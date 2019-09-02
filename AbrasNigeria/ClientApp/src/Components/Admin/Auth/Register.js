@@ -12,6 +12,11 @@ class Register extends Component {
 
   render() {
     const { username, password } = this.state;
+    const { history, isRegistered } = this.props;
+    console.log(this.props);
+    if (isRegistered === true) {
+      history.push("/admin/auth/login");
+    }
     return (
       <AuthIndex>
         <React.Fragment>
@@ -90,17 +95,25 @@ class Register extends Component {
     event.preventDefault();
 
     const { username, password } = this.state;
-    this.props.register(username, password);
+    this.props.register({ username, password });
   };
 }
 
+const mapStateToProps = ({ authReducer }) => {
+  const { isRegistering, isRegistered } = authReducer;
+  return {
+    isRegistered,
+    isRegistering
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    register: (username, password) => dispatch(register(username, password))
+    register: user => dispatch(register(user))
   };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Register);

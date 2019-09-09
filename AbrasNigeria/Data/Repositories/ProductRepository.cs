@@ -72,7 +72,8 @@ namespace AbrasNigeria.Data.Repositories
                 .Select(p => new ProductDTO
                 {
                     PartNumber = p.PartNumber,
-                    Category = p.Category.CategoryName
+                    Category = p.Category.CategoryName,
+                    Brand = p.Brand.Name
                 });
         }
     }

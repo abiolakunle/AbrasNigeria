@@ -35,6 +35,10 @@ namespace AbrasNigeria.Data.DbContexts
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<StockProduct> StockProducts { get; set; }
+
+        public DbSet<StockProductHistory> stockProductHistories { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -58,6 +62,10 @@ namespace AbrasNigeria.Data.DbContexts
             modelBuilder.Entity<Order>()
                 .Property(o => o.Date)
                 .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<StockProductHistory>()
+                .Property(p => p.Date)
+                .HasDefaultValueSql("getDate()");
 
             //modelBuilder.Entity<MachineSection>()
             //    .HasOne(m => m.Machine)

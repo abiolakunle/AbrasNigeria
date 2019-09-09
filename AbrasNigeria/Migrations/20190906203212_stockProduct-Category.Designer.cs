@@ -4,14 +4,16 @@ using AbrasNigeria.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AbrasNigeria.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190906203212_stockProduct-Category")]
+    partial class stockProductCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,6 +366,8 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<string>("Category");
 
+                    b.Property<string>("CurrentQuantity");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("Detail");
@@ -379,31 +383,6 @@ namespace AbrasNigeria.Migrations
                     b.HasKey("StockProductId");
 
                     b.ToTable("StockProducts");
-                });
-
-            modelBuilder.Entity("AbrasNigeria.Models.StockProductHistory", b =>
-                {
-                    b.Property<int>("StockProductHistoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AddedQuantity");
-
-                    b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasDefaultValueSql("getDate()");
-
-                    b.Property<string>("Note");
-
-                    b.Property<int>("RemovedQuantity");
-
-                    b.Property<int>("StockProductId");
-
-                    b.HasKey("StockProductHistoryId");
-
-                    b.HasIndex("StockProductId");
-
-                    b.ToTable("stockProductHistories");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.User", b =>
@@ -547,14 +526,6 @@ namespace AbrasNigeria.Migrations
                     b.HasOne("AbrasNigeria.Models.Section", "Section")
                         .WithMany("SectionGroups")
                         .HasForeignKey("SectionId");
-                });
-
-            modelBuilder.Entity("AbrasNigeria.Models.StockProductHistory", b =>
-                {
-                    b.HasOne("AbrasNigeria.Models.StockProduct")
-                        .WithMany("StockProductHistories")
-                        .HasForeignKey("StockProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -28,8 +28,12 @@ const DashboardIndex = ({ children }) => {
               <NavLink to="/admin/document/new">Create New Document</NavLink>
             </li>
             <li>
-              <NavLink to="/admin/document/list">Manage Stock</NavLink>
+              <NavLink to="/admin/stock/list">Store</NavLink>
             </li>
+            <li>
+              <NavLink to="/admin/stock/create">Create Product</NavLink>
+            </li>
+
             <li>
               <button className="btn btn-secondary" onClick={logout}>
                 Logout

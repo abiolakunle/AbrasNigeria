@@ -54,7 +54,6 @@ namespace AbrasNigeria.Data.Repositories
         {
             _context.Entry(entity).State = EntityState.Modified;
             Save();
-
         }
     }
 }

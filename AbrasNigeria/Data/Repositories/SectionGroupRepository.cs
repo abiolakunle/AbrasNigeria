@@ -9,7 +9,7 @@ namespace AbrasNigeria.Data.Repositories
 {
     public class SectionGroupRepository : Repository<SectionGroup>, ISectionGroupRepository
     {
-        public SectionGroupRepository(AppDbContext dbContext) : base(dbContext)
+        public SectionGroupRepository(AppDbContext context) : base(context)
         {
 
         }

@@ -19,7 +19,7 @@ export default class Machines extends Component {
       <React.Fragment>
         <h1 className="my-2">Machines</h1>
         <hr />
-        {this.renderForm()}
+        {this.renderFilterForm()}
         <div className="row">
           {this.state.machines.map(machine => {
             return this.renderMachine(machine);
@@ -80,25 +80,23 @@ export default class Machines extends Component {
 
   sendQuery = page => {
     //sends search query to api and assigns data from response into state
-    axios
-      .get(`/api/machine/list?page=${page}`)
-      .then(response => {
-        let paging = JSON.parse(response.headers.paging); //convert paging test to Json object
+    axios.get(`/api/machine/list?page=${page}`).then(response => {
+      let paging = JSON.parse(response.headers.paging); //convert paging test to Json object
 
-        this.setState(
-          {
-            machines: response.data,
-            paging,
-            page
-          },
-          () => {
-            console.log(this.state.machines);
-          }
-        );
-      });
+      this.setState(
+        {
+          machines: response.data,
+          paging,
+          page
+        },
+        () => {
+          console.log(this.state.machines);
+        }
+      );
+    });
   };
 
-  renderForm() {
+  renderFilterForm() {
     //renders for filtering list of machines
     return (
       <React.Fragment>

@@ -23,7 +23,7 @@ class DocumentList extends Component {
               {documents.map(document => {
                 return (
                   <React.Fragment key={document.documentId}>
-                    <li className="list-group-item  justify-content-between align-items-center">
+                    <li className="list-group-item justify-content-between align-items-center">
                       <div className="row">
                         <div className="col-md-5">
                           <Link to={`/admin/document/${document.documentId}`}>

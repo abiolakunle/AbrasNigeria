@@ -51,21 +51,21 @@ class NewDocument extends Component {
 
   handleChange = event => {
     //handle change event from add item-line form
-    const eventName = event.target.name;
-    const eventValue = event.target.value;
+    const { name, value } = event.target;
 
     this.setState(
       {
-        [eventName]: eventValue
+        [name]: value
       },
       () => {
-        if (eventName === "partNumber") {
-          if (eventValue.length === 0) {
+        if (name === "partNumber") {
+          if (value.length === 0) {
+            this.props.clearPartNumberSuggestion();
             this.setState({
               description: ""
             });
           }
-          this.props.suggestPartNumber(eventValue);
+          this.props.suggestPartNumber(value);
         }
       }
     );

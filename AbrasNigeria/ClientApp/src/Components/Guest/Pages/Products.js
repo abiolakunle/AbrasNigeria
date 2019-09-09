@@ -43,7 +43,7 @@ export default class products extends Component {
               </div>
               <hr />
 
-              {this.renderForm()}
+              {this.renderFilterForm()}
               {this.renderProductList(addToCart, syncWithCart)}
               <Pagination
                 paging={this.state.paging}
@@ -70,21 +70,15 @@ export default class products extends Component {
   };
 
   loadSuggestions = eventName => {
-    let productsUrl = `/api/product/search?searchQuery=${
-      this.state.partNumber
-    }`;
+    let productsUrl = `/api/product/search?searchQuery=${this.state.partNumber}`;
 
     let brandsUrl = `/api/brand/search?searchQuery=${this.state.brand}`;
 
-    let categoriesUrl = `/api/category/search?searchQuery=${
-      this.state.category
-    }`;
+    let categoriesUrl = `/api/category/search?searchQuery=${this.state.category}`;
 
     let sectionsUrl = `/api/section/search?searchQuery=${this.state.section}`;
 
-    let sectionGroupsUrl = `/api/sectionGroup/search?searchQuery=${
-      this.state.sectionGroup
-    }`;
+    let sectionGroupsUrl = `/api/sectionGroup/search?searchQuery=${this.state.sectionGroup}`;
 
     const switchEvent = eventName => {
       //load suggestions from server and update component state
@@ -274,7 +268,7 @@ export default class products extends Component {
       });
   };
 
-  renderForm() {
+  renderFilterForm = () => {
     return (
       <React.Fragment>
         <div className="badge badge-dark p-2 mb-1">Filter products by: </div>
@@ -399,7 +393,7 @@ export default class products extends Component {
         </form>
       </React.Fragment>
     );
-  }
+  };
 
   renderProductList = (addToCart, syncWithCart) => {
     return (

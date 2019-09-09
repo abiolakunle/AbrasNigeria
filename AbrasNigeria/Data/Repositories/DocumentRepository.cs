@@ -10,19 +10,19 @@ namespace AbrasNigeria.Data.Repositories
 {
     public class DocumentRepository : Repository<Document>, IDocumentRepository
     {
-        private readonly AppDbContext _dbContext;
 
-        public DocumentRepository(AppDbContext dbContext) : base(dbContext)
+
+        public DocumentRepository(AppDbContext context) : base(context)
         {
-            _dbContext = dbContext;
+
         }
 
         public IEnumerable<Document> LoadAllWithItems()
         {
-            IEnumerable<Document> documents = _dbContext.Documents;
+            IEnumerable<Document> documents = _context.Documents;
             foreach (var quotation in documents)
             {
-                quotation.Table = _dbContext.DocumentItems
+                quotation.Table = _context.DocumentItems
                     .Where(item => item.DocumentId == quotation.DocumentId).ToList();
             }
 
@@ -31,7 +31,7 @@ namespace AbrasNigeria.Data.Repositories
 
         public Document LoadWithItems(int id)
         {
-            return _dbContext.Documents
+            return _context.Documents
                 .Where(q => q.DocumentId == id)
                 .Include(q => q.Table).FirstOrDefault();
         }

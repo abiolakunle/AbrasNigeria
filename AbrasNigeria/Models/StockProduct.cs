@@ -5,11 +5,20 @@ using System.Threading.Tasks;
 
 namespace AbrasNigeria.Models
 {
-    public class StoreProduct
+    public class StockProduct
     {
-        public int StoreProductId { get; set; }
+        public StockProduct()
+        {
+            StockProductHistories = new HashSet<StockProductHistory>();
+        }
+
+        public int StockProductId { get; set; }
 
         public string PartNumber { get; set; }
+
+        public string Category { get; set; }
+
+        public string Brand { get; set; }
 
         public decimal Price { get; set; }
 
@@ -21,7 +30,6 @@ namespace AbrasNigeria.Models
 
         public string ThumbUrl { get; set; }
 
-        public string CurrentQuantity { get; set; }
-
+        public ICollection<StockProductHistory> StockProductHistories { get; set; }
     }
 }

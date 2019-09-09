@@ -12,6 +12,9 @@ import Cummins from "../../../Images/c_cummins.png";
 import Volvo from "../../../Images/c_volvo.png";
 import logo from "../../../Images/abrasLogo.png";
 
+import PrintPage from "../../Shared/PrintPage";
+import PrintBtn from "../../Shared/PrintBtn";
+
 class ViewDocument extends Component {
   state = {
     documentNo: "",
@@ -55,63 +58,68 @@ class ViewDocument extends Component {
   render() {
     return (
       <React.Fragment>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-        />
-        {this.renderHeader(this.props.match.params.id)}
-        <div className="d-flex justify-content-center my-5">
-          <h4
-            className="font-weight-bold py-2 px-2 text-uppercase
+        <PrintBtn id={"document"} label={"Print Document"} />
+        <PrintPage id={"document"}>
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+          />
+          {this.renderHeader(this.props.match.params.id)}
+          <div className="d-flex justify-content-center my-5">
+            <h4
+              className="font-weight-bold py-2 px-2 text-uppercase
           "
-          >
-            {this.state.documentType}
-          </h4>
-        </div>
-        <div>{this.renderInfo()}</div>
-        <table className="table table-striped">
-          {this.renderTableHead()}
-          <tbody>
-            {this.state.table.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{item.partNumber}</td>
-                  <td>{item.description}</td>
-                  <td>{(item.quantity * 1).toLocaleString()}</td>
-                  <td>{(item.unitPrice * 1).toLocaleString()}</td>
-                  <td>{(item.unitPrice * item.quantity).toLocaleString()}</td>
-                </tr>
-              );
-            })}
-          </tbody>
+            >
+              {this.state.documentType}
+            </h4>
+          </div>
+          <div>{this.renderInfo()}</div>
+          <table className="table table-striped">
+            {this.renderTableHead()}
+            <tbody>
+              {this.state.table.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <th scope="row">{index + 1}</th>
+                    <td>{item.partNumber}</td>
+                    <td>{item.description}</td>
+                    <td>{(item.quantity * 1).toLocaleString()}</td>
+                    <td>{(item.unitPrice * 1).toLocaleString()}</td>
+                    <td>{(item.unitPrice * item.quantity).toLocaleString()}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
 
-          <tr className="table-footer text-white">
-            <td />
-            <td />
-            <td />
-            <td />
-            <td className="blue darken-4 font-weight-bold py-2">GrandTotal</td>
-            <td className="blue darken-2 py-2">
-              <strong>{this.state.total.toLocaleString()}</strong>
-            </td>
-          </tr>
-        </table>
-        <div className="row ml-5">
-          <div className="card">
-            <div className="card-header">Note:</div>
-            <div className="card-body">{this.state.note}</div>
+            <tr className="table-footer text-white">
+              <td />
+              <td />
+              <td />
+              <td />
+              <td className="blue darken-4 font-weight-bold py-2">
+                GrandTotal
+              </td>
+              <td className="blue darken-2 py-2">
+                <strong>{this.state.total.toLocaleString()}</strong>
+              </td>
+            </tr>
+          </table>
+          <div className="row ml-5">
+            <div className="card">
+              <div className="card-header">Note:</div>
+              <div className="card-body">{this.state.note}</div>
+            </div>
           </div>
-        </div>
-        <div className="row my-5 text-white">
-          <div className="col-md-4 blue darken-4 font-weight-bold py-2">
-            Amount in words:{" "}
+          <div className="row my-5 text-white">
+            <div className="col-md-4 blue darken-4 font-weight-bold py-2">
+              Amount in words:{" "}
+            </div>
+            <div className="col-md-8 blue darken-2 py-2">
+              {NumInWords(this.state.total)} Naira only
+            </div>
           </div>
-          <div className="col-md-8 blue darken-2 py-2">
-            {NumInWords(this.state.total)} Naira only
-          </div>
-        </div>
-        {this.renderFooter}
+          {this.renderFooter}
+        </PrintPage>
       </React.Fragment>
     );
   }

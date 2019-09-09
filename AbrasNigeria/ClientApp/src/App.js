@@ -6,9 +6,12 @@ import NewDocument from "./Components/Admin/Document/NewDocument";
 import ViewDocument from "./Components/Admin/Document/ViewDocument";
 import SendQuotation from "./Components/Admin/Document/SendDocument";
 import Guest from "./Components/Guest/Guest";
-import UploadExcel from "./Components/Admin/Store/UploadExcel";
+import UploadExcel from "./Components/Admin/Stock/UploadExcel";
 import Login from "./Components/Admin/Auth/Login";
 import Register from "./Components/Admin/Auth/Register";
+import List from "./Components/Admin/Stock/List";
+import CreateProduct from "./Components/Admin/Stock/CreateProduct";
+import Product from "./Components/Admin/Stock/Product";
 
 import PrivateRoute from "./Components/Routes/PrivateRoute";
 
@@ -37,6 +40,9 @@ const App = () => {
             component={SendQuotation}
           />
           <PrivateRoute path="/admin/store/upload" component={UploadExcel} />
+          <PrivateRoute path="/admin/stock/list" component={List} />
+          <PrivateRoute path="/admin/stock/create" component={CreateProduct} />
+          <PrivateRoute path="/admin/stock/:id" component={Product} />
         </Switch>
       </Router>
     </DocumentProvider>

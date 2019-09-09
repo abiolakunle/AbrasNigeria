@@ -119,6 +119,7 @@ namespace AbrasNigeria
             services.AddTransient<ISectionRepository, SectionRepository>();
             services.AddTransient<IDocumentRepository, DocumentRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IStockProductRepository, StockProductRepository>();
 
             services.AddMemoryCache();
             services.AddSession();

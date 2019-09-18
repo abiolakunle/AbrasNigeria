@@ -6,6 +6,7 @@ import axios from "axios";
 import { CartConsumer } from "../../../Contexts/CartContext";
 
 import AddToCartBtn from "../Partials/AddToCartBtn";
+import HeaderFooter from "../Shared/HeaderFooter";
 
 export default class Cart extends Component {
   state = {
@@ -18,49 +19,55 @@ export default class Cart extends Component {
 
   render() {
     return (
-      <CartConsumer>
-        {contextValue => {
-          const { contextState, addToCart, changeQuantity } = contextValue;
-          return (
-            <React.Fragment>
-              <h1 className="my-2">Your cart</h1>
+      <HeaderFooter>
+        <CartConsumer>
+          {contextValue => {
+            const { contextState, addToCart, changeQuantity } = contextValue;
+            return (
+              <React.Fragment>
+                <h1 className="my-2">Your cart</h1>
 
-              <table className="table table-striped">
-                <thead>
-                  <tr className="row">
-                    <th className="col-md-1" scope="col">
-                      #
-                    </th>
-                    <th className="col-md-3" scope="col">
-                      Part number
-                    </th>
-                    <th className="col-md-3" scope="col">
-                      Category
-                    </th>
-                    <th className="col-md-2" scope="col">
-                      Quantity
-                    </th>
-                    <th className="col-md-3" scope="col">
-                      Remove
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {contextState.cartItems.map((item, index) => {
-                    return this.renderCartLine(item, index + 1, changeQuantity);
-                  })}
-                </tbody>
-              </table>
-              {this.renderForm(addToCart)}
-              <div className="row mt-5">
-                <Link to="/guest/checkout">
-                  <button className="btn btn-primary">Request quotation</button>
-                </Link>
-              </div>
-            </React.Fragment>
-          );
-        }}
-      </CartConsumer>
+                <table className="table table-striped">
+                  <thead>
+                    <tr className="row">
+                      <th className="col-md-1" scope="col">
+                        #
+                      </th>
+                      <th className="col-md-3" scope="col">
+                        Part number
+                      </th>
+                      <th className="col-md-3" scope="col">
+                        Category
+                      </th>
+                      <th className="col-md-2" scope="col">
+                        Quantity
+                      </th>
+                      <th className="col-md-3" scope="col">
+                        Remove
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {contextState.cartItems.map((item, index) => {
+                      return this.renderCartLine(
+                        item,
+                        index + 1,
+                        changeQuantity
+                      );
+                    })}
+                  </tbody>
+                </table>
+                {this.renderForm(addToCart)}
+                <div className="row mt-5">
+                  <Link to="/guest/checkout">
+                    <button className="btn btn-primary">Submit request</button>
+                  </Link>
+                </div>
+              </React.Fragment>
+            );
+          }}
+        </CartConsumer>
+      </HeaderFooter>
     );
   }
   renderForm = addToCart => {
@@ -76,8 +83,12 @@ export default class Cart extends Component {
           });
         }}
       >
+        <div className="badge badge-dark p-2 mb-1">
+          <span>Add new items to quotation request</span>
+        </div>
         <div className="form-row align-items-center">
           <div className="col-auto dropdown">
+            <label>PART NUMBER</label>
             <input
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -86,7 +97,7 @@ export default class Cart extends Component {
               value={this.state.partNumber}
               type="text"
               className="form-control mb-2 dropdown-toggle"
-              placeholder="Part number"
+              placeholder="eg. 600-319-3240"
               onChange={this.onFormChange}
               required
             />
@@ -120,16 +131,18 @@ export default class Cart extends Component {
             </div>
           </div>
           <div className="col-auto">
+            <label>DESCRIPTION</label>
             <input
               name="category"
               value={this.state.category}
               type="text"
               className="form-control mb-2"
-              placeholder="Description"
+              placeholder="eg. Bolt shoe"
               onChange={this.onFormChange}
             />
           </div>
           <div className="col-auto">
+            <label>QUANTITY</label>
             <input
               name="quantity"
               value={this.state.quantity}
@@ -140,7 +153,7 @@ export default class Cart extends Component {
               required
             />
           </div>
-          <div className="col-auto">
+          <div className="col-auto mt-4">
             <button type="submit" className="btn btn-primary mb-2">
               Add
             </button>
@@ -191,8 +204,8 @@ export default class Cart extends Component {
 
   renderCartLine = (cartItem, index, changeQuantity) => {
     return (
-      <React.Fragment>
-        <tr className="row" Key={index}>
+      <React.Fragment Key={index}>
+        <tr className="row">
           <th className="col-md-1" scope="row">
             {index}
           </th>

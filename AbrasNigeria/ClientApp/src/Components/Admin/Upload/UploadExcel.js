@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import DasboardIndex from "../Shared/AdminNav";
+import SideNavbar from "../Shared/SideNavbar";
 
 export default class UploadExcel extends Component {
   state = {
@@ -10,7 +10,7 @@ export default class UploadExcel extends Component {
 
   render() {
     return (
-      <DasboardIndex>
+      <SideNavbar>
         <React.Fragment>
           <main id="excel-db" className="container mt-5">
             <div className="card mx-auto">
@@ -45,7 +45,7 @@ export default class UploadExcel extends Component {
             </div>
           </main>
         </React.Fragment>
-      </DasboardIndex>
+      </SideNavbar>
     );
   }
 

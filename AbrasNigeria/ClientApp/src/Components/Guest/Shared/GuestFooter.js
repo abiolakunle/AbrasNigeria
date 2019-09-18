@@ -2,10 +2,18 @@ import React, { Component } from "react";
 
 import { Link } from "react-router-dom";
 
+import "./guestFooter.css";
+
 class GuestFooter extends Component {
   render() {
     return (
       <footer className="footer text-light mt-5">
+        <Link to="/guest/cart">
+          <button id="side-btn" class="btn btn-secondary">
+            <i id="toggleIcon" class="fa fa-angle-double-down"></i> Request
+            Quotation
+          </button>
+        </Link>
         <div className="container-fluid bg-dark pt-5">
           <div className="row">
             <div className="col-md-3 col-lg-4 col-xl-3">

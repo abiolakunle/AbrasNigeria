@@ -1,0 +1,8 @@
+#side-btn {
+  color: white;
+  position: fixed;
+  top: 40vh;
+  right: -70px;
+  transform: rotate(90deg);
+  background: black;
+}

@@ -7,6 +7,7 @@ import Pagination from "../Shared/Pagination";
 import AddToCartBtn from "../Partials/AddToCartBtn";
 
 import { CartConsumer } from "../../../Contexts/CartContext";
+import HeaderFooter from "../Shared/HeaderFooter";
 
 export default class products extends Component {
   state = {
@@ -32,27 +33,29 @@ export default class products extends Component {
 
   render() {
     return (
-      <CartConsumer>
-        {contextValue => {
-          const { addToCart, syncWithCart } = contextValue;
+      <HeaderFooter>
+        <CartConsumer>
+          {contextValue => {
+            const { addToCart, syncWithCart } = contextValue;
 
-          return (
-            <React.Fragment>
-              <div className="my-2">
-                <h1 className="my-2">Products</h1>
-              </div>
-              <hr />
+            return (
+              <React.Fragment>
+                <div className="my-2">
+                  <h1 className="my-2">Products</h1>
+                </div>
+                <hr />
 
-              {this.renderFilterForm()}
-              {this.renderProductList(addToCart, syncWithCart)}
-              <Pagination
-                paging={this.state.paging}
-                querySender={this.sendQuery}
-              />
-            </React.Fragment>
-          );
-        }}
-      </CartConsumer>
+                {this.renderFilterForm()}
+                {this.renderProductList(addToCart, syncWithCart)}
+                <Pagination
+                  paging={this.state.paging}
+                  querySender={this.sendQuery}
+                />
+              </React.Fragment>
+            );
+          }}
+        </CartConsumer>
+      </HeaderFooter>
     );
   }
 

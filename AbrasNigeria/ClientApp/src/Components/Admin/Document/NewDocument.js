@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+
 import LoadingOverlay from "react-loading-overlay";
 import NumInWords from "../../../Utils/NumInWords";
 
@@ -8,14 +9,19 @@ import {
   suggestPartNumber,
   clearPartNumberSuggestion
 } from "../../../Actions/suggestionActions";
-import { createDocument } from "../../../Actions/documentActions";
+import {
+  createDocument,
+  getDocument,
+  updateDocument
+} from "../../../Actions/documentActions";
 
-import DasboardIndex from "../Shared/AdminNav";
+import SideNavbar from "../Shared/SideNavbar";
 
 class NewDocument extends Component {
   state = {
     company: "",
     documentType: "Quotation",
+    documentId: "",
     date: new Date().toISOString().split("T")[0],
     //`${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`
 
@@ -26,28 +32,63 @@ class NewDocument extends Component {
     extendedPrice: undefined,
     table: [],
     total: 0,
-
     note: ""
   };
 
   render() {
-    const { isCreated, isCreating } = this.props;
-    if (isCreated === true) {
+    const { isCreated, isCreating, isUpdating, isUpdated } = this.props;
+
+    if (isCreated || isUpdated === true) {
       this.props.history.push("/admin/document/list");
     }
 
     return (
       <React.Fragment>
-        <LoadingOverlay active={isCreating} spinner text="Creating document">
-          <DasboardIndex>
+        <LoadingOverlay
+          active={isCreating || isUpdating}
+          spinner
+          text="Creating document"
+        >
+          <SideNavbar>
             {this.renderInfoForm()}
             {this.renderTable()}
             {this.renderSummary()}
-          </DasboardIndex>
+          </SideNavbar>
         </LoadingOverlay>
       </React.Fragment>
     );
   }
+  componentDidMount() {
+    //fire action to get existing document from server
+    this.getOldDocument();
+  }
+
+  componentWillReceiveProps({ document }) {
+    const { table, documentType, documentId, company, date, note } = document;
+
+    //check if existing document is loaded
+    if (document && this.props.document !== document) {
+      this.setState(
+        {
+          table,
+          documentType,
+          documentId,
+          company,
+          date: date.split("T")[0],
+          note
+        },
+        () => {
+          this.calculateTotal(table);
+        }
+      );
+    }
+  }
+
+  getOldDocument = () => {
+    let id = this.props.match.params.id;
+
+    this.props.getDocument(id);
+  };
 
   handleChange = event => {
     //handle change event from add item-line form
@@ -95,10 +136,26 @@ class NewDocument extends Component {
     );
   };
 
+  handleDeleteRow = id => {
+    const { table } = this.state;
+    let newTable = table.filter((item, index) => {
+      return id !== index;
+    });
+
+    this.setState(
+      {
+        table: newTable
+      },
+      () => {
+        this.calculateTotal(table);
+      }
+    );
+  };
+
   calculateTotal = table => {
     //calculate grand total of extended prices and set total in component state
     let total = 0;
-    table.forEach(item => {
+    this.state.table.forEach(item => {
       total += item.unitPrice * item.quantity;
     });
 
@@ -108,14 +165,33 @@ class NewDocument extends Component {
   };
 
   prepareDocument = () => {
-    let { company, documentType, date, table, note } = this.state;
-    this.props.createDocument({
-      company,
-      documentType,
-      date,
-      table,
-      note
-    });
+    const { company, documentType, date, table, note } = this.state;
+    const { documentId } = this.props.document;
+
+    if (this.props.document) {
+      console.log("table", table);
+      const newDoc = {
+        documentId,
+        company,
+        documentType,
+        date,
+        table,
+        note
+      };
+
+      console.log("New Doc", newDoc);
+      //update document
+      this.props.updateDocument(newDoc);
+    } else {
+      //create document
+      this.props.createDocument({
+        company,
+        documentType,
+        date,
+        table,
+        note
+      });
+    }
   };
 
   renderInfoForm = () => {
@@ -193,6 +269,16 @@ class NewDocument extends Component {
                   <td>{(item.quantity * 1).toLocaleString()}</td>
                   <td>{(item.unitPrice * 1).toLocaleString()}</td>
                   <td>{(item.unitPrice * item.quantity).toLocaleString()}</td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        this.handleDeleteRow(index);
+                      }}
+                      className="btn btn-white p-0"
+                    >
+                      <span class="far fa-times-circle fa-2x "></span>
+                    </button>
+                  </td>
                 </tr>
               );
             })}
@@ -206,7 +292,7 @@ class NewDocument extends Component {
               <td />
               <td />
               <td />
-              <td />
+              <td className="bg-light">Total</td>
               <td className="bg-secondary text-white">
                 <strong>{this.state.total.toLocaleString()}</strong>
               </td>
@@ -282,7 +368,9 @@ class NewDocument extends Component {
                 className="form-control mb-2"
                 placeholder="Quantity"
                 step="1"
+                min="1"
                 onChange={this.handleChange}
+                required
               />
             </div>
 
@@ -291,9 +379,11 @@ class NewDocument extends Component {
                 name="unitPrice"
                 value={this.state.unitPrice}
                 type="number"
+                step="0.01"
                 className="form-control mb-2"
                 placeholder="Unit price"
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div className="col-md-2">
@@ -361,14 +451,28 @@ class NewDocument extends Component {
   };
 }
 
-const mapStateToProps = state => {
-  console.log(state);
-  const { suggestionReducer, documentReducer } = state;
+const mapStateToProps = ({ suggestionReducer, documentReducer }) => {
+  const {
+    isCreated,
+    isCreating,
+    isUpdating,
+    isUpdated,
+    document,
+    isLoading,
+    isLoaded,
+    error
+  } = documentReducer;
+  const { partNoSuggestions } = suggestionReducer;
   return {
-    partNoSuggestions: suggestionReducer.partNoSuggestions,
-    isCreated: documentReducer.isCreated,
-    isCreating: documentReducer.isCreating,
-    error: documentReducer.error
+    partNoSuggestions,
+    isCreated,
+    isCreating,
+    isUpdating,
+    isUpdated,
+    isLoading,
+    isLoaded,
+    document,
+    error
   };
 };
 
@@ -376,7 +480,9 @@ const mapDispatchToProps = dispatch => {
   return {
     suggestPartNumber: value => dispatch(suggestPartNumber(value)),
     clearPartNumberSuggestion: () => dispatch(clearPartNumberSuggestion()),
-    createDocument: document => dispatch(createDocument(document))
+    createDocument: document => dispatch(createDocument(document)),
+    getDocument: id => dispatch(getDocument(id)),
+    updateDocument: document => dispatch(updateDocument(document))
   };
 };
 

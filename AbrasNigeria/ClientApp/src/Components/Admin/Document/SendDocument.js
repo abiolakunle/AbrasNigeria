@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import DasboardIndex from "../Shared/AdminNav";
+import SideNavbar from "../Shared/SideNavbar";
 
 import axios from "axios";
 
@@ -24,7 +24,7 @@ class SendQuotation extends Component {
 
   render() {
     return (
-      <DasboardIndex>
+      <SideNavbar>
         <React.Fragment>
           <div>Send Mail</div>
           <div className="container">
@@ -72,7 +72,7 @@ class SendQuotation extends Component {
             </form>
           </div>
         </React.Fragment>
-      </DasboardIndex>
+      </SideNavbar>
     );
   }
 

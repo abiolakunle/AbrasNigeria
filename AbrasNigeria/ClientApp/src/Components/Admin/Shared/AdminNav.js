@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { logout } from "../../../Actions/authActions";
 
 import logo from "../../../Images/abrasLogo.png";
-import "./AdminNav.css";
 
 const DashboardIndex = ({ children }) => {
   return (
@@ -32,6 +31,9 @@ const DashboardIndex = ({ children }) => {
             </li>
             <li>
               <NavLink to="/admin/stock/create">Create Product</NavLink>
+            </li>
+            <li>
+              <NavLink to="/admin/upload/excel">Upload excel</NavLink>
             </li>
 
             <li>

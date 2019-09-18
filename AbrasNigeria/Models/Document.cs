@@ -16,6 +16,8 @@ namespace AbrasNigeria.Models
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public string DocumentNo { get; set; }
 
+        public string RefDocumentNo { get; set; }
+
         public string DocumentType { get; set; }
 
         public string Company { get; set; }

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import AddToCartBtn from "../Partials/AddToCartBtn";
+import HeaderFooter from "../Shared/HeaderFooter";
 
 export default class Product extends Component {
   state = {
@@ -23,23 +24,25 @@ export default class Product extends Component {
     const product = { productId, partNumber, category };
 
     return (
-      <React.Fragment>
-        <div>
-          <span className="badge badge-dark">Part number</span>
-          <h3>{partNumber}</h3>
-          <AddToCartBtn product={product} />
-          <hr />
-          <p>
-            <span className="font-weight-bold">Category: </span>
-            {category}
-          </p>
-          <p>
-            <span className="font-weight-bold">Brand: </span>
-            {brand}
-          </p>
-        </div>
-        {this.renderDetailTab(this.state.machines, this.state.sectionGroups)}
-      </React.Fragment>
+      <HeaderFooter>
+        <React.Fragment>
+          <div>
+            <span className="badge badge-dark">Part number</span>
+            <h3>{partNumber}</h3>
+            <AddToCartBtn product={product} />
+            <hr />
+            <p>
+              <span className="font-weight-bold">Category: </span>
+              {category}
+            </p>
+            <p>
+              <span className="font-weight-bold">Brand: </span>
+              {brand}
+            </p>
+          </div>
+          {this.renderDetailTab(this.state.machines, this.state.sectionGroups)}
+        </React.Fragment>
+      </HeaderFooter>
     );
   }
 

@@ -8,9 +8,9 @@ import { authHeader } from "../../../Helpers/authHeader";
 
 import axios from "axios";
 
-import AdminNav from "../Shared/AdminNav";
+import SideNavbar from "../Shared/SideNavbar";
 
-class CreateProduct extends Component {
+class CreateStockProduct extends Component {
   state = {
     partNumber: "",
     category: "",
@@ -19,7 +19,7 @@ class CreateProduct extends Component {
   render() {
     const { partNumber, category, brand } = this.state;
     return (
-      <AdminNav>
+      <SideNavbar>
         <React.Fragment>
           <h1>Add Product to stock</h1>
           <form autoComplete="off" onSubmit={this.handleSubmit} className="">
@@ -94,7 +94,7 @@ class CreateProduct extends Component {
             </button>
           </form>
         </React.Fragment>
-      </AdminNav>
+      </SideNavbar>
     );
   }
 
@@ -158,4 +158,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateProduct);
+)(CreateStockProduct);

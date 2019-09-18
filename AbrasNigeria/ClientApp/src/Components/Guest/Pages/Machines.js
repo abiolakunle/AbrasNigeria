@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import Pagination from "../Shared/Pagination";
+import HeaderFooter from "../Shared/HeaderFooter";
 
 export default class Machines extends Component {
   state = {
@@ -16,17 +17,19 @@ export default class Machines extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <h1 className="my-2">Machines</h1>
-        <hr />
-        {this.renderFilterForm()}
-        <div className="row">
-          {this.state.machines.map(machine => {
-            return this.renderMachine(machine);
-          })}
-        </div>
-        <Pagination paging={this.state.paging} querySender={this.sendQuery} />
-      </React.Fragment>
+      <HeaderFooter>
+        <React.Fragment>
+          <h1 className="my-2">Machines</h1>
+          <hr />
+          {this.renderFilterForm()}
+          <div className="row">
+            {this.state.machines.map(machine => {
+              return this.renderMachine(machine);
+            })}
+          </div>
+          <Pagination paging={this.state.paging} querySender={this.sendQuery} />
+        </React.Fragment>
+      </HeaderFooter>
     );
   }
 

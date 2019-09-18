@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 
-import AdminNav from "../Shared/AdminNav";
+import SideNavbar from "../Shared/SideNavbar";
 import axios from "axios";
 
 import { authHeader } from "../../../Helpers/authHeader";
 
-class ProductHistory extends Component {
+class StockProduct extends Component {
   state = {
     stockProductId: "",
     partNumber: "",
@@ -26,7 +25,7 @@ class ProductHistory extends Component {
     const { partNumber, brand, category, stockProductHistories } = this.state;
 
     return (
-      <AdminNav>
+      <SideNavbar>
         {
           <React.Fragment>
             <h1 className="my-2">
@@ -81,7 +80,7 @@ class ProductHistory extends Component {
             </ul>
           </React.Fragment>
         }
-      </AdminNav>
+      </SideNavbar>
     );
   }
 
@@ -228,4 +227,4 @@ class ProductHistory extends Component {
   };
 }
 
-export default ProductHistory;
+export default StockProduct;

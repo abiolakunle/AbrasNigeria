@@ -36,10 +36,17 @@ namespace AbrasNigeria.Controllers
 
         // POST api/<controller>
         [HttpPost("[action]")]
-        public ActionResult<Document> CreateDocument([FromBody]Document document)
+        public ActionResult CreateDocument([FromBody]Document document)
         {
-            document.DocumentNo = "ANE" + DateTime.Now.ToString("yyMMddHHmmss");
+            document.DocumentNo = "AN" + document.DocumentType.Substring(0, 1) + DateTime.Now.ToString("yyMMddHHmmss");
             _documentRepository.Create(document);
+            return Ok();
+        }
+
+        [HttpPut("[action]")]
+        public ActionResult UpdateDocument([FromBody]Document document)
+        {
+            _documentRepository.Update(document);
             return Ok();
         }
 

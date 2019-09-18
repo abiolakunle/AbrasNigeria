@@ -4,13 +4,15 @@ import axios from "axios";
 
 import NumInWords from "../../../Utils/NumInWords";
 
+import { authHeader } from "../../../Helpers/authHeader";
+
 //imported images
 import Cat from "../../../Images/c_caterpillar.png";
 import Komatsu from "../../../Images/c_komatsu.png";
 import Perkins from "../../../Images/c_perkins.png";
 import Cummins from "../../../Images/c_cummins.png";
 import Volvo from "../../../Images/c_volvo.png";
-import logo from "../../../Images/abrasLogo.png";
+import logo from "../../../Images/Abras logo red.png";
 
 import PrintPage from "../../Shared/PrintPage";
 import PrintBtn from "../../Shared/PrintBtn";
@@ -27,9 +29,17 @@ class ViewDocument extends Component {
   };
 
   componentDidMount() {
+    const requestOptions = {
+      method: "POST",
+      headers: { ...authHeader(), "Content-Type": "application/json" }
+    };
+
     //get quotation from api call  with id
     axios
-      .get(`/api/document/document?id=${this.props.match.params.id}`)
+      .get(
+        `/api/document/document?id=${this.props.match.params.id}`,
+        requestOptions
+      )
       .then(response => {
         const {
           documentNo,
@@ -58,67 +68,75 @@ class ViewDocument extends Component {
   render() {
     return (
       <React.Fragment>
-        <PrintBtn id={"document"} label={"Print Document"} />
-        <PrintPage id={"document"}>
-          <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-          />
-          {this.renderHeader(this.props.match.params.id)}
-          <div className="d-flex justify-content-center my-5">
-            <h4
-              className="font-weight-bold py-2 px-2 text-uppercase
-          "
-            >
-              {this.state.documentType}
-            </h4>
-          </div>
-          <div>{this.renderInfo()}</div>
-          <table className="table table-striped">
-            {this.renderTableHead()}
-            <tbody>
-              {this.state.table.map((item, index) => {
-                return (
-                  <tr key={index}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{item.partNumber}</td>
-                    <td>{item.description}</td>
-                    <td>{(item.quantity * 1).toLocaleString()}</td>
-                    <td>{(item.unitPrice * 1).toLocaleString()}</td>
-                    <td>{(item.unitPrice * item.quantity).toLocaleString()}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
+        <PrintBtn id={this.state.documentNo} label={"Download Document"} />
+        <PrintPage id={this.state.documentNo}>
+          <React.Fragment>
+            <link
+              rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+            />
+            {this.renderHeader(this.props.match.params.id)}
 
-            <tr className="table-footer text-white">
-              <td />
-              <td />
-              <td />
-              <td />
-              <td className="blue darken-4 font-weight-bold py-2">
-                GrandTotal
-              </td>
-              <td className="blue darken-2 py-2">
-                <strong>{this.state.total.toLocaleString()}</strong>
-              </td>
-            </tr>
-          </table>
-          <div className="row ml-5">
-            <div className="card">
-              <div className="card-header">Note:</div>
-              <div className="card-body">{this.state.note}</div>
+            <div className="mt-5">{this.renderInfo()}</div>
+            <div className="d-flex justify-content-center">
+              <h5 className="font-weight-bold mt-0 px-2 text-uppercase">
+                {this.state.documentType}
+              </h5>
             </div>
-          </div>
-          <div className="row my-5 text-white">
-            <div className="col-md-4 blue darken-4 font-weight-bold py-2">
-              Amount in words:{" "}
+            <table className="table table-striped">
+              {this.renderTableHead()}
+              <tbody>
+                {this.state.table.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{item.partNumber}</td>
+                      <td>{item.description}</td>
+                      <td className="text-right">
+                        {(item.quantity * 1).toLocaleString()}
+                      </td>
+                      <td className="text-right">
+                        {(item.unitPrice * 1).toLocaleString()}
+                      </td>
+                      <td className="text-right">
+                        {(item.unitPrice * item.quantity).toLocaleString()}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+
+              <tbody>
+                <tr className="table-footer text-white">
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td className="red accent-4 font-weight-bold py-2">
+                    GrandTotal
+                  </td>
+                  <td className="red lighten-1 py-2">
+                    <strong>{this.state.total.toLocaleString()}</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="row mx-5">
+              <div className="card">
+                <div className="card-header">Note:</div>
+                <div className="card-body">{this.state.note}</div>
+              </div>
             </div>
-            <div className="col-md-8 blue darken-2 py-2">
-              {NumInWords(this.state.total)} Naira only
+            <div className="row my-5 text-white">
+              <div className="col-md-4 red accent-4 font-weight-bold py-1">
+                Amount in words:{" "}
+              </div>
+              <div className="col-md-8 red lighten-1 py-1">
+                {NumInWords(this.state.total)} Naira only
+              </div>
             </div>
-          </div>
-          {this.renderFooter}
+            {this.renderFooter()}
+          </React.Fragment>
         </PrintPage>
       </React.Fragment>
     );
@@ -168,47 +186,46 @@ class ViewDocument extends Component {
             </Link>
           </div>
         </div>
-        <div className="">
-          <div className="container">
-            <div className="d-flex justify-content-center mt-3">
-              <img src={logo} width="120px" alt="abras" />
-            </div>
-            <h1 className="d-flex justify-content-center red-text display-5 indigo-text darken-3 text-uppercase font-weight-bolder my-0">
-              Abras nigeria enterprises
-            </h1>
-            <p className="d-flex justify-content-center font-weight-bold mb-3">
-              Suppliers of wide range of heavy duty equipment parts &
-              maintenance services
-            </p>
-            <hr />
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row">
-                  <p className="mb-0">
-                    <span className="font-weight-bold mr-1">Phone:</span>{" "}
-                    08036775192, 08083458300
-                  </p>
-                </div>
 
-                <p className="row">
-                  <span className="font-weight-bold mr-1">Email:</span>
-                  {"  "}
-                  Abrasnigeriaent@gmail.com
+        <div className="container-fluid">
+          <div className="d-flex justify-content-center mt-3">
+            <img src={logo} width="50px" height="50px" alt="abras" />
+          </div>
+          <h3 className="d-flex text-center justify-content-center red-text text-darken-1 text-uppercase font-weight-bolder my-0">
+            Abras nigeria enterprises
+          </h3>
+          <p className="d-flex text-center justify-content-center font-weight-bold mb-1">
+            Suppliers of wide range of heavy duty equipment parts & maintenance
+            services
+          </p>
+          <hr />
+          <div className="row">
+            <div className="col-md-6 col-sm-6">
+              <div className="row my-1">
+                <p className="mb-0">
+                  <span className="font-weight-bold mr-1">Phone:</span>{" "}
+                  08036775192, 08083458300
                 </p>
               </div>
-              <div className="col-md-6">
-                <div className="row">
-                  <div className="col-md-3 font-weight-bold">Addresses:</div>
-                  <div className="col-md-9">
-                    <div className="row">
-                      10, Ajiboye Street, Ketu, Alapere, Lagos.
-                    </div>
-                    <div className="row">
-                      41 Ifeloju Street, Obada-Oko, Abeokuta
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+              <p className="row my-1">
+                <span className="font-weight-bold mr-1">Email:</span>
+                {"  "}
+                abrasnigeriaent@gmail.com
+              </p>
+              <p className="row my-1">
+                <span className="font-weight-bold mr-1">Website:</span>
+                {"  "}
+                www.abrasnigeria.com
+              </p>
+            </div>
+            <div className="col-md-6 col-sm-6">
+              <p className="row my-1">
+                <span className="font-weight-bold mr-1">Addresses:</span>
+                {"  "}
+                10, Ajiboye Street, Ketu, Alapere, Lagos. <br /> 41 Ifeloju
+                Street, Obada-Oko, Abeokuta
+              </p>
             </div>
           </div>
         </div>
@@ -216,46 +233,46 @@ class ViewDocument extends Component {
     );
   };
 
-  renderInfo() {
+  renderInfo = () => {
     return (
       <div className="row text-white">
         <div className="col-md-6">
-          <div className=" row">
-            <div className="col-md-3 blue darken-4  font-weight-bold py-2">
+          <div className="row">
+            <div className="col-md-3 red accent-4  font-weight-bold py-1">
               To:
             </div>
-            <div className="col-md-9  blue darken-2 py-2">
+            <div className="col-md-9  red lighten-1 py-1">
               <span>{this.state.company}</span>
             </div>
           </div>
         </div>
         <div className="col-md-6">
           <div className="row">
-            <div className="col-md-3 blue darken-4 font-weight-bold py-2">
-              Quote No:
+            <div className="col-md-4 red accent-4 font-weight-bold py-1">
+              Quote No.:
             </div>
-            <div className="col-md-9  blue darken-2 py-2">
+            <div className="col-md-8 red lighten-1 py-1">
               <span>{this.state.documentNo}</span>
             </div>
           </div>
           <div className=" row">
-            <div className="col-md-3 blue darken-4 font-weight-bold py-2">
+            <div className="col-md-3 red accent-4 font-weight-bold py-1">
               Date:
             </div>
-            <div className="col-md-9  blue darken-2 py-2">
+            <div className="col-md-9  red lighten-1 py-1">
               <span>{this.state.date}</span>
             </div>
           </div>
         </div>
       </div>
     );
-  }
+  };
 
   renderFooter = () => {
     return (
       <React.Fragment>
-        <div className="container d-flex justify-content-around  pt-5 mt-5">
-          <div className="">
+        <div className="container d-flex justify-content-around  py-5 mb-5">
+          <div className="mb-5">
             <img src={Cat} height="50px" alt="Cat" />
           </div>
           <div className="">
@@ -275,20 +292,26 @@ class ViewDocument extends Component {
     );
   };
 
-  renderTableHead() {
+  renderTableHead = () => {
     return (
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Part Number</th>
           <th scope="col">Description</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">Unit Price</th>
-          <th scope="col">Extended Price</th>
+          <th scope="col " className="text-right">
+            Quantity
+          </th>
+          <th scope="col " className="text-right">
+            Unit Price
+          </th>
+          <th scope="col " className="text-right">
+            Extended Price
+          </th>
         </tr>
       </thead>
     );
-  }
+  };
 }
 
 export default ViewDocument;

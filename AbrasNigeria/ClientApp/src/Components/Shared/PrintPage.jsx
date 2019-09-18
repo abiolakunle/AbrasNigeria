@@ -1,11 +1,10 @@
 import React from "react";
 
-const PrintPage = ({ children, singleMode, id }) => {
+const PrintPage = ({ children, id }) => {
   return (
-    <div id={id}>{children}</div>
-    //     <div id={id} style={{ width: "210mm", height: singleMode ? "297mm" : "" }}>
-    //     {children}
-    //   </div>
+    <React.Fragment>
+      <div id={id}>{children}</div>
+    </React.Fragment>
   );
 };
 

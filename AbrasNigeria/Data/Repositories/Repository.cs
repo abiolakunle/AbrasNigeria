@@ -50,7 +50,7 @@ namespace AbrasNigeria.Data.Repositories
             return _context.Set<T>().Find(id);
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             Save();

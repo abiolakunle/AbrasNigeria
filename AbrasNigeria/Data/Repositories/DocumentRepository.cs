@@ -36,5 +36,11 @@ namespace AbrasNigeria.Data.Repositories
                 .Include(q => q.Table).FirstOrDefault();
         }
 
+        public override void Update(Document document)
+        {
+            _context.Upsert(document).On(m => new { m.DocumentNo }).Run();
+            Save();
+        }
+
     }
 }

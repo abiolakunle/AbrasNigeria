@@ -4,9 +4,9 @@ import axios from "axios";
 import { authHeader } from "../../../Helpers/authHeader";
 
 import { Link } from "react-router-dom";
-import AdminNav from "../Shared/AdminNav";
+import SideNavbar from "../Shared/SideNavbar";
 
-class Store extends Component {
+class StockList extends Component {
   state = {
     stockProducts: []
   };
@@ -17,7 +17,7 @@ class Store extends Component {
 
   render() {
     return (
-      <AdminNav>
+      <SideNavbar>
         <React.Fragment>
           <h1 className="my-2">Stock</h1>
           <hr />
@@ -36,21 +36,21 @@ class Store extends Component {
                 <React.Fragment key={index}>
                   <li className="list-group-item justify-content-between align-items-center">
                     <div className="row">
-                      <div className="col-md-5">
+                      <div className="col-md-4">
                         <Link to={`/admin/stock/${stockProductId}`}>
                           <span className="font-weight-bold">PartNumber: </span>
                           {partNumber}
                         </Link>
                       </div>
-                      <div className="col-md-5">
+                      <div className="col-md-4">
                         <span className="font-weight-bold">Category:</span>
                         {category}{" "}
                       </div>
-                      <div className="col-md-2">
+                      <div className="col-md-4">
                         <span className="font-weight-bold">
                           Current quantity:
                         </span>
-                        <span className="badge badge-primary badge-pill">
+                        <span className="badge badge-primary badge-pill ml-2">
                           {quantity}
                         </span>
                       </div>
@@ -61,7 +61,7 @@ class Store extends Component {
             })}
           </ul>
         </React.Fragment>
-      </AdminNav>
+      </SideNavbar>
     );
   }
 
@@ -111,4 +111,4 @@ class Store extends Component {
   };
 }
 
-export default Store;
+export default StockList;

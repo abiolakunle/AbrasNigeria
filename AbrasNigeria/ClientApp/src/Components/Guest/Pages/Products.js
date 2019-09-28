@@ -398,7 +398,7 @@ export default class products extends Component {
     );
   };
 
-  renderProductList = (addToCart, syncWithCart) => {
+  renderProductList = () => {
     return (
       <React.Fragment>
         <div className="row">
@@ -417,7 +417,14 @@ export default class products extends Component {
                     <hr />
                     <div className="d-flex justify-content-between">
                       <p className="mb-1 pb-1">
-                        <b>Category: </b> {product.category}
+                        <b>Category: </b>{" "}
+                        {product.categories.map((category, index) => {
+                          return (
+                            <span key={index}>{`${index > 0 ? " | " : ""} ${
+                              category.categoryName
+                            }`}</span>
+                          );
+                        })}
                       </p>
                     </div>
 

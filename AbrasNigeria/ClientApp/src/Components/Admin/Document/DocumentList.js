@@ -7,16 +7,17 @@ import { getDocuments } from "../../../Actions/documentActions";
 
 import SideNavbar from "../Shared/SideNavbar";
 
-import PrintBtn from "../../Shared/PrintBtn";
-import PrintPage from "../../Shared/PrintPage";
-
 class DocumentList extends Component {
   render() {
     const { documents, isLoaded, isLoading } = this.props;
     return (
       <React.Fragment>
         <SideNavbar>
-          <LoadingOverlay active={isLoading} spinner text="Loading Documents">
+          <LoadingOverlay
+            active={isLoading && !isLoaded}
+            spinner
+            text="Loading Documents"
+          >
             <React.Fragment>
               <Link to="/admin/document/new">
                 <button className="btn btn-primary my-2 ml-5">

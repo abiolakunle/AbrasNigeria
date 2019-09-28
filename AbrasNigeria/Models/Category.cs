@@ -7,7 +7,7 @@ namespace AbrasNigeria.Models
     {
         public Category()
         {
-            Products = new HashSet<Product>();
+            ProductCategories = new HashSet<ProductCategory>();
         }
 
         public int CategoryId { get; set; }
@@ -20,7 +20,7 @@ namespace AbrasNigeria.Models
 
         public string ThumbUrl { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
 
     }
 }

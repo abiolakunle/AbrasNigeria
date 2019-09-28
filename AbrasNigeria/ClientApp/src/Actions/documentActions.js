@@ -83,7 +83,7 @@ export const updateDocument = document => {
     dispatch(request());
 
     axios
-      .put("/api/document/updatedocument", document, requestOptions)
+      .post("/api/document/createdocument", document, requestOptions)
       .then(() => {
         dispatch(success(`updated`));
       })

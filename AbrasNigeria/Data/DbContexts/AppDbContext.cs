@@ -27,6 +27,12 @@ namespace AbrasNigeria.Data.DbContexts
 
         public DbSet<SectionGroup> SectionGroups { get; set; }
 
+        public DbSet<Quantity> Quantities { get; set; }
+
+        public DbSet<SerialNo> SerialNos { get; set; }
+
+        public DbSet<Remark> Remarks { get; set; }
+
         public DbSet<Document> Documents { get; set; }
 
         public DbSet<DocumentItem> DocumentItems { get; set; }
@@ -37,7 +43,7 @@ namespace AbrasNigeria.Data.DbContexts
 
         public DbSet<StockProduct> StockProducts { get; set; }
 
-        public DbSet<StockProductHistory> stockProductHistories { get; set; }
+        public DbSet<StockProductHistory> StockProductHistories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,6 +60,14 @@ namespace AbrasNigeria.Data.DbContexts
 
             modelBuilder.Entity<MachineSection>().HasKey(ms => new { ms.MachineId, ms.SectionId });
             modelBuilder.Entity<MachineSectionGroup>().HasKey(msg => new { msg.MachineId, msg.SectionGroupId });
+
+            modelBuilder.Entity<ProductCategory>().HasKey(pc => new { pc.ProductId, pc.CategoryId });
+
+            modelBuilder.Entity<MachineProductSectionGroupQuantity>().HasKey(pq => new { pq.MachineId, pq.ProductId, pq.QuantityId, pq.SectionGroupId });
+
+            modelBuilder.Entity<ProductSectionGroupSerialNo>().HasKey(pss => new { pss.ProductId, pss.SectionGroupId, pss.SerialNoId, pss.MachineId });
+
+            modelBuilder.Entity<ProductMachineRemark>().HasKey(pmr => new { pmr.ProductId, pmr.MachineId, pmr.RemarkId });
 
             modelBuilder.Entity<Document>()
             .Property(q => q.Date)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,7 @@ namespace AbrasNigeria.Controllers
 
         // GET api/<controller>/5
         [HttpGet("[action]")]
-        public Document Document(int id)
+        public DocumentDTO Document(int id)
         {
             return _documentRepository.LoadWithItems(id);
         }

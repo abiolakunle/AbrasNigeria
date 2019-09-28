@@ -1,4 +1,5 @@
-﻿using AbrasNigeria.Data.Repositories;
+﻿using AbrasNigeria.Data.DTO;
+using AbrasNigeria.Data.Repositories;
 using AbrasNigeria.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace AbrasNigeria.Data.Interfaces
     public interface IDocumentRepository : IRepository<Document>
     {
         IEnumerable<Document> LoadAllWithItems();
-        Document LoadWithItems(int id);
+        DocumentDTO LoadWithItems(int id);
     }
 }

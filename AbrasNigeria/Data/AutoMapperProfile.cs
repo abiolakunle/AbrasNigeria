@@ -16,6 +16,10 @@ namespace AbrasNigeria.Data
             CreateMap<UserDto, User>();
             CreateMap<StockProduct, StockProductDTO>();
             CreateMap<StockProductDTO, StockProduct>();
+            CreateMap<Document, DocumentDTO>();
+            CreateMap<DocumentDTO, Document>();
+            CreateMap<DocumentItem, DocumentItemDTO>();
+            CreateMap<DocumentItemDTO, DocumentItem>();
         }
     }
 }

@@ -68,6 +68,7 @@ class NewDocument extends Component {
 
     //check if existing document is loaded
     if (document && this.props.document !== document) {
+      console.log("docu", document);
       this.setState(
         {
           table,
@@ -166,12 +167,12 @@ class NewDocument extends Component {
 
   prepareDocument = () => {
     const { company, documentType, date, table, note } = this.state;
-    const { documentId } = this.props.document;
+    const { documentNo } = this.props.document;
 
     if (this.props.document) {
       console.log("table", table);
       const newDoc = {
-        documentId,
+        refDocumentNo: documentNo,
         company,
         documentType,
         date,

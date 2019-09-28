@@ -59,12 +59,15 @@ export default class Machine extends Component {
                               {sectionGroup.sectionGroupName}
                             </div>
 
-                            <table className="table table-sm">
+                            <table className="table table-sm table-striped">
                               <thead>
                                 <tr>
                                   <th scope="col">#</th>
-                                  <th scope="col">Category</th>
                                   <th scope="col">Part Number</th>
+                                  <th scope="col">Categories</th>
+                                  <th scope="col">Quantity</th>
+                                  <th scope="col">Serial No.</th>
+                                  <th scope="col">Remark</th>
                                   <th scope="col">Cart</th>
                                 </tr>
                               </thead>
@@ -73,8 +76,23 @@ export default class Machine extends Component {
                                   return (
                                     <tr>
                                       <th scope="row">{index + 1}</th>
-                                      <td>{product.category}</td>
                                       <td>{product.partNumber}</td>
+                                      <td>
+                                        {product.categories.map(
+                                          (category, index) => {
+                                            return (
+                                              <span key={index}>{` ${
+                                                index > 0 ? " | " : ""
+                                              }${
+                                                category.categoryName
+                                              }  `}</span>
+                                            );
+                                          }
+                                        )}
+                                      </td>
+                                      <td>{product.quantity}</td>
+                                      <td>{product.serialNo}</td>
+                                      <td>{product.remark}</td>
                                       <td>
                                         <AddToCartBtn product={product} />
                                       </td>
@@ -102,6 +120,7 @@ export default class Machine extends Component {
     axios
       .get(`/api/machine/machine?id=${this.props.match.params.id}`)
       .then(({ data }) => {
+        console.log("Data", data);
         this.setState({
           machine: data,
           sections: data.sections

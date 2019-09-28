@@ -37,12 +37,6 @@ namespace AbrasNigeria.Data.Repositories
                 ModelName = m.ModelName,
                 SerialNumber = m.SerialNumber,
                 BrandName = m.Brand.Name,
-                Products = m.ProductMachines.Select(pm => new ProductDTO
-                {
-                    ProductId = pm.MachineId,
-                    PartNumber = pm.Product.PartNumber,
-                    Category = pm.Product.Category.CategoryName
-                }),
                 Sections = m.MachineSections.Where(s => s.MachineId == m.MachineId).Select(s => new SectionDTO
                 {
                     SectionName = s.Section.SectionName,
@@ -59,13 +53,24 @@ namespace AbrasNigeria.Data.Repositories
                         .Where(p => m.ProductMachines.Select(pm => pm.ProductId).Contains(p.ProductId)).Select(pg => new ProductDTO
                         {
                             PartNumber = pg.PartNumber,
-                            Category = pg.Category.CategoryName
+                            Categories = pg.ProductCategories.Select(pc => new CategoryDTO
+                            {
+                                CategoryName = pc.Category.CategoryName
+                            }),
+                            Quantity = pg.ProductQuantities
+                            .Where(pq => pq.MachineId == m.MachineId && pq.SectionGroupId == msg.SectionGroupId && pq.ProductId == pg.ProductId)
+                            .FirstOrDefault().Quantity.Value,
+
+                            SerialNo = pg.SectionGroupSerialNos
+                            .Where(pss => pss.ProductId == pg.ProductId && pss.SectionGroupId == msg.SectionGroupId && pss.MachineId == m.MachineId)
+                            .FirstOrDefault().SerialNo.Value,
+
+                            Remark = pg.ProductMachineRemarks.Where(pmr => pmr.ProductId == pg.ProductId && pmr.MachineId == m.MachineId)
+                            .FirstOrDefault().Remark.Value
                         })
                     })
                 })
             }).FirstOrDefault();
-
-
         }
 
         public IEnumerable<MachineDTO> Search(string searchQuery)

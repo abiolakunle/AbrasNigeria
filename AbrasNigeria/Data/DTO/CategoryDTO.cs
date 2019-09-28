@@ -8,5 +8,7 @@ namespace AbrasNigeria.Data.DTO
     public class CategoryDTO
     {
         public string CategoryName { get; set; }
+
+        public IEnumerable<ProductDTO> Products { get; set; }
     }
 }

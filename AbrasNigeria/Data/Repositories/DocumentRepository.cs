@@ -1,6 +1,8 @@
 ﻿using AbrasNigeria.Data.DbContexts;
+using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,11 +12,11 @@ namespace AbrasNigeria.Data.Repositories
 {
     public class DocumentRepository : Repository<Document>, IDocumentRepository
     {
+        private readonly IMapper _mapper;
 
-
-        public DocumentRepository(AppDbContext context) : base(context)
+        public DocumentRepository(AppDbContext context, IMapper mapper) : base(context)
         {
-
+            _mapper = mapper;
         }
 
         public IEnumerable<Document> LoadAllWithItems()
@@ -29,11 +31,15 @@ namespace AbrasNigeria.Data.Repositories
             return documents;
         }
 
-        public Document LoadWithItems(int id)
+        public DocumentDTO LoadWithItems(int id)
         {
-            return _context.Documents
-                .Where(q => q.DocumentId == id)
-                .Include(q => q.Table).FirstOrDefault();
+            var document = _context.Documents
+                 .Where(q => q.DocumentId == id)
+                 .Include(q => q.Table).FirstOrDefault();
+
+            DocumentDTO documentDTO = _mapper.Map<DocumentDTO>(document);
+
+            return documentDTO;
         }
 
         public override void Update(Document document)

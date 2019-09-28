@@ -9,7 +9,7 @@ export default class Product extends Component {
   state = {
     productId: "",
     partNumber: "",
-    category: "",
+    categories: [],
     brand: "",
     machines: [],
     sectionGroups: []
@@ -20,8 +20,8 @@ export default class Product extends Component {
   }
 
   render() {
-    const { productId, partNumber, category, brand } = this.state;
-    const product = { productId, partNumber, category };
+    const { productId, partNumber, categories, brand } = this.state;
+    const product = { productId, partNumber, categories };
 
     return (
       <HeaderFooter>
@@ -32,8 +32,14 @@ export default class Product extends Component {
             <AddToCartBtn product={product} />
             <hr />
             <p>
-              <span className="font-weight-bold">Category: </span>
-              {category}
+              <span className="font-weight-bold">Categories: </span>
+              {categories.map((category, index) => {
+                return (
+                  <span key={index}>{`${index > 0 ? " | " : ""} ${
+                    category.categoryName
+                  }`}</span>
+                );
+              })}
             </p>
             <p>
               <span className="font-weight-bold">Brand: </span>
@@ -56,7 +62,7 @@ export default class Product extends Component {
           productId,
           partNumber,
           brand,
-          category,
+          categories,
           sectionGroups,
           machines
         } = response.data;
@@ -65,7 +71,7 @@ export default class Product extends Component {
           productId,
           partNumber,
           brand,
-          category,
+          categories,
           sectionGroups,
           machines
         });

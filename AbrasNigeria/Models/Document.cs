@@ -9,7 +9,7 @@ namespace AbrasNigeria.Models
 
         public Document()
         {
-            Date = DateTime.Now;
+
         }
         public int DocumentId { get; set; }
 

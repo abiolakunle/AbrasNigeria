@@ -11,13 +11,19 @@ namespace AbrasNigeria.Data.DTO
 
         public string PartNumber { get; set; }
 
-        public string Category { get; set; }
-
         public string Brand { get; set; }
 
         public string Section { get; set; }
 
+        public string Quantity { get; set; }
+
+        public string SerialNo { get; set; }
+
+        public string Remark { get; set; }
+
         public IEnumerable<MachineDTO> Machines { get; set; }
+
+        public IEnumerable<CategoryDTO> Categories { get; set; }
 
         public IEnumerable<SectionGroupDTO> SectionGroups { get; set; }
 

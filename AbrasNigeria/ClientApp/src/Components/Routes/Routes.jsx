@@ -22,6 +22,7 @@ import StockList from "../Admin/Stock/StockList";
 import CreateStockProduct from "../Admin/Stock/CreateStockProduct";
 import StockProduct from "../Admin/Stock/StockProduct";
 import UploadExcel from "../Admin/Upload/UploadExcel";
+import NoMatch from "./NoMatch";
 
 import RouteTitle from "./RouteTitle";
 import PrivateRoute from "./PrivateRoute";
@@ -177,6 +178,13 @@ const Routes = () => {
         component={withTitle({
           component: UploadExcel,
           title: "Upload excel"
+        })}
+      />
+
+      <Route
+        component={withTitle({
+          component: NoMatch,
+          title: "Error page not found"
         })}
       />
     </Switch>

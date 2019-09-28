@@ -98,6 +98,8 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<string>("Note");
 
+                    b.Property<string>("RefDocumentNo");
+
                     b.HasKey("DocumentId");
 
                     b.ToTable("Documents");
@@ -153,6 +155,29 @@ namespace AbrasNigeria.Migrations
                     b.HasIndex("MachineTypeId");
 
                     b.ToTable("Machines");
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.MachineProductSectionGroupQuantity", b =>
+                {
+                    b.Property<int>("MachineId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("QuantityId");
+
+                    b.Property<int>("SectionGroupId");
+
+                    b.Property<int>("ProductQuantityId");
+
+                    b.HasKey("MachineId", "ProductId", "QuantityId", "SectionGroupId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("QuantityId");
+
+                    b.HasIndex("SectionGroupId");
+
+                    b.ToTable("MachineProductSectionGroupQuantity");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.MachineSection", b =>
@@ -243,8 +268,6 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<int?>("BrandId");
 
-                    b.Property<int?>("CategoryId");
-
                     b.Property<string>("Description");
 
                     b.Property<string>("Detail");
@@ -254,8 +277,6 @@ namespace AbrasNigeria.Migrations
                     b.Property<string>("PartNumber");
 
                     b.Property<decimal>("Price");
-
-                    b.Property<string>("Quantity");
 
                     b.Property<string>("Remarks");
 
@@ -267,11 +288,24 @@ namespace AbrasNigeria.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("SectionId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<int>("ProductCategoryId");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategory");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.ProductMachine", b =>
@@ -289,6 +323,25 @@ namespace AbrasNigeria.Migrations
                     b.ToTable("ProductMachine");
                 });
 
+            modelBuilder.Entity("AbrasNigeria.Models.ProductMachineRemark", b =>
+                {
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("MachineId");
+
+                    b.Property<int>("RemarkId");
+
+                    b.Property<int>("ProductMachineRemarkId");
+
+                    b.HasKey("ProductId", "MachineId", "RemarkId");
+
+                    b.HasIndex("MachineId");
+
+                    b.HasIndex("RemarkId");
+
+                    b.ToTable("ProductMachineRemark");
+                });
+
             modelBuilder.Entity("AbrasNigeria.Models.ProductSectionGroup", b =>
                 {
                     b.Property<int>("ProductId");
@@ -302,6 +355,55 @@ namespace AbrasNigeria.Migrations
                     b.HasIndex("SectionGroupId");
 
                     b.ToTable("ProductSectionGroup");
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.ProductSectionGroupSerialNo", b =>
+                {
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("SectionGroupId");
+
+                    b.Property<int>("SerialNoId");
+
+                    b.Property<int>("MachineId");
+
+                    b.Property<int>("ProductSectionGroupSerialNoId");
+
+                    b.HasKey("ProductId", "SectionGroupId", "SerialNoId", "MachineId");
+
+                    b.HasIndex("MachineId");
+
+                    b.HasIndex("SectionGroupId");
+
+                    b.HasIndex("SerialNoId");
+
+                    b.ToTable("ProductSectionGroupSerialNo");
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.Quantity", b =>
+                {
+                    b.Property<int>("QuantityId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("QuantityId");
+
+                    b.ToTable("Quantities");
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.Remark", b =>
+                {
+                    b.Property<int>("RemarkId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("RemarkId");
+
+                    b.ToTable("Remarks");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.Section", b =>
@@ -354,6 +456,19 @@ namespace AbrasNigeria.Migrations
                     b.ToTable("SectionGroups");
                 });
 
+            modelBuilder.Entity("AbrasNigeria.Models.SerialNo", b =>
+                {
+                    b.Property<int>("SerialNoId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("SerialNoId");
+
+                    b.ToTable("SerialNos");
+                });
+
             modelBuilder.Entity("AbrasNigeria.Models.StockProduct", b =>
                 {
                     b.Property<int>("StockProductId")
@@ -403,7 +518,7 @@ namespace AbrasNigeria.Migrations
 
                     b.HasIndex("StockProductId");
 
-                    b.ToTable("stockProductHistories");
+                    b.ToTable("StockProductHistories");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.User", b =>
@@ -460,6 +575,29 @@ namespace AbrasNigeria.Migrations
                         .HasForeignKey("MachineTypeId");
                 });
 
+            modelBuilder.Entity("AbrasNigeria.Models.MachineProductSectionGroupQuantity", b =>
+                {
+                    b.HasOne("AbrasNigeria.Models.Machine", "Machine")
+                        .WithMany()
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.Product", "Product")
+                        .WithMany("ProductQuantities")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.Quantity", "Quantity")
+                        .WithMany()
+                        .HasForeignKey("QuantityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.SectionGroup", "SectionGroup")
+                        .WithMany()
+                        .HasForeignKey("SectionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("AbrasNigeria.Models.MachineSection", b =>
                 {
                     b.HasOne("AbrasNigeria.Models.Machine", "Machine")
@@ -496,13 +634,22 @@ namespace AbrasNigeria.Migrations
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
 
-                    b.HasOne("AbrasNigeria.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("AbrasNigeria.Models.Section", "Section")
                         .WithMany()
                         .HasForeignKey("SectionId");
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.ProductCategory", b =>
+                {
+                    b.HasOne("AbrasNigeria.Models.Category", "Category")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.Product", "Product")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.ProductMachine", b =>
@@ -518,6 +665,24 @@ namespace AbrasNigeria.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("AbrasNigeria.Models.ProductMachineRemark", b =>
+                {
+                    b.HasOne("AbrasNigeria.Models.Machine", "Machine")
+                        .WithMany()
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.Product", "Product")
+                        .WithMany("ProductMachineRemarks")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.Remark", "Remark")
+                        .WithMany()
+                        .HasForeignKey("RemarkId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("AbrasNigeria.Models.ProductSectionGroup", b =>
                 {
                     b.HasOne("AbrasNigeria.Models.Product", "Product")
@@ -528,6 +693,29 @@ namespace AbrasNigeria.Migrations
                     b.HasOne("AbrasNigeria.Models.SectionGroup", "SectionGroup")
                         .WithMany("ProductSectionGroups")
                         .HasForeignKey("SectionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AbrasNigeria.Models.ProductSectionGroupSerialNo", b =>
+                {
+                    b.HasOne("AbrasNigeria.Models.Machine", "Machine")
+                        .WithMany()
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.Product", "Product")
+                        .WithMany("SectionGroupSerialNos")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.SectionGroup", "SectionGroup")
+                        .WithMany()
+                        .HasForeignKey("SectionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbrasNigeria.Models.SerialNo", "SerialNo")
+                        .WithMany()
+                        .HasForeignKey("SerialNoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

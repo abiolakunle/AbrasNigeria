@@ -7,7 +7,7 @@ export default class Contact extends Component {
       <HeaderFooter>
         <React.Fragment>
           <div className="row">
-            <div className="col">
+            <div className="col-md-6 col-sm-12 mb-2">
               <div className="card">
                 <div className="card-header">
                   <i className="fa fa-envelope" /> Contact us.
@@ -71,7 +71,7 @@ export default class Contact extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-12 col-sm-4">
+            <div className="col-md-6 col-sm-12">
               <div className="card bg-light mb-3">
                 <div className="card-header text-uppercase">
                   <i className="fa fa-home" /> Address

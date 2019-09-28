@@ -12,6 +12,7 @@ namespace AbrasNigeria.Models
 
             MachineSectionGroups = new HashSet<MachineSectionGroup>();
             ProductSectionGroups = new HashSet<ProductSectionGroup>();
+            //ProductQuantities = new HashSet<MachineProductSectionGroupQuantity>();
         }
 
         public int SectionGroupId { get; set; }
@@ -25,6 +26,8 @@ namespace AbrasNigeria.Models
         public string ThumbUrl { get; set; }
 
         public Section Section { get; set; }
+
+        //public ICollection<MachineProductSectionGroupQuantity> ProductQuantities { get; set; }
 
         public ICollection<MachineSectionGroup> MachineSectionGroups { get; set; }
 

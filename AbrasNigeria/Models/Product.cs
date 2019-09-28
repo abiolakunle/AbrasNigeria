@@ -11,6 +11,11 @@ namespace AbrasNigeria.Models
         {
             ProductMachines = new HashSet<ProductMachine>();
             ProductSectionGroups = new HashSet<ProductSectionGroup>();
+            ProductCategories = new HashSet<ProductCategory>();
+            ProductQuantities = new HashSet<MachineProductSectionGroupQuantity>();
+            SectionGroupSerialNos = new HashSet<ProductSectionGroupSerialNo>();
+            ProductMachineRemarks = new HashSet<ProductMachineRemark>();
+
         }
 
         public int ProductId { get; set; }
@@ -27,9 +32,7 @@ namespace AbrasNigeria.Models
 
         public string ThumbUrl { get; set; }
 
-        public string Quantity { get; set; }
-
-        public virtual Category Category { get; set; }
+        //public string Quantity { get; set; }
 
         public virtual Brand Brand { get; set; }
 
@@ -39,7 +42,15 @@ namespace AbrasNigeria.Models
 
         public virtual Section Section { get; set; }
 
+        public ICollection<ProductSectionGroupSerialNo> SectionGroupSerialNos { get; set; }
+
+        public ICollection<MachineProductSectionGroupQuantity> ProductQuantities { get; set; }
+
+        public ICollection<ProductMachineRemark> ProductMachineRemarks { get; set; }
+
         public ICollection<ProductMachine> ProductMachines { get; set; }
+
+        public ICollection<ProductCategory> ProductCategories { get; set; }
 
         public ICollection<ProductSectionGroup> ProductSectionGroups { get; set; }
     }

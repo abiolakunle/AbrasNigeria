@@ -99,7 +99,7 @@ namespace AbrasNigeria
             if (HostingEnvironment.IsDevelopment())
             {
                 services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-                Configuration["ConnectionStrings:DevConnection"]
+                Configuration["ConnectionStrings:TestConnection"]
                 ));
             }
             else
@@ -110,6 +110,7 @@ namespace AbrasNigeria
             }
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ExcelPartBookToDb>();
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();

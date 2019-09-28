@@ -20,6 +20,7 @@ import PrintBtn from "../../Shared/PrintBtn";
 class ViewDocument extends Component {
   state = {
     documentNo: "",
+    refDocumentNo: "",
     company: "",
     note: "",
     documentType: "",
@@ -43,6 +44,7 @@ class ViewDocument extends Component {
       .then(response => {
         const {
           documentNo,
+          refDocumentNo,
           company,
           date,
           table,
@@ -53,6 +55,7 @@ class ViewDocument extends Component {
           Object.keys(response.data).length //check if response contains data
             ? {
                 documentNo,
+                refDocumentNo,
                 company,
                 note,
                 documentType,
@@ -135,6 +138,7 @@ class ViewDocument extends Component {
                 {NumInWords(this.state.total)} Naira only
               </div>
             </div>
+            <div className="d-flex">{`Ref.: ${this.state.refDocumentNo}`}</div>
             {this.renderFooter()}
           </React.Fragment>
         </PrintPage>
@@ -248,10 +252,10 @@ class ViewDocument extends Component {
         </div>
         <div className="col-md-6">
           <div className="row">
-            <div className="col-md-4 red accent-4 font-weight-bold py-1">
-              Quote No.:
+            <div className="col-md-5 red accent-4 font-weight-bold py-1">
+              Document No.:
             </div>
-            <div className="col-md-8 red lighten-1 py-1">
+            <div className="col-md-7 red lighten-1 py-1">
               <span>{this.state.documentNo}</span>
             </div>
           </div>

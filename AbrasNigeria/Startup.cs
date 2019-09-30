@@ -1,4 +1,5 @@
 using AbrasNigeria.Data.DbContexts;
+using AbrasNigeria.Data.Extensions;
 using AbrasNigeria.Data.Helpers;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Data.Repositories;
@@ -44,54 +45,18 @@ namespace AbrasNigeria
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddScoped<SessionCart>(sp => new SessionCart(sp));
+            services.AddScoped(sp => new SessionCart(sp));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddAutoMapper();
+            services.AddSwagger();
 
             //configure stringly typed settings object
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
-
             var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(
-                x =>
-                {
-                    x.Events = new JwtBearerEvents
-                    {
-                        OnTokenValidated = context =>
-                        {
-                            var userServices = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
-                            var userId = int.Parse(context.Principal.Identity.Name);
-                            var user = userServices.GetById(userId);
-                            if (user == null)
-                            {
-                                //return unauthorized if user no longer exists
-                                context.Fail("Unauthorized");
-                            }
 
-                            return Task.CompletedTask;
-                        }
-
-                    };
-
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+            services.AddCustomAuthentication(appSettings.Secret);
 
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), HostingEnvironment.WebRootPath)));
@@ -127,7 +92,7 @@ namespace AbrasNigeria
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IUserService userService)
         {
             if (env.IsDevelopment())
             {
@@ -151,12 +116,16 @@ namespace AbrasNigeria
             app.UseSpaStaticFiles();
             app.UseSession();
 
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+
+            app.UseSwagger();
+            app.UseCustomSwagger();
 
             app.UseSpa(spa =>
             {
@@ -171,6 +140,8 @@ namespace AbrasNigeria
             {
                 DbInitializer.DoMigration(app);
             }
+            AdminCreator.CreateSuperAdmin(app.ApplicationServices);
+
         }
     }
 }

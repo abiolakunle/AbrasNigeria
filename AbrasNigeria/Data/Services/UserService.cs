@@ -1,10 +1,17 @@
 ﻿using AbrasNigeria.Data.DbContexts;
+using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Helpers;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Models;
+using AutoMapper;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AbrasNigeria.Data.Services
@@ -12,13 +19,17 @@ namespace AbrasNigeria.Data.Services
     public class UserService : IUserService
     {
         private AppDbContext _context;
+        private readonly AppSettings _appSettings;
+        private readonly IMapper _mapper;
 
-        public UserService(AppDbContext context)
+        public UserService(AppDbContext context, IOptions<AppSettings> appSettings, IMapper mapper)
         {
             _context = context;
+            _appSettings = appSettings.Value;
+            _mapper = mapper;
         }
 
-        public User Authenticate(string username, string password)
+        public UserDto Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
@@ -32,20 +43,48 @@ namespace AbrasNigeria.Data.Services
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
-            return user;
+            string tokenString = GenerateToken(user);
 
+            UserDto userDto = _mapper.Map<UserDto>(user);
+            userDto.TokenString = tokenString;
+
+            return userDto;
         }
 
-        public User CreateUser(User user, string passord)
+        private string GenerateToken(User user)
         {
-            if (string.IsNullOrWhiteSpace(passord))
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity
+                (
+                    new Claim[]
+                    {
+                        new Claim(ClaimTypes.Name, user.UserId.ToString()),
+                        new Claim(ClaimTypes.Role, user.Role)
+                    }
+                ),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+            return tokenString;
+        }
+
+        public User CreateUser(User user, string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is require");
 
             if (_context.Users.Any(u => u.UserName == user.UserName))
                 throw new AppException("Username \"" + user.UserName + "\" is already taken");
 
             byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(passord, out passwordHash, out passwordSalt);
+            CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;

@@ -1,6 +1,8 @@
 import axios from "axios";
 
 import { authHeader } from "../Helpers/authHeader";
+import { USER } from "../Constants/localStorageKeyConstants";
+import { ADMIN, GUEST, SUPER_ADMIN } from "../Constants/rolesConstants";
 
 const login = user => {
   const requestOptions = {
@@ -20,13 +22,25 @@ const register = user => {
   return axios.put("/api/user/register", { ...user }, requestOptions);
 };
 
+const getCurrentUser = () => {
+  return JSON.parse(localStorage.getItem(USER));
+};
+
 const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem(USER);
   window.location.reload(true);
 };
 
-export const userService = {
+const roles = {
+  GUEST,
+  ADMIN,
+  SUPER_ADMIN
+};
+
+export default {
   login,
   register,
+  getCurrentUser,
+  roles,
   logout
 };

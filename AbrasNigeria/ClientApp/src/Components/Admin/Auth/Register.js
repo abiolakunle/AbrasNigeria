@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import AuthIndex from "../Shared/AuthNav";
+import SideNavbar from "../Shared/SideNavbar";
 import { register } from "../../../Actions/authActions";
+import { ADMIN } from "../../../Constants/rolesConstants";
 
 class Register extends Component {
   state = {
@@ -18,7 +19,7 @@ class Register extends Component {
       history.push("/admin/auth/login");
     }
     return (
-      <AuthIndex>
+      <SideNavbar>
         <React.Fragment>
           <form onSubmit={this.handleSubmit}>
             <div class="form-group row">
@@ -78,7 +79,7 @@ class Register extends Component {
             </div>
           </form>
         </React.Fragment>
-      </AuthIndex>
+      </SideNavbar>
     );
   }
 
@@ -95,7 +96,13 @@ class Register extends Component {
     event.preventDefault();
 
     const { username, password } = this.state;
-    this.props.register({ username, password });
+    const role = ADMIN;
+    const user = {
+      username,
+      password,
+      role
+    };
+    this.props.register(user);
   };
 }
 

@@ -7,6 +7,7 @@ using MimeKit;
 
 namespace AbrasNigeria.Controllers
 {
+    [Route("api/[controller]")]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
@@ -16,6 +17,7 @@ namespace AbrasNigeria.Controllers
             _orderRepository = orderRepository;
         }
 
+        [HttpPost("[action]")]
         public ActionResult AddOrder([FromBody]Order order)
         {
             SendMail(order);
@@ -28,6 +30,7 @@ namespace AbrasNigeria.Controllers
             return Ok();
         }
 
+        [NonAction]
         public void SendMail(Order order)
         {
             //set order date

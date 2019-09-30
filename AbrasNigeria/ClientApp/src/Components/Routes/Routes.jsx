@@ -24,9 +24,12 @@ import StockProduct from "../Admin/Stock/StockProduct";
 import UploadExcel from "../Admin/Upload/UploadExcel";
 import NoMatch from "./NoMatch";
 
-import RouteTitle from "./RouteTitle";
-import PrivateRoute from "./PrivateRoute";
+import GuestLogin from "../Guest/Pages/GuestLogin";
+import GuestRegister from "../Guest/Pages/GuestRegister";
 
+import RouteTitle from "./RouteTitle";
+import AdminPrivateRoute from "./AdminPrivateRoute";
+import GuestPrivateRoute from "./GuestPrivateRoute";
 const withTitle = ({ component: Component, title }) => {
   return class Title extends React.Component {
     render() {
@@ -60,6 +63,16 @@ const Routes = () => {
       />
       <Route
         exact
+        path="/guest/auth/login"
+        component={withTitle({ component: GuestLogin, title: "Home" })}
+      />
+      <Route
+        exact
+        path="/guest/auth/register"
+        component={withTitle({ component: GuestRegister, title: "Home" })}
+      />
+      <Route
+        exact
         path="/guest/machines"
         component={withTitle({ component: Machines, title: "Machines" })}
       />
@@ -83,7 +96,7 @@ const Routes = () => {
         path="/guest/product/:id"
         component={withTitle({ component: Product, title: "Product" })}
       />
-      <Route
+      <GuestPrivateRoute
         exact
         path="/guest/cart"
         component={withTitle({ component: Cart, title: "Cart" })}
@@ -102,78 +115,78 @@ const Routes = () => {
         path="/admin/auth/register"
         component={withTitle({ component: Register, title: "Register" })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/dashboard"
         component={withTitle({ component: Dashboard, title: "Dashboard" })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/document/new"
         component={withTitle({
           component: NewDocument,
           title: "New document"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/document/edit/:id"
         component={withTitle({
           component: NewDocument,
           title: "Edit document"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/document/list"
         component={withTitle({
           component: DocumentList,
           title: "Document list"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/document/:id"
         component={withTitle({
           component: ViewDocument,
           title: "View Document"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/document/send"
         component={withTitle({
           component: SendQuotation,
           title: "Send quotation"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/document/send/:id"
         component={withTitle({
           component: SendQuotation,
           title: "Send quotation"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/store/upload"
         component={withTitle({
           component: UploadExcel,
           title: "Upload excel"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/stock/list"
         component={withTitle({ component: StockList, title: "Stock List" })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/stock/create"
         component={withTitle({
           component: CreateStockProduct,
           title: "Create product"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/stock/:id"
         component={withTitle({
           component: StockProduct,
           title: "Stock product"
         })}
       />
-      <PrivateRoute
+      <AdminPrivateRoute
         path="/admin/upload/excel"
         component={withTitle({
           component: UploadExcel,

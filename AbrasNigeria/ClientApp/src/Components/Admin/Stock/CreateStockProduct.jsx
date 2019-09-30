@@ -13,11 +13,11 @@ import SideNavbar from "../Shared/SideNavbar";
 class CreateStockProduct extends Component {
   state = {
     partNumber: "",
-    category: "",
+    categories: [],
     brand: ""
   };
   render() {
-    const { partNumber, category, brand } = this.state;
+    const { partNumber, categories, brand } = this.state;
     return (
       <SideNavbar>
         <React.Fragment>
@@ -54,7 +54,11 @@ class CreateStockProduct extends Component {
                           event.preventDefault();
                           this.setState({
                             partNumber: item.partNumber,
-                            category: item.category,
+                            categories: item.categories.map((category, index) => {
+                             return (`${index > 0 ? " | " : ""} ${
+                              category.categoryName
+                            }`)
+                            }),
                             brand: item.brand
                           });
                         }}
@@ -70,9 +74,9 @@ class CreateStockProduct extends Component {
               <input
                 type="text"
                 className="form-control"
-                placeholder="category"
-                name="category"
-                value={category}
+                placeholder="categories"
+                name="categories"
+                value={categories}
                 onChange={this.handleChange}
                 required
               />
@@ -99,8 +103,8 @@ class CreateStockProduct extends Component {
   }
 
   sendStockProduct = () => {
-    const { partNumber, category, brand } = this.state;
-    const product = { partNumber, category, brand };
+    const { partNumber, categories, brand } = this.state;
+    const product = { partNumber, categories, brand };
 
     const requestOptions = {
       method: "POST",
@@ -132,7 +136,7 @@ class CreateStockProduct extends Component {
           if (value.length === 0) {
             this.props.clearPartNumberSuggestion();
             this.setState({
-              category: ""
+              categories: []
             });
           }
           this.props.suggestPartNumber(value);

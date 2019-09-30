@@ -1,6 +1,7 @@
 ﻿using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Helpers;
 using AbrasNigeria.Data.Interfaces;
+using AbrasNigeria.Data.Models;
 using AbrasNigeria.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -37,38 +38,12 @@ namespace AbrasNigeria.Controllers
         [HttpPost("[action]")]
         public IActionResult Authenticate([FromBody] UserDto userDto)
         {
-            User user = _userService.Authenticate(userDto.UserName, userDto.Password);
+            UserDto user = _userService.Authenticate(userDto.UserName, userDto.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity
-                (
-                    new Claim[]
-                    {
-                        new Claim(ClaimTypes.Name, user.UserId.ToString())
-                    }
-                ),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            return Ok(new
-            {
-                user.UserId,
-                user.FirstName,
-                user.LastName,
-                user.UserName,
-                Token = tokenString
-            });
+            return Ok(user);
         }
 
         [AllowAnonymous]
@@ -91,13 +66,16 @@ namespace AbrasNigeria.Controllers
             }
         }
 
-        [HttpGet]
+        [Authorize(Roles = Roles.SuperAdmin)]
+        [HttpGet("[action]")]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
             var userDtos = _mapper.Map<IList<UserDto>>(users);
             return Ok(userDtos);
         }
+
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)

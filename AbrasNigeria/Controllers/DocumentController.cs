@@ -50,7 +50,5 @@ namespace AbrasNigeria.Controllers
             _documentRepository.Update(document);
             return Ok();
         }
-
-
     }
 }

@@ -4,6 +4,8 @@ import { NavLink, withRouter } from "react-router-dom";
 import "./sideNavbar.css";
 
 import { logout } from "../../../Actions/authActions";
+import Authorize from "../Shared/Authorize";
+import userService from "../../../Services/userService";
 
 import logo from "../../../Images/abrasLogo.png";
 
@@ -67,6 +69,11 @@ const SideNavbar = ({ children }) => {
                 Create Product <span class="fas fa-link sub_icon"></span>
               </NavLink>
             </li>
+            <Authorize role={userService.roles.SUPER_ADMIN}>
+              <li>
+                <NavLink to="/admin/auth/register">Create User</NavLink>
+              </li>
+            </Authorize>
             <li>
               <NavLink to="/admin/upload/excel">
                 Upload excel <span class="fas fa-link sub_icon"></span>

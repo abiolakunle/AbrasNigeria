@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import { login } from "../../../Actions/authActions";
 
+import userService from "../../../Services/userService";
+
 import HeaderFooter from "../Shared/HeaderFooter";
 
 class Login extends Component {
@@ -13,11 +15,13 @@ class Login extends Component {
 
   render() {
     const { username, password } = this.state;
-    const { isLoggedIn, history } = this.props;
+    const { history } = this.props;
+    const user = userService.getCurrentUser();
 
-    if (isLoggedIn === true) {
+    user &&
+      user.role === userService.roles.GUEST &&
       history.push("/guest/cart");
-    }
+
     return (
       <HeaderFooter>
         <React.Fragment>
@@ -82,6 +86,8 @@ class Login extends Component {
       </HeaderFooter>
     );
   }
+
+  componentWillUpdate() {}
 
   handleChange = event => {
     const eventName = event.target.name;

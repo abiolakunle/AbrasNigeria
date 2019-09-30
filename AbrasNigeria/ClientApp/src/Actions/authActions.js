@@ -1,4 +1,4 @@
-import { userService } from "../Services/userService";
+import userService from "../Services/userService";
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -8,7 +8,9 @@ import {
   REGISTER_FAILURE
 } from "../Constants/authConstants";
 
-export const login = (username, password) => {
+import { USER } from "../Constants/localStorageKeyConstants";
+
+export const login = (username, password, role) => {
   const request = () => {
     return { type: LOGIN_REQUEST };
   };
@@ -27,8 +29,8 @@ export const login = (username, password) => {
     userService
       .login(username, password)
       .then(({ data }) => {
-        localStorage.setItem("user", JSON.stringify(data));
-        console.log("LOGINED", data);
+        localStorage.setItem(USER, JSON.stringify(data));
+        console.log("LOGGED IN", data);
         dispatch(success());
       })
       .catch(error => {
@@ -66,6 +68,8 @@ export const register = user => {
       });
   };
 };
+
+export const currentUser = () => {};
 
 export const logout = () => {
   userService.logout();

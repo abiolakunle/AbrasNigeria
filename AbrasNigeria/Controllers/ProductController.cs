@@ -11,7 +11,6 @@ using System.Linq;
 namespace AbrasNigeria.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController()]
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;

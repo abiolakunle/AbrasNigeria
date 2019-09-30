@@ -12,5 +12,7 @@ namespace AbrasNigeria.Data.DTO
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string Role { get; set; }
+        public string TokenString { get; set; }
     }
 }

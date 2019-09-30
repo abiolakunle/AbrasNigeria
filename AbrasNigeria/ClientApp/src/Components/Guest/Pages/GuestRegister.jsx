@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import HeaderFooter from "../Shared/HeaderFooter";
 import { register } from "../../../Actions/authActions";
-import { GUEST } from "../../../Constants/rolesConstants";
+import userService from "../../../Services/userService";
 
 class Register extends Component {
   state = {
@@ -14,10 +14,9 @@ class Register extends Component {
   render() {
     const { username, password } = this.state;
     const { history, isRegistered } = this.props;
-    console.log(this.props);
-    if (isRegistered === true) {
-      history.push("/admin/auth/login");
-    }
+    (userService.getCurrentUser() || isRegistered) &&
+      history.push("/guest/cart");
+
     return (
       <HeaderFooter>
         <React.Fragment>
@@ -95,8 +94,8 @@ class Register extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
+    const role = userService.roles.GUEST;
     const { username, password } = this.state;
-    const role = GUEST;
     const user = {
       username,
       password,

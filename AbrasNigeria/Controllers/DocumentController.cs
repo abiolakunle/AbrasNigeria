@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Interfaces;
+using AbrasNigeria.Data.Models;
 using AbrasNigeria.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace AbrasNigeria.Controllers
             _documentRepository = documentRepository;
         }
 
-        // GET: api/<controller>
+        [Authorize(Roles = Roles.SuperAdmin)]
         [HttpGet("[action]")]
         public IEnumerable<Document> Documents()
         {

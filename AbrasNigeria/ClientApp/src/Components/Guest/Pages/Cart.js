@@ -119,7 +119,12 @@ export default class Cart extends Component {
                         event.preventDefault();
                         this.setState({
                           partNumber: item.partNumber,
-                          category: item.category
+                          category: item.categories.map(
+                            (category, index) =>
+                              ` ${index > 0 ? " | " : ""}${
+                                category.categoryName
+                              }  `
+                          )
                         });
                       }}
                     >

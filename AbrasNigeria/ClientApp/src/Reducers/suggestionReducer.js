@@ -1,10 +1,5 @@
-import axios from "axios";
-
 import {
   PART_NO_SUGGESTIONS,
-  DESCRIPTION_SUGGESTIONS,
-  CATEGORY_SUGGESTIONS,
-  MACHINE_SUGGESTIONS,
   CLEAR_PART_SUGGESTIONS
 } from "../Constants/suggestionConstants";
 

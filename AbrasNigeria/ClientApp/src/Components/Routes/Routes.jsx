@@ -9,7 +9,6 @@ import Products from "../Guest/Pages/Products";
 import Product from "../Guest/Pages/Product";
 import Cart from "../Guest/Pages/Cart";
 import Checkout from "../Guest/Pages/CheckOut";
-import Side from "../Admin/Shared/SideNavbar";
 
 import Dashboard from "../Admin/Dashboard/Dashboard";
 import DocumentList from "../Admin/Document/DocumentList";
@@ -30,6 +29,7 @@ import GuestRegister from "../Guest/Pages/GuestRegister";
 import RouteTitle from "./RouteTitle";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 import GuestPrivateRoute from "./GuestPrivateRoute";
+import userService from "../../Services/userService";
 const withTitle = ({ component: Component, title }) => {
   return class Title extends React.Component {
     render() {
@@ -44,13 +44,9 @@ const withTitle = ({ component: Component, title }) => {
 };
 
 const Routes = () => {
+  const { SUPER_ADMIN, ADMIN } = userService.roles;
   return (
     <Switch>
-      <Route
-        exact
-        path="/side"
-        component={withTitle({ component: Side, title: "Home" })}
-      />
       <Route
         exact
         path="/"
@@ -111,15 +107,18 @@ const Routes = () => {
         path="/admin/auth/login"
         component={withTitle({ component: Login, title: "Login" })}
       />
-      <Route
+      <AdminPrivateRoute
+        roles={[SUPER_ADMIN]}
         path="/admin/auth/register"
         component={withTitle({ component: Register, title: "Register" })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/dashboard"
         component={withTitle({ component: Dashboard, title: "Dashboard" })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/document/new"
         component={withTitle({
           component: NewDocument,
@@ -127,6 +126,7 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/document/edit/:id"
         component={withTitle({
           component: NewDocument,
@@ -134,6 +134,7 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/document/list"
         component={withTitle({
           component: DocumentList,
@@ -141,6 +142,7 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/document/:id"
         component={withTitle({
           component: ViewDocument,
@@ -148,6 +150,7 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/document/send"
         component={withTitle({
           component: SendQuotation,
@@ -155,6 +158,7 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/document/send/:id"
         component={withTitle({
           component: SendQuotation,
@@ -162,6 +166,7 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/store/upload"
         component={withTitle({
           component: UploadExcel,
@@ -169,10 +174,12 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/stock/list"
         component={withTitle({ component: StockList, title: "Stock List" })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/stock/create"
         component={withTitle({
           component: CreateStockProduct,
@@ -180,6 +187,7 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/stock/:id"
         component={withTitle({
           component: StockProduct,
@@ -187,6 +195,7 @@ const Routes = () => {
         })}
       />
       <AdminPrivateRoute
+        roles={[SUPER_ADMIN, ADMIN]}
         path="/admin/upload/excel"
         component={withTitle({
           component: UploadExcel,

@@ -6,6 +6,7 @@ using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Models;
 using AbrasNigeria.Data.DbContexts;
 using AbrasNigeria.Data.DTO;
+using System.Threading.Tasks;
 
 namespace AbrasNigeria.Data.Repositories
 {
@@ -69,9 +70,9 @@ namespace AbrasNigeria.Data.Repositories
                 }).FirstOrDefault();
         }
 
-        public IEnumerable<ProductDTO> Search(string searchQuery)
+        public async Task<IEnumerable<ProductDTO>> Search(string searchQuery)
         {
-            return _context.Products
+            return await _context.Products
                 .Where(p => p.PartNumber.Contains(searchQuery))
                 .Select(p => new ProductDTO
                 {
@@ -81,7 +82,7 @@ namespace AbrasNigeria.Data.Repositories
                         CategoryName = pc.Category.CategoryName
                     }),
                     Brand = p.Brand.Name
-                });
+                }).ToListAsync();
         }
     }
 }

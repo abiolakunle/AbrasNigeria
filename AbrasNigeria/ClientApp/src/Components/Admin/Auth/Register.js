@@ -3,12 +3,13 @@ import { connect } from "react-redux";
 
 import SideNavbar from "../Shared/SideNavbar";
 import { register } from "../../../Actions/authActions";
-import { ADMIN } from "../../../Constants/rolesConstants";
+import { ADMIN, SUPER_ADMIN } from "../../../Constants/rolesConstants";
 
 class Register extends Component {
   state = {
     username: "",
-    password: ""
+    password: "",
+    role: ""
   };
 
   render() {
@@ -36,6 +37,17 @@ class Register extends Component {
                   value={username}
                   onChange={this.handleChange}
                 />
+              </div>
+            </div>
+            <div className="form-group row">
+              <label for="inputEmail3" class="col-sm-2 col-form-label">
+                Role
+              </label>
+              <div className="col-sm-10">
+                <select className="form-control" onChange={this.handleChange}>
+                  <option>{ADMIN}</option>
+                  <option>{SUPER_ADMIN}</option>
+                </select>
               </div>
             </div>
             <div class="form-group row">
@@ -86,6 +98,7 @@ class Register extends Component {
   handleChange = event => {
     const eventName = event.target.name;
     const eventValue = event.target.value;
+    console.log("EVENT", eventValue);
 
     this.setState({
       [eventName]: eventValue
@@ -95,8 +108,8 @@ class Register extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const { username, password } = this.state;
-    const role = ADMIN;
+    const { username, password, role } = this.state;
+
     const user = {
       username,
       password,

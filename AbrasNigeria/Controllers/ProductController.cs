@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace AbrasNigeria.Controllers
 {
@@ -34,9 +34,9 @@ namespace AbrasNigeria.Controllers
         }
 
         [HttpGet("[action]")]
-        public JsonResult Search(string searchQuery)
+        public async Task<JsonResult> Search(string searchQuery)
         {
-            var products = _productRepository.Search(searchQuery);
+            var products = await _productRepository.Search(searchQuery);
 
             return Json(products, JsonHelper.SerializerSettings);
         }

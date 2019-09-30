@@ -100,8 +100,16 @@ ul.sidebar-group {
   font-size: 18px;
 }
 
-.sidebar-nav > .sidebar-brand a {
+.sidebar-nav > .menu-btn button {
+  display: block;
+  outline: none;
+  width: 100%;
   color: #999999;
+  background: none;
+  border: none;
+  height: 65px;
+  line-height: 60px;
+  font-size: 18px;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
@@ -109,12 +117,12 @@ ul.sidebar-group {
   background: none;
 }
 
-#main_icon {
+#main-icon {
   float: right;
   padding-right: 65px;
   padding-top: 20px;
 }
-.sub_icon {
+.sub-icon {
   float: right;
   padding-right: 20px;
   padding-top: 15px;

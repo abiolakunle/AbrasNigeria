@@ -12,11 +12,11 @@ import logo from "../../../Images/abrasLogo.png";
 const SideNavbar = ({ children }) => {
   return (
     <React.Fragment>
-      <div id="wrapper" class="active">
+      <div id="wrapper" className="active">
         <div id="sidebar-wrapper">
-          <ul id="sidebar_menu" class="sidebar-nav">
-            <li class="sidebar-brand">
-              <a
+          <ul id="sidebar_menu" className="sidebar-nav">
+            <li className="menu-btn">
+              <button
                 onClick={event => {
                   event.preventDefault();
                   const wrapper = document.querySelector("#wrapper");
@@ -28,11 +28,11 @@ const SideNavbar = ({ children }) => {
                 }}
               >
                 Menu
-                <span class="fas fa-bars sub_icon"></span>
-              </a>
+                <span className="fas fa-bars sub-icon"></span>
+              </button>
             </li>
           </ul>
-          <ul class="sidebar-nav" id="sidebar">
+          <ul className="sidebar-nav" id="sidebar">
             <li className="sidebar-brand">
               <NavLink to="/">
                 Abras home{" "}
@@ -40,49 +40,51 @@ const SideNavbar = ({ children }) => {
                   src={logo}
                   alt="Abras"
                   height="40px"
-                  className="sub_icon"
+                  className="sub-icon"
                 />
               </NavLink>
             </li>
             <li>
               <NavLink to="/admin/dashboard">
-                Dashboard <span class="fas fa-link sub_icon"></span>
+                Dashboard <span className="fas fa-link sub-icon"></span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/admin/document/list">
-                Document list <span class="fas fa-link sub_icon"></span>
+                Document list <span className="fas fa-link sub-icon"></span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/admin/document/new">
-                New Document <span class="fas fa-link sub_icon"></span>
+                New Document <span className="fas fa-link sub-icon"></span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/admin/stock/list">
-                Store <span class="fas fa-link sub_icon"></span>
+                Store <span className="fas fa-link sub-icon"></span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/admin/stock/create">
-                Create Product <span class="fas fa-link sub_icon"></span>
+                Create Product <span className="fas fa-link sub-icon"></span>
               </NavLink>
             </li>
             <Authorize role={userService.roles.SUPER_ADMIN}>
               <li>
-                <NavLink to="/admin/auth/register">Create User</NavLink>
+                <NavLink to="/admin/auth/register">
+                  Create User <span className="fas fa-link sub-icon"></span>
+                </NavLink>
               </li>
             </Authorize>
             <li>
               <NavLink to="/admin/upload/excel">
-                Upload excel <span class="fas fa-link sub_icon"></span>
+                Upload excel <span className="fas fa-link sub-icon"></span>
               </NavLink>
             </li>
 
             <li>
               <NavLink onClick={logout}>
-                Logout <span class="fas fa-sign-out-alt sub_icon"></span>
+                Logout <span className="fas fa-sign-out-alt sub-icon"></span>
               </NavLink>
             </li>
           </ul>

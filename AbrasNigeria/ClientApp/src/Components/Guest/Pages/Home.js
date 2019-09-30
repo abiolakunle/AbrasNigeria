@@ -8,7 +8,7 @@ import Pump from "../images/hydraulic_pump.jpg";
 import CarouselFilters from "../images/Komatsu_filters_1274x500.jpg";
 import CarouselExcavator from "../images/pc200_1053x500.jpg";
 import Attachment from "../images/rsz_attachments.png";
-import CarouselUndercarriage from "../images/undercarriage.jpg";
+//import CarouselUndercarriage from "../images/undercarriage.jpg";
 import undercarriage2 from "../images/undercarriage2.jpg";
 
 import HeaderFooter from "../Shared/HeaderFooter";
@@ -34,13 +34,7 @@ export default class Home extends Component {
                   <div className="card">
                     <img className="card-img-top" src={Filter} alt="Filters" />
                     <div className="card-body">
-                      <h5 className="card-title border-bottom pb-3">
-                        Filters
-                        <a
-                          href="#"
-                          className="float-right d-inline-flex share"
-                        />
-                      </h5>
+                      <h5 className="card-title border-bottom pb-3">Filters</h5>
                       <p className="card-text">
                         We have a broad and forward-thinking scope of channels
                         that guarantee solid execution that expands the life of
@@ -59,10 +53,6 @@ export default class Home extends Component {
                     <div className="card-body">
                       <h5 className="card-title border-bottom pb-3">
                         Engine components
-                        <a
-                          href="#"
-                          className="float-right d-inline-flex share"
-                        />
                       </h5>
                       <p className="card-text">
                         We stock parts for most machine engines in the domestic
@@ -83,10 +73,6 @@ export default class Home extends Component {
                     <div className="card-body">
                       <h5 className="card-title border-bottom pb-3">
                         Hydraulic pumps
-                        <a
-                          href="#"
-                          className="float-right d-inline-flex share"
-                        />
                       </h5>
                       <p className="card-text">
                         We have the answer for the most incessant faults in
@@ -108,10 +94,6 @@ export default class Home extends Component {
                     <div className="card-body">
                       <h5 className="card-title border-bottom pb-3">
                         Undercarriage
-                        <a
-                          href="#"
-                          className="float-right d-inline-flex share"
-                        />
                       </h5>
                       <p className="card-text">
                         We have a huge load of elastic tracks for most machines
@@ -131,10 +113,6 @@ export default class Home extends Component {
                     <div className="card-body">
                       <h5 className="card-title border-bottom pb-3">
                         Attachments
-                        <a
-                          href="#"
-                          className="float-right d-inline-flex share"
-                        />
                       </h5>
                       <p className="card-text">
                         Attachments sold by Abras Nigeria Parts incorporate

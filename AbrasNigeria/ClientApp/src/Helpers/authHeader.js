@@ -1,8 +1,10 @@
-export const authHeader = () => {
-  let user = JSON.parse(localStorage.getItem("user"));
+import userService from "../Services/userService";
 
-  if (user && user.token) {
-    return { Authorization: "Bearer " + user.token };
+export const authHeader = () => {
+  let user = userService.getCurrentUser();
+
+  if (user && user.tokenString) {
+    return { Authorization: "Bearer " + user.tokenString };
   } else {
     return {};
   }

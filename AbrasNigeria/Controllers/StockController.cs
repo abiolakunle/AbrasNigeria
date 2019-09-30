@@ -18,7 +18,6 @@ namespace AbrasNigeria.Controllers
 
         private readonly IStockProductRepository _stockProductRepository;
 
-
         public StockController(IStockProductRepository storeProductRepository)
         {
             _stockProductRepository = storeProductRepository;

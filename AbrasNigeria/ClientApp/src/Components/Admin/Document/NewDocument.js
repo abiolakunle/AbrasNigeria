@@ -68,7 +68,6 @@ class NewDocument extends Component {
 
     //check if existing document is loaded
     if (document && this.props.document !== document) {
-      console.log("docu", document);
       this.setState(
         {
           table,
@@ -170,7 +169,6 @@ class NewDocument extends Component {
     const { documentNo } = this.props.document;
 
     if (this.props.document) {
-      console.log("table", table);
       const newDoc = {
         refDocumentNo: documentNo,
         company,
@@ -180,7 +178,6 @@ class NewDocument extends Component {
         note
       };
 
-      console.log("New Doc", newDoc);
       //update document
       this.props.updateDocument(newDoc);
     } else {
@@ -305,6 +302,7 @@ class NewDocument extends Component {
   };
 
   renderAddItem = () => {
+    console.log("SUGG", this.props.partNoSuggestions);
     return (
       <React.Fragment>
         <form autoComplete="off" onSubmit={this.handleAddRow}>
@@ -339,7 +337,12 @@ class NewDocument extends Component {
                           event.preventDefault();
                           this.setState({
                             partNumber: item.partNumber,
-                            description: item.category
+                            description: item.categories.map(
+                              (category, index) =>
+                                ` ${index > 0 ? " | " : ""}${
+                                  category.categoryName
+                                }  `
+                            )
                           });
                         }}
                       >

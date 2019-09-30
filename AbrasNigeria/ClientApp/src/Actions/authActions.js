@@ -69,8 +69,6 @@ export const register = user => {
   };
 };
 
-export const currentUser = () => {};
-
 export const logout = () => {
   userService.logout();
 };

@@ -277,109 +277,115 @@ export default class products extends Component {
         <div className="badge badge-dark p-2 mb-1">Filter products by: </div>
         <form
           autoComplete="off"
-          className=" form-inline mb-5"
           onSubmit={event => {
             event.preventDefault();
             this.sendQuery();
           }}
         >
-          <div className="dropdown">
-            <label className="sr-only">Part Number</label>
-            <input
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              name="partNumber"
-              value={this.state.partNumber}
-              type="text"
-              className="form-control mb-2 mr-sm-2 dropdown-toggle"
-              placeholder="Part number"
-              onChange={this.onFormChanged}
-            />
-            <React.Fragment>
-              {this.renderSuggestions(this.state.partNumberSuggestions, "PART")}
-            </React.Fragment>
-          </div>
+          <div className="form-row">
+            <div className="dropdown col-auto">
+              <label>PART NUMBER</label>
+              <input
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                name="partNumber"
+                value={this.state.partNumber}
+                type="text"
+                className="form-control mb-2 mr-sm-2 dropdown-toggle"
+                placeholder="eg. 600-319-3240"
+                onChange={this.onFormChanged}
+              />
+              <React.Fragment>
+                {this.renderSuggestions(
+                  this.state.partNumberSuggestions,
+                  "PART"
+                )}
+              </React.Fragment>
+            </div>
 
-          <div className="dropdown">
-            <label className="sr-only">Category</label>
-            <input
-              type="text"
-              placeholder="Category"
-              name="category"
-              value={this.state.category}
-              onChange={this.onFormChanged}
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              className="form-control mb-2 mr-sm-2 dropdown-toggle"
-            />
-            <React.Fragment>
-              {this.renderSuggestions(
-                this.state.categorySuggestions,
-                "CATEGORY"
-              )}
-            </React.Fragment>
-          </div>
+            <div className="dropdown col-auto">
+              <label>DESCRIPTION</label>
+              <input
+                type="text"
+                placeholder="eg. Bolt shoe"
+                name="category"
+                value={this.state.category}
+                onChange={this.onFormChanged}
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                className="form-control mb-2 mr-sm-2 dropdown-toggle"
+              />
+              <React.Fragment>
+                {this.renderSuggestions(
+                  this.state.categorySuggestions,
+                  "CATEGORY"
+                )}
+              </React.Fragment>
+            </div>
 
-          <div className="dropdown">
-            <label className="sr-only">Section</label>
-            <input
-              type="text"
-              placeholder="Section"
-              name="section"
-              value={this.state.section}
-              onChange={this.onFormChanged}
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              className="form-control mb-2 mr-sm-2 dropdown-toggle"
-            />
-            <React.Fragment>
-              {this.renderSuggestions(this.state.sectionSuggestions, "SECTION")}
-            </React.Fragment>
-          </div>
+            <div className="dropdown col-auto">
+              <label>SECTION</label>
+              <input
+                type="text"
+                placeholder="eg. Undercarrige"
+                name="section"
+                value={this.state.section}
+                onChange={this.onFormChanged}
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                className="form-control mb-2 mr-sm-2 dropdown-toggle"
+              />
+              <React.Fragment>
+                {this.renderSuggestions(
+                  this.state.sectionSuggestions,
+                  "SECTION"
+                )}
+              </React.Fragment>
+            </div>
 
-          <div className="dropdown">
-            <label className="sr-only">sectionGroup</label>
-            <input
-              type="text"
-              placeholder="sectionGroup"
-              name="sectionGroup"
-              value={this.state.sectionGroup}
-              onChange={this.onFormChanged}
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              className="form-control mb-2 mr-sm-2 dropdown-toggle"
-            />
-            <React.Fragment>
-              {this.renderSuggestions(
-                this.state.sectionGroupSuggestions,
-                "SECTIONGROUP"
-              )}
-            </React.Fragment>
-          </div>
+            <div className="dropdown col-auto">
+              <label className>SECTION GROUP</label>
+              <input
+                type="text"
+                placeholder="eg. Track roller"
+                name="sectionGroup"
+                value={this.state.sectionGroup}
+                onChange={this.onFormChanged}
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                className="form-control mb-2 mr-sm-2 dropdown-toggle"
+              />
+              <React.Fragment>
+                {this.renderSuggestions(
+                  this.state.sectionGroupSuggestions,
+                  "SECTIONGROUP"
+                )}
+              </React.Fragment>
+            </div>
 
-          <div className="dropdown">
-            <label className="sr-only">brand</label>
-            <input
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              className="form-control mb-2 mr-sm-2 dropdown-toggle"
-              type="text"
-              placeholder="Brand"
-              name="brand"
-              value={this.state.brand}
-              onChange={this.onFormChanged}
-            />
-            <React.Fragment>
-              {this.renderSuggestions(this.state.brandSuggestions, "BRAND")}
-            </React.Fragment>
-          </div>
+            <div className="dropdown col-auto">
+              <label>BRAND</label>
+              <input
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                className="form-control mb-2 mr-sm-2 dropdown-toggle"
+                type="text"
+                placeholder="eg. Komatsu"
+                name="brand"
+                value={this.state.brand}
+                onChange={this.onFormChanged}
+              />
+              <React.Fragment>
+                {this.renderSuggestions(this.state.brandSuggestions, "BRAND")}
+              </React.Fragment>
+            </div>
 
-          {/* <div className="form-check mb-2 mr-sm-2">
+            {/* <div className="form-check mb-2 mr-sm-2">
           <input
             className="form-check-input"
             type="checkbox"
@@ -389,10 +395,12 @@ export default class products extends Component {
             Strict
           </label>
         </div> */}
-
-          <button type="submit" className="btn btn-primary mb-2">
-            Submit
-          </button>
+          </div>
+          <div className="form-row">
+            <button type="submit" className="btn btn-primary mb-5">
+              Submit
+            </button>
+          </div>
         </form>
       </React.Fragment>
     );

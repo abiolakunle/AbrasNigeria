@@ -56,19 +56,14 @@ class GuestHeader extends Component {
                   >
                     <ul className="navbar-nav ml-auto">
                       <li className="nav-item ">
-                        <NavLink to="/guest/home" active ClassName="active">
+                        <NavLink to="/guest/home" className="active">
                           <div className="nav-link">
                             Home <span className="sr-only">(current)</span>
                           </div>
                         </NavLink>
                       </li>
                       <li className="nav-item ">
-                        <NavLink
-                          exact
-                          to="/guest/products"
-                          active
-                          ClassName="active"
-                        >
+                        <NavLink exact to="/guest/products" className="active">
                           <div className="nav-link">
                             Find parts{" "}
                             <span className="sr-only">(current)</span>
@@ -77,7 +72,7 @@ class GuestHeader extends Component {
                       </li>
 
                       <li className="nav-item ">
-                        <NavLink to="/guest/machines" activeClassName="active">
+                        <NavLink to="/guest/machines" className="active">
                           <div className="nav-link">
                             Explore Machines{" "}
                             <span className="sr-only">(current)</span>
@@ -86,7 +81,7 @@ class GuestHeader extends Component {
                       </li>
 
                       <li className="nav-item ">
-                        <NavLink to="/guest/contact" activeClassName="active">
+                        <NavLink to="/guest/contact" className="active">
                           <div className="nav-link">
                             Contact us{" "}
                             <span className="sr-only">(current)</span>
@@ -94,7 +89,7 @@ class GuestHeader extends Component {
                         </NavLink>
                       </li>
                       <li className="nav-item ">
-                        <NavLink to="/guest/cart" activeClassName="active">
+                        <NavLink to="/guest/cart" className="active">
                           <div className="nav-link btn btn-light">
                             Cart <span className="sr-only">(current)</span>{" "}
                             <span className="fas fa-shopping-cart text-dark" />

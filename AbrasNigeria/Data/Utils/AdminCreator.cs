@@ -29,7 +29,7 @@ namespace AbrasNigeria.Data.Utils
                     UserName = "AbrasAdmin",
                     FirstName = "Abras",
                     LastName = "Nigeria",
-                    Role = Roles.Admin,
+                    Role = Roles.SuperAdmin,
                 };
 
                 bool exists = _dbContext.Users.Any(u => u.UserName == user.UserName);

@@ -34,9 +34,14 @@ namespace AbrasNigeria.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<JsonResult> Search(string searchQuery)
+        public JsonResult Search(string searchQuery)
         {
-            var products = await _productRepository.Search(searchQuery);
+            IEnumerable<ProductDTO> products;
+
+            if (searchQuery.Length == 0)
+                products = Enumerable.Empty<ProductDTO>();
+            else
+                products = _productRepository.Search(searchQuery);
 
             return Json(products, JsonHelper.SerializerSettings);
         }

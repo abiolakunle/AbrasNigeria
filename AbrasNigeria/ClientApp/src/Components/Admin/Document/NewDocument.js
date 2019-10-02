@@ -152,7 +152,7 @@ class NewDocument extends Component {
     );
   };
 
-  calculateTotal = table => {
+  calculateTotal = () => {
     //calculate grand total of extended prices and set total in component state
     let total = 0;
     this.state.table.forEach(item => {
@@ -337,12 +337,9 @@ class NewDocument extends Component {
                           event.preventDefault();
                           this.setState({
                             partNumber: item.partNumber,
-                            description: item.categories.map(
-                              (category, index) =>
-                                ` ${index > 0 ? " | " : ""}${
-                                  category.categoryName
-                                }  `
-                            )
+                            description: item.categories
+                              .map(category => category.categoryName)
+                              .join(" | ")
                           });
                         }}
                       >

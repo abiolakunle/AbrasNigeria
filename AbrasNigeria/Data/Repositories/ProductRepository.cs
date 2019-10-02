@@ -70,9 +70,9 @@ namespace AbrasNigeria.Data.Repositories
                 }).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<ProductDTO>> Search(string searchQuery)
+        public IEnumerable<ProductDTO> Search(string searchQuery)
         {
-            return await _context.Products
+            return _context.Products
                 .Where(p => p.PartNumber.Contains(searchQuery))
                 .Select(p => new ProductDTO
                 {
@@ -82,7 +82,7 @@ namespace AbrasNigeria.Data.Repositories
                         CategoryName = pc.Category.CategoryName
                     }),
                     Brand = p.Brand.Name
-                }).ToListAsync();
+                });
         }
     }
 }

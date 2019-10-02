@@ -83,39 +83,40 @@ export default class products extends Component {
 
     let sectionGroupsUrl = `/api/sectionGroup/search?searchQuery=${this.state.sectionGroup}`;
 
-    const switchEvent = eventName => {
+    const switchEvent = async eventName => {
+      let resp;
       //load suggestions from server and update component state
       switch (eventName) {
         case "partNumber":
-          return axios.get(productsUrl).then(response => {
-            this.setState({
-              partNumberSuggestions: response.data
-            });
+          resp = await axios.get(productsUrl);
+          this.setState({
+            partNumberSuggestions: resp.data
           });
+          break;
         case "brand":
-          return axios.get(brandsUrl).then(response => {
-            this.setState({
-              brandSuggestions: response.data
-            });
+          resp = await axios.get(brandsUrl);
+          this.setState({
+            brandSuggestions: resp.data
           });
+          break;
         case "category":
-          return axios.get(categoriesUrl).then(response => {
-            this.setState({
-              categorySuggestions: response.data
-            });
+          resp = await axios.get(categoriesUrl);
+          this.setState({
+            categorySuggestions: resp.data
           });
+          break;
         case "section":
-          return axios.get(sectionsUrl).then(response => {
-            this.setState({
-              sectionSuggestions: response.data
-            });
+          resp = await axios.get(sectionsUrl);
+          this.setState({
+            sectionSuggestions: resp.data
           });
+          break;
         case "sectionGroup":
-          return axios.get(sectionGroupsUrl).then(response => {
-            this.setState({
-              sectionGroupSuggestions: response.data
-            });
+          resp = await axios.get(sectionGroupsUrl);
+          this.setState({
+            sectionGroupSuggestions: resp.data
           });
+          break;
         default:
       }
     };
@@ -347,7 +348,7 @@ export default class products extends Component {
             </div>
 
             <div className="dropdown col-auto">
-              <label className>SECTION GROUP</label>
+              <label>SECTION GROUP</label>
               <input
                 type="text"
                 placeholder="eg. Track roller"
@@ -384,7 +385,6 @@ export default class products extends Component {
                 {this.renderSuggestions(this.state.brandSuggestions, "BRAND")}
               </React.Fragment>
             </div>
-
             {/* <div className="form-check mb-2 mr-sm-2">
           <input
             className="form-check-input"
@@ -410,9 +410,9 @@ export default class products extends Component {
     return (
       <React.Fragment>
         <div className="row">
-          {this.state.products.map(product => {
+          {this.state.products.map((product, index) => {
             return (
-              <div className="col-md-4 mb-3">
+              <div key={index} className="col-md-4 mb-3">
                 <div className="card shadow-sm">
                   <div className="card-body">
                     <Link to={`/guest/product/${product.productId}`}>

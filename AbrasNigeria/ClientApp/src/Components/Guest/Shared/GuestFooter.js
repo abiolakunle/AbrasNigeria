@@ -9,8 +9,8 @@ class GuestFooter extends Component {
     return (
       <footer className="footer text-light mt-5">
         <Link to="/guest/cart">
-          <button id="side-btn" class="btn btn-secondary">
-            <i id="toggleIcon" class="fa fa-angle-double-down"></i> Request
+          <button id="side-btn" className="btn btn-secondary">
+            <i id="toggleIcon" className="fa fa-angle-double-down"></i> Request
             Quotation
           </button>
         </Link>

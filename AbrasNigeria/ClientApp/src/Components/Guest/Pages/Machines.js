@@ -86,16 +86,11 @@ export default class Machines extends Component {
     axios.get(`/api/machine/list?page=${page}`).then(response => {
       let paging = JSON.parse(response.headers.paging); //convert paging test to Json object
 
-      this.setState(
-        {
-          machines: response.data,
-          paging,
-          page
-        },
-        () => {
-          console.log(this.state.machines);
-        }
-      );
+      this.setState({
+        machines: response.data,
+        paging,
+        page
+      });
     });
   };
 
@@ -106,59 +101,56 @@ export default class Machines extends Component {
         <div className="badge badge-dark p-2 mb-1">Search: </div>
         <form
           autoComplete="off"
-          className=" form-inline mb-5"
           onSubmit={event => {
             event.preventDefault();
             this.sendQuery();
           }}
         >
-          <label className="sr-only" for="inlineFormInputName2">
-            modelName
-          </label>
-
-          <input
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            name="modelName"
-            value={this.state.modelName}
-            type="text"
-            className="form-control mb-2 mr-sm-2 dropdown-toggle"
-            placeholder="Model name"
-            onChange={this.onFormChanged}
-          />
-          <div
-            className="dropdown-menu pre-scrollable"
-            aria-labelledby="dropdownMenuButton"
-          >
-            {this.state.modelNameSuggestions.length === 0 ? (
-              <button className="dropdown-item">No match found</button>
-            ) : (
-              this.state.modelNameSuggestions.map((item, index) => {
-                //iterate over suggestions and display
-                return (
-                  <button
-                    key={index}
-                    className="dropdown-item"
-                    onClick={event => {
-                      //set the value from clicked suggestion to inputs
-                      event.preventDefault();
-                      this.setState({
-                        ...this.state,
-                        modelName: item.modelName
-                      });
-                    }}
-                  >
-                    {item.modelName}
-                  </button>
-                );
-              })
-            )}
+          <div className="form-row mb-5">
+            <label>MODEL NAME</label>
+            <input
+              id="dropdownMenuButton"
+              className="form-control mb-2 mr-sm-2 dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              placeholder="eg. D155A-5"
+              name="modelName"
+              value={this.state.modelName}
+              type="text"
+              onChange={this.onFormChanged}
+            />
+            <div
+              className="dropdown-menu pre-scrollable"
+              aria-labelledby="dropdownMenuButton"
+            >
+              {this.state.modelNameSuggestions.length === 0 ? (
+                <button className="dropdown-item">No match found</button>
+              ) : (
+                this.state.modelNameSuggestions.map((item, index) => {
+                  //iterate over suggestions and display
+                  return (
+                    <button
+                      key={index}
+                      className="dropdown-item"
+                      onClick={event => {
+                        //set the value from clicked suggestion to inputs
+                        event.preventDefault();
+                        this.setState({
+                          ...this.state,
+                          modelName: item.modelName
+                        });
+                      }}
+                    >
+                      {item.modelName}
+                    </button>
+                  );
+                })
+              )}
+            </div>
+            <button type="submit" className="btn btn-primary mb-2">
+              Submit
+            </button>
           </div>
-
-          <button type="submit" className="btn btn-primary mb-2">
-            Submit
-          </button>
         </form>
       </React.Fragment>
     );
@@ -173,7 +165,6 @@ export default class Machines extends Component {
         [eventName]: eventValue
       },
       () => {
-        console.log(eventName, this.state.modelName);
         this.loadSuggestions();
       }
     );
@@ -193,7 +184,7 @@ export default class Machines extends Component {
         });
       })
       .catch(error => {
-        console.log("axios error", error);
+        console.log("suggestion error", error);
       });
   };
 }

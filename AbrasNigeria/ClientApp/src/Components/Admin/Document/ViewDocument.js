@@ -138,7 +138,9 @@ class ViewDocument extends Component {
                 {NumInWords(this.state.total)} Naira only
               </div>
             </div>
-            <div className="d-flex">{`Ref.: ${this.state.refDocumentNo}`}</div>
+            {this.state.refDocumentNo && (
+              <div className="d-flex">{`Ref.:  ${this.state.refDocumentNo}`}</div>
+            )}
             {this.renderFooter()}
           </React.Fragment>
         </PrintPage>

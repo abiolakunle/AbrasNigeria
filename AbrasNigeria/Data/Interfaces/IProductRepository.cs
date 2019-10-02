@@ -10,7 +10,7 @@ namespace AbrasNigeria.Data.Interfaces
     {
         ProductDTO FindWithProp(int productId);
 
-        Task<IEnumerable<ProductDTO>> Search(string searchQuery);
+        IEnumerable<ProductDTO> Search(string searchQuery);
 
         IEnumerable<ProductDTO> Filter(FilterProductsDTO query);
 

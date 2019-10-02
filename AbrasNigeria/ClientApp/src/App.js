@@ -8,13 +8,17 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import { DocumentProvider } from "./Contexts/DocumentContext";
 
+import { CloudinaryContext } from "cloudinary-react";
+
 const App = () => {
   return (
-    <DocumentProvider>
-      <Router history={history} forceRefresh={true}>
-        <Routes />
-      </Router>
-    </DocumentProvider>
+    <CloudinaryContext cloudName="abiolasoft">
+      <DocumentProvider>
+        <Router history={history} forceRefresh={true}>
+          <Routes />
+        </Router>
+      </DocumentProvider>
+    </CloudinaryContext>
   );
 };
 

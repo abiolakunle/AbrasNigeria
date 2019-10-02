@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
+import { Image } from "cloudinary-react";
+
+import { getStock } from "../../../Actions/stockActions";
 
 import { authHeader } from "../../../Helpers/authHeader";
 
@@ -23,8 +27,9 @@ class StockList extends Component {
           <hr />
 
           <ul className="list-group">
-            {this.state.stockProducts.map((stockProduct, index) => {
+            {this.props.stockItems.map((stockProduct, index) => {
               const {
+                thumbUrl,
                 stockProductId,
                 partNumber,
                 category,
@@ -36,17 +41,20 @@ class StockList extends Component {
                 <React.Fragment key={index}>
                   <li className="list-group-item justify-content-between align-items-center">
                     <div className="row">
-                      <div className="col-md-4">
+                      <div className="col-md-1">
+                        <Image publicId={thumbUrl}></Image>
+                      </div>
+                      <div className="col-md-3">
                         <Link to={`/admin/stock/${stockProductId}`}>
                           <span className="font-weight-bold">PartNumber: </span>
                           {partNumber}
                         </Link>
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3">
                         <span className="font-weight-bold">Category:</span>
                         {category}{" "}
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3">
                         <span className="font-weight-bold">
                           Current quantity:
                         </span>
@@ -66,22 +74,7 @@ class StockList extends Component {
   }
 
   loadStock = () => {
-    const api = "/api/stock/products";
-    const requestOptions = {
-      method: "POST",
-      headers: { ...authHeader(), "Content-Type": "application/json" }
-    };
-    axios
-      .get(api, requestOptions)
-      .then(response => {
-        console.log("data", response.data);
-        this.setState({
-          stockProducts: response.data
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    this.props.getStock();
   };
 
   addHistory = id => {
@@ -111,4 +104,22 @@ class StockList extends Component {
   };
 }
 
-export default StockList;
+const mapStateToProps = ({ stockReducer }) => {
+  console.log("reducer", stockReducer);
+  return {
+    stockItems: stockReducer.stockItems
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getStock: () => {
+      dispatch(getStock());
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StockList);

@@ -28,7 +28,8 @@ namespace AbrasNigeria.Data.Repositories
                      Category = p.Category,
                      PartNumber = p.PartNumber,
                      Quantity = p.StockProductHistories
-                     .Sum(ph => ph.AddedQuantity - ph.RemovedQuantity)
+                     .Sum(ph => ph.AddedQuantity - ph.RemovedQuantity),
+                     ThumbUrl = p.ThumbUrl
                  });
 
             return products;

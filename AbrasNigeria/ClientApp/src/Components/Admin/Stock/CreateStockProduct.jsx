@@ -14,9 +14,26 @@ class CreateStockProduct extends Component {
   state = {
     partNumber: "",
     categories: [],
-    brand: ""
+    brand: "",
+    imageUrl: "",
+    thumbUrl: ""
   };
   render() {
+    let widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: "abiolasoft",
+        uploadPreset: "ttle7bua"
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          const { url, thumbnail_url } = result.info;
+          this.setState({
+            imageUrl: url,
+            thumbUrl: thumbnail_url
+          });
+        }
+      }
+    );
     const { partNumber, categories, brand } = this.state;
     return (
       <SideNavbar>
@@ -54,11 +71,13 @@ class CreateStockProduct extends Component {
                           event.preventDefault();
                           this.setState({
                             partNumber: item.partNumber,
-                            categories: item.categories.map((category, index) => {
-                             return (`${index > 0 ? " | " : ""} ${
-                              category.categoryName
-                            }`)
-                            }),
+                            categories: item.categories.map(
+                              (category, index) => {
+                                return `${index > 0 ? " | " : ""} ${
+                                  category.categoryName
+                                }`;
+                              }
+                            ),
                             brand: item.brand
                           });
                         }}
@@ -93,6 +112,20 @@ class CreateStockProduct extends Component {
               />
             </div>
 
+            {partNumber.length > 0 ? (
+              <button
+                className="btn btn-dark"
+                onClick={event => {
+                  event.preventDefault();
+                  this.openwidget(widget);
+                }}
+              >
+                Upload Image
+              </button>
+            ) : (
+              <div />
+            )}
+
             <button type="submit" className="btn-primary btn">
               Create product
             </button>
@@ -102,9 +135,13 @@ class CreateStockProduct extends Component {
     );
   }
 
+  openwidget = widget => {
+    widget.open();
+  };
+
   sendStockProduct = () => {
-    const { partNumber, categories, brand } = this.state;
-    const product = { partNumber, categories, brand };
+    const { partNumber, categories, brand, thumbUrl, imageUrl } = this.state;
+    const product = { partNumber, categories, brand, thumbUrl, imageUrl };
 
     const requestOptions = {
       method: "POST",
@@ -115,7 +152,7 @@ class CreateStockProduct extends Component {
       .post("/api/stock/createproduct/", product, requestOptions)
       .then(response => {})
       .catch(error => {
-        console.error(error);
+        console.error("axios error ", error);
       });
   };
 

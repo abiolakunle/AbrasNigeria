@@ -22,7 +22,6 @@ namespace AbrasNigeria.Controllers
             _documentRepository = documentRepository;
         }
 
-        [Authorize(Roles = Roles.SuperAdmin)]
         [HttpGet("[action]")]
         public IEnumerable<Document> Documents()
         {
@@ -40,9 +39,15 @@ namespace AbrasNigeria.Controllers
         [HttpPost("[action]")]
         public ActionResult CreateDocument([FromBody]Document document)
         {
-            document.DocumentNo = "AN" + document.DocumentType.Substring(0, 1) + DateTime.Now.ToString("yyMMddHHmmss");
-            _documentRepository.Create(document);
-            return Ok();
+            //I NEED TO WRITE A FUNCTIONALITY TO HANDLES VALIDIATION OF MODEL STATE FOR ALL ACTION METHODS
+            if (ModelState.IsValid)
+            {
+                document.DocumentNo = "AN" + document.DocumentType.Substring(0, 1) + DateTime.Now.ToString("yyMMddHHmmss");
+                _documentRepository.Create(document);
+                return Ok();
+            }
+            return BadRequest(ModelState);
+
         }
 
         [HttpPut("[action]")]

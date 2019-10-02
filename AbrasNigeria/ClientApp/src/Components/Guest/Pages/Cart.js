@@ -11,7 +11,7 @@ import HeaderFooter from "../Shared/HeaderFooter";
 export default class Cart extends Component {
   state = {
     partNumber: "",
-    category: "",
+    categories: "",
     suggestions: [],
     quantity: 1,
     company: ""
@@ -37,7 +37,7 @@ export default class Cart extends Component {
                         Part number
                       </th>
                       <th className="col-md-3" scope="col">
-                        Category
+                        Categories
                       </th>
                       <th className="col-md-2" scope="col">
                         Quantity
@@ -78,7 +78,7 @@ export default class Cart extends Component {
           event.preventDefault();
           addToCart({
             partNumber: this.state.partNumber,
-            category: this.state.category,
+            categories: this.state.categories,
             quantity: this.state.quantity
           });
         }}
@@ -138,8 +138,8 @@ export default class Cart extends Component {
           <div className="col-auto">
             <label>DESCRIPTION</label>
             <input
-              name="category"
-              value={this.state.category}
+              name="categories"
+              value={this.state.categories}
               type="text"
               className="form-control mb-2"
               placeholder="eg. Bolt shoe"
@@ -180,7 +180,7 @@ export default class Cart extends Component {
         if (eventName === "partNumber") {
           if (eventValue.length === 0) {
             this.setState({
-              category: ""
+              categories: ""
             });
           }
           this.loadSuggestions();
@@ -203,7 +203,7 @@ export default class Cart extends Component {
         });
       })
       .catch(error => {
-        console.log("axios error", error);
+        console.log("search error", error);
       });
   };
 
@@ -219,7 +219,12 @@ export default class Cart extends Component {
               {cartItem.partNumber}
             </Link>{" "}
           </td>
-          <td className="col-md-3">{cartItem.category}</td>
+          <td className="col-md-3">
+            {cartItem.categories.map(
+              (category, index) =>
+                ` ${index > 0 ? " | " : ""}${category.categoryName}  `
+            )}
+          </td>
           <td className="col-md-2">
             <input
               className="form-control mw-25"

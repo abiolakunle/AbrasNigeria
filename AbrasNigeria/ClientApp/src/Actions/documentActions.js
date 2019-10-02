@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { authHeader } from "../Helpers/authHeader";
+import { request, success, failure } from "./requestStateActions";
 
 import {
   CREATE_DOC_REQUEST,
@@ -18,147 +19,67 @@ import {
 } from "../Constants/documentConstants";
 
 const requestOptions = {
-  method: "POST",
   headers: authHeader()
 };
 
 export const createDocument = document => {
-  const request = () => {
-    return {
-      type: CREATE_DOC_REQUEST
-    };
-  };
-
-  const success = message => {
-    return {
-      type: CREATE_DOC_SUCCESS,
-      payload: message
-    };
-  };
-
-  const failure = messsage => {
-    return {
-      type: CREATE_DOC_FAILURE,
-      payload: messsage
-    };
-  };
-
+  console.log("Document", document);
   return dispatch => {
-    dispatch(request());
+    dispatch(request(CREATE_DOC_REQUEST));
 
     axios
       .post("/api/document/createdocument", document, requestOptions)
       .then(() => {
-        dispatch(success(`created`));
+        dispatch(success(CREATE_DOC_SUCCESS, `created`));
       })
       .catch(({ message }) => {
         console.log(CREATE_DOC_FAILURE, message);
-        dispatch(failure(message));
+        dispatch(failure(CREATE_DOC_FAILURE, message));
       });
   };
 };
 
 export const updateDocument = document => {
-  const request = () => {
-    return {
-      type: UPDATE_DOC_REQUEST
-    };
-  };
-
-  const success = message => {
-    return {
-      type: UPDATE_DOC_SUCCESS,
-      payload: message
-    };
-  };
-
-  const failure = messsage => {
-    return {
-      type: UPDATE_DOC_FAILURE,
-      payload: messsage
-    };
-  };
-
   return dispatch => {
-    dispatch(request());
+    dispatch(request(UPDATE_DOC_REQUEST));
 
     axios
       .post("/api/document/createdocument", document, requestOptions)
       .then(() => {
-        dispatch(success(`updated`));
+        dispatch(success(UPDATE_DOC_SUCCESS, `updated`));
       })
       .catch(({ message }) => {
         console.log(UPDATE_DOC_FAILURE, message);
-        dispatch(failure(message));
+        dispatch(failure(UPDATE_DOC_FAILURE, message));
       });
   };
 };
 
 export const getDocuments = () => {
-  const request = () => {
-    return {
-      type: GET_DOCS_REQUEST
-    };
-  };
-
-  const success = data => {
-    return {
-      type: GET_DOCS_SUCCESS,
-      payload: data
-    };
-  };
-
-  const failure = messsage => {
-    return {
-      type: GET_DOCS_FAILURE,
-      payload: messsage
-    };
-  };
-
   return dispatch => {
-    dispatch(request());
+    dispatch(request(GET_DOCS_REQUEST));
     axios
       .get("/api/document/documents", requestOptions)
       .then(({ data }) => {
-        dispatch(success(data));
+        dispatch(success(GET_DOCS_SUCCESS, data));
       })
       .catch(error => {
-        dispatch(failure(error));
+        dispatch(failure(GET_DOCS_FAILURE, error));
         console.log(error);
       });
   };
 };
 
 export const getDocument = id => {
-  const request = () => {
-    return {
-      type: GET_DOC_REQUEST
-    };
-  };
-
-  const success = data => {
-    return {
-      type: GET_DOC_SUCCESS,
-      payload: data
-    };
-  };
-
-  const failure = messsage => {
-    return {
-      type: GET_DOC_FAILURE,
-      payload: messsage
-    };
-  };
-
   return dispatch => {
-    dispatch(request());
+    dispatch(request(GET_DOC_REQUEST));
     axios
       .get(`/api/document/document?id=${id}`, requestOptions)
       .then(({ data }) => {
-        dispatch(success(data));
+        dispatch(success(GET_DOC_SUCCESS, data));
       })
       .catch(error => {
-        dispatch(failure(error));
+        dispatch(failure(GET_DOC_FAILURE, error));
         console.log(error);
       });
   };

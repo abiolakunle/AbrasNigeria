@@ -57,7 +57,7 @@ namespace AbrasNigeria.Controllers
 
             foreach (var item in order.CartItems)
             {
-                itemRow = $"<tr><td>{item.PartNumber}</td><td>{item.Category}</td><td>{item.Quantity}</td></tr>";
+                itemRow = $"<tr><td>{item.PartNumber}</td><td>{item.Categories}</td><td>{item.Quantity}</td></tr>";
                 tableRows += itemRow;
             }
 

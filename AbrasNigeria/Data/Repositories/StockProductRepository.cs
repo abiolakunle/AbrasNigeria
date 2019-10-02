@@ -2,6 +2,7 @@
 using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,25 +13,18 @@ namespace AbrasNigeria.Data.Repositories
 {
     public class StockProductRepository : Repository<StockProduct>, IStockProductRepository
     {
+        private readonly IMapper _mapper;
 
-        public StockProductRepository(AppDbContext context) : base(context)
+        public StockProductRepository(AppDbContext context, IMapper mapper) : base(context)
         {
-
+            _mapper = mapper;
         }
 
         public IEnumerable<StockProductDTO> LoadAllWithHistory()
         {
             IEnumerable<StockProductDTO> products = _context.StockProducts
-                 .Include(s => s.StockProductHistories).Select(p => new StockProductDTO
-                 {
-                     StockProductId = p.StockProductId,
-                     Brand = p.Brand,
-                     Category = p.Category,
-                     PartNumber = p.PartNumber,
-                     Quantity = p.StockProductHistories
-                     .Sum(ph => ph.AddedQuantity - ph.RemovedQuantity),
-                     ThumbUrl = p.ThumbUrl
-                 });
+                 .Include(s => s.StockProductHistories)
+                 .Select(p => _mapper.Map<StockProductDTO>(p));
 
             return products;
         }

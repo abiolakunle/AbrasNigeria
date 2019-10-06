@@ -10,7 +10,7 @@ class StockProduct extends Component {
     stockProductId: "",
     partNumber: "",
     brand: "",
-    category: "",
+    description: "",
     stockProductHistories: [],
     addedQuantity: "",
     removedQuantity: "",
@@ -22,14 +22,14 @@ class StockProduct extends Component {
   }
 
   render() {
-    const { partNumber, brand, category, stockProductHistories } = this.state;
+    const { partNumber, brand, description, stockProductHistories } = this.state;
 
     return (
       <SideNavbar>
         {
           <React.Fragment>
             <h1 className="my-2">
-              {brand} - {partNumber} - {category}
+              {brand} - {partNumber} - {description}
             </h1>
             <hr />
             {this.renderAddHistory()}
@@ -151,14 +151,14 @@ class StockProduct extends Component {
           stockProductId,
           partNumber,
           brand,
-          category,
+          description,
           stockProductHistories
         } = data;
         this.setState({
           stockProductId,
           partNumber,
           brand,
-          category,
+          description,
           stockProductHistories
         });
       })

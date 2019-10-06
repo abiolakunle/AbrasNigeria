@@ -32,7 +32,7 @@ class StockList extends Component {
                 thumbUrl,
                 stockProductId,
                 partNumber,
-                category,
+                descriptions,
                 quantity
               } = stockProduct;
               console.log("stock", stockProduct);
@@ -50,9 +50,9 @@ class StockList extends Component {
                           {partNumber}
                         </Link>
                       </div>
-                      <div className="col-md-3">
-                        <span className="font-weight-bold">Category:</span>
-                        {category}{" "}
+                      <div className="col-md-4">
+                        <span className="font-weight-bold">Descriptions: </span>
+                        {descriptions}{" "}
                       </div>
                       <div className="col-md-3">
                         <span className="font-weight-bold">

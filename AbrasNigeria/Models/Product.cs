@@ -11,7 +11,7 @@ namespace AbrasNigeria.Models
         {
             ProductMachines = new HashSet<ProductMachine>();
             ProductSectionGroups = new HashSet<ProductSectionGroup>();
-            ProductCategories = new HashSet<ProductCategory>();
+            ProductDescription = new HashSet<ProductDescription>();
             ProductQuantities = new HashSet<MachineProductSectionGroupQuantity>();
             SectionGroupSerialNos = new HashSet<ProductSectionGroupSerialNo>();
             ProductMachineRemarks = new HashSet<ProductMachineRemark>();
@@ -48,7 +48,7 @@ namespace AbrasNigeria.Models
 
         public ICollection<ProductMachine> ProductMachines { get; set; }
 
-        public ICollection<ProductCategory> ProductCategories { get; set; }
+        public ICollection<ProductDescription> ProductDescription { get; set; }
 
         public ICollection<ProductSectionGroup> ProductSectionGroups { get; set; }
     }

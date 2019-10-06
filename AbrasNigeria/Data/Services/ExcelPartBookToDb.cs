@@ -143,21 +143,21 @@ namespace AbrasNigeria.Data.Services
 
                                     if (line.Description != "")
                                     {
-                                        Category category = _dbContext.Categories.Where(c => c.CategoryName == line.Description).FirstOrDefault();
+                                        Description description = _dbContext.Descriptions.Where(c => c.DescriptionName == line.Description).FirstOrDefault();
 
-                                        if (category == null)
+                                        if (description == null)
                                         {
-                                            category = new Category
+                                            description = new Description
                                             {
-                                                CategoryName = line.Description,
+                                                DescriptionName = line.Description,
                                             };
-                                            _dbContext.Categories.Add(category);
+                                            _dbContext.Descriptions.Add(description);
                                             _dbContext.SaveChanges();
-                                            Console.WriteLine("Added category");
-                                            category = _dbContext.Categories.Where(c => c.CategoryName == line.Description).FirstOrDefault();
+                                            Console.WriteLine("Added description");
+                                            description = _dbContext.Descriptions.Where(c => c.DescriptionName == line.Description).FirstOrDefault();
                                         }
 
-                                        //_dbContext.Categories.Upsert(category).On(s => new { s.CategoryName }).Run();
+                                        //_dbContext.Descriptions.Upsert(description).On(s => new { s.DescriptionName }).Run();
 
                                         if (line.PartNumber != "")
                                         {
@@ -213,7 +213,7 @@ namespace AbrasNigeria.Data.Services
                                                         serialNo = _dbContext.SerialNos.Where(sn => sn.Value == serialNo.Value).FirstOrDefault();
                                                     }
 
-                                                    brand.Categories.Add(category);
+
                                                     brand.Machines.Add(machine);
                                                     brand.Products.Add(product);
                                                     brand.SectionGroups.Add(sectionGroup);
@@ -288,20 +288,20 @@ namespace AbrasNigeria.Data.Services
                                                         _dbContext.SaveChanges();
                                                     }
 
-                                                    //ProductCategory relationship
-                                                    ProductCategory productCategory = _dbContext
-                                                        .Set<ProductCategory>()
-                                                        .Where(pc => pc.ProductId == product.ProductId && pc.CategoryId == category.CategoryId)
+                                                    //ProductDescription relationship
+                                                    ProductDescription productDescription = _dbContext
+                                                        .Set<ProductDescription>()
+                                                        .Where(pc => pc.ProductId == product.ProductId && pc.DescriptionId == description.DescriptionId)
                                                         .FirstOrDefault();
 
-                                                    if (productCategory == null)
+                                                    if (productDescription == null)
                                                     {
-                                                        productCategory = new ProductCategory
+                                                        productDescription = new ProductDescription
                                                         {
                                                             Product = product,
-                                                            Category = category
+                                                            Description = description
                                                         };
-                                                        product.ProductCategories.Add(productCategory);
+                                                        product.ProductDescription.Add(productDescription);
                                                         _dbContext.SaveChanges();
                                                     }
 
@@ -527,25 +527,25 @@ namespace AbrasNigeria.Data.Services
 
                                     if (line.Description != "")
                                     {
-                                        Category category = new Category
+                                        Description description = new Description
                                         {
-                                            CategoryName = line.Description,
+                                            DescriptionName = line.Description,
                                         };
 
-                                        Category dbCategory = _dbContext.Categories.Where(c => c.CategoryName == category.CategoryName).FirstOrDefault();
+                                        Description dbDescription = _dbContext.Descriptions.Where(c => c.DescriptionName == description.DescriptionName).FirstOrDefault();
 
-                                        if (dbCategory == null)
+                                        if (dbDescription == null)
                                         {
-                                            _dbContext.Categories.Add(category);
+                                            _dbContext.Descriptions.Add(description);
                                             _dbContext.SaveChanges();
 
                                         }
 
-                                        //_dbContext.Categories.Upsert(category).On(s => new { s.CategoryName }).Run();
-                                        Console.WriteLine("Added category");
-                                        category = _dbContext.Categories.Where(s => s.CategoryName == category.CategoryName).FirstOrDefault();
+                                        //_dbContext.Descriptions.Upsert(description).On(s => new { s.DescriptionName }).Run();
+                                        Console.WriteLine("Added description");
+                                        description = _dbContext.Descriptions.Where(s => s.DescriptionName == description.DescriptionName).FirstOrDefault();
 
-                                        //brand.Categories.Add(category);
+                                        //brand.Descriptions.Add(description);
 
 
                                         if (line.PartNumber != "")
@@ -554,7 +554,7 @@ namespace AbrasNigeria.Data.Services
                                             {
                                                 PartNumber = line.PartNumber,
                                                 Brand = brand,
-                                                //Category = category,
+                                                //Descriptions = description,
                                                 Section = section,
                                                 //Quantity = line.Quantity,
                                                 Remarks = line.Remark
@@ -610,7 +610,7 @@ namespace AbrasNigeria.Data.Services
                                                     serialNo = _dbContext.SerialNos.Where(sn => sn.Value == serialNo.Value).FirstOrDefault();
 
 
-                                                    brand.Categories.Add(category);
+
 
                                                     brand.Machines.Add(machine);
 
@@ -622,7 +622,7 @@ namespace AbrasNigeria.Data.Services
 
                                                     section.SectionGroups.Add(sectionGroup);
 
-                                                    //category.Products.Add(product);
+                                                    //description.Products.Add(product);
 
                                                     _dbContext.SaveChanges();
 
@@ -698,21 +698,21 @@ namespace AbrasNigeria.Data.Services
                                                         _dbContext.SaveChanges();
                                                     }
 
-                                                    //ProductCategory relationship
-                                                    ProductCategory productCategory = new ProductCategory
+                                                    //ProductDescription relationship
+                                                    ProductDescription productDescription = new ProductDescription
                                                     {
                                                         Product = product,
-                                                        Category = category
+                                                        Description = description
                                                     };
 
-                                                    ProductCategory dbProductCategory = _dbContext
-                                                        .Set<ProductCategory>()
-                                                        .Where(pc => pc.ProductId == product.ProductId && pc.CategoryId == category.CategoryId)
+                                                    ProductDescription dbProductDescription = _dbContext
+                                                        .Set<ProductDescription>()
+                                                        .Where(pc => pc.ProductId == product.ProductId && pc.DescriptionId == description.DescriptionId)
                                                         .FirstOrDefault();
 
-                                                    if (dbProductCategory == null)
+                                                    if (dbProductDescription == null)
                                                     {
-                                                        product.ProductCategories.Add(productCategory);
+                                                        product.ProductDescription.Add(productDescription);
                                                         _dbContext.SaveChanges();
                                                     }
 

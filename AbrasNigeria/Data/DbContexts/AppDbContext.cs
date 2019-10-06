@@ -15,7 +15,7 @@ namespace AbrasNigeria.Data.DbContexts
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Description> Descriptions { get; set; }
 
         public DbSet<Brand> Brands { get; set; }
 
@@ -61,7 +61,7 @@ namespace AbrasNigeria.Data.DbContexts
             modelBuilder.Entity<MachineSection>().HasKey(ms => new { ms.MachineId, ms.SectionId });
             modelBuilder.Entity<MachineSectionGroup>().HasKey(msg => new { msg.MachineId, msg.SectionGroupId });
 
-            modelBuilder.Entity<ProductCategory>().HasKey(pc => new { pc.ProductId, pc.CategoryId });
+            modelBuilder.Entity<ProductDescription>().HasKey(pd => new { pd.ProductId, pd.DescriptionId });
 
             modelBuilder.Entity<MachineProductSectionGroupQuantity>().HasKey(pq => new { pq.MachineId, pq.ProductId, pq.QuantityId, pq.SectionGroupId });
 

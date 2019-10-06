@@ -11,7 +11,7 @@ import HeaderFooter from "../Shared/HeaderFooter";
 export default class Cart extends Component {
   state = {
     partNumber: "",
-    categories: "",
+    descriptions: "",
     suggestions: [],
     quantity: 1,
     company: ""
@@ -37,7 +37,7 @@ export default class Cart extends Component {
                         Part number
                       </th>
                       <th className="col-md-3" scope="col">
-                        Categories
+                        Descriptions
                       </th>
                       <th className="col-md-2" scope="col">
                         Quantity
@@ -78,7 +78,7 @@ export default class Cart extends Component {
           event.preventDefault();
           addToCart({
             partNumber: this.state.partNumber,
-            categories: this.state.categories,
+            descriptions: this.state.descriptions,
             quantity: this.state.quantity
           });
         }}
@@ -119,10 +119,10 @@ export default class Cart extends Component {
                         event.preventDefault();
                         this.setState({
                           partNumber: item.partNumber,
-                          category: item.categories.map(
-                            (category, index) =>
+                          description: item.descriptions.map(
+                            (description, index) =>
                               ` ${index > 0 ? " | " : ""}${
-                                category.categoryName
+                                description.descriptionName
                               }  `
                           )
                         });
@@ -138,8 +138,8 @@ export default class Cart extends Component {
           <div className="col-auto">
             <label>DESCRIPTION</label>
             <input
-              name="categories"
-              value={this.state.categories}
+              name="descriptions"
+              value={this.state.descriptions}
               type="text"
               className="form-control mb-2"
               placeholder="eg. Bolt shoe"
@@ -180,7 +180,7 @@ export default class Cart extends Component {
         if (eventName === "partNumber") {
           if (eventValue.length === 0) {
             this.setState({
-              categories: ""
+              descriptions: ""
             });
           }
           this.loadSuggestions();
@@ -220,9 +220,9 @@ export default class Cart extends Component {
             </Link>{" "}
           </td>
           <td className="col-md-3">
-            {cartItem.categories.map(
-              (category, index) =>
-                ` ${index > 0 ? " | " : ""}${category.categoryName}  `
+            {cartItem.descriptions.map(
+              (description, index) =>
+                ` ${index > 0 ? " | " : ""}${description.descriptionName}  `
             )}
           </td>
           <td className="col-md-2">

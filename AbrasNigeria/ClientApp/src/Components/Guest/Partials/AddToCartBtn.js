@@ -18,7 +18,7 @@ const AddToCartBtn = props => {
                   addToCart({
                     productId: product.productId,
                     partNumber: product.partNumber,
-                    categories: product.categories,
+                    descriptions: product.descriptions,
                     quantity: 1
                   });
                 }}
@@ -32,7 +32,7 @@ const AddToCartBtn = props => {
                 onClick={() => {
                   addToCart({
                     partNumber: product.partNumber,
-                    categories: product.categories
+                    descriptions: product.descriptions
                   });
                 }}
               >

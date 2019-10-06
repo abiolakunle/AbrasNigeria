@@ -64,7 +64,7 @@ export default class Machine extends Component {
                                 <tr>
                                   <th scope="col">#</th>
                                   <th scope="col">Part Number</th>
-                                  <th scope="col">Categories</th>
+                                  <th scope="col">Descriptions</th>
                                   <th scope="col">Quantity</th>
                                   <th scope="col">Serial No.</th>
                                   <th scope="col">Remark</th>
@@ -78,13 +78,13 @@ export default class Machine extends Component {
                                       <th scope="row">{index + 1}</th>
                                       <td>{product.partNumber}</td>
                                       <td>
-                                        {product.categories.map(
-                                          (category, index) => {
+                                        {product.descriptions.map(
+                                          (description, index) => {
                                             return (
                                               <span key={index}>{` ${
                                                 index > 0 ? " | " : ""
                                               }${
-                                                category.categoryName
+                                                description.descriptionName
                                               }  `}</span>
                                             );
                                           }

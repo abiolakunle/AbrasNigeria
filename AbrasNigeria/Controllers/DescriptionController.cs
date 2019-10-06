@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 namespace AbrasNigeria.Controllers
 {
     [Route("api/[controller]")]
-    public class CategoryController : Controller
+    public class DescriptionController : Controller
     {
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IDescriptionRepository _descriptionRepository;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public DescriptionController(IDescriptionRepository descriptionRepository)
         {
-            _categoryRepository = categoryRepository;
+            _descriptionRepository = descriptionRepository;
         }
 
         [HttpGet("[action]")]
         public JsonResult Search(string searchQuery)
         {
-            IEnumerable<CategoryDTO> products = _categoryRepository.Search(searchQuery);
+            IEnumerable<DescriptionDTO> products = _descriptionRepository.Search(searchQuery);
 
             return Json(products, JsonHelper.SerializerSettings);
         }

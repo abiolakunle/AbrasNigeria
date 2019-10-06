@@ -53,9 +53,9 @@ namespace AbrasNigeria.Data.Repositories
                         .Where(p => m.ProductMachines.Select(pm => pm.ProductId).Contains(p.ProductId)).Select(pg => new ProductDTO
                         {
                             PartNumber = pg.PartNumber,
-                            Categories = pg.ProductCategories.Select(pc => new CategoryDTO
+                            Descriptions = pg.ProductDescription.Select(pc => new DescriptionDTO
                             {
-                                CategoryName = pc.Category.CategoryName
+                                DescriptionName = pc.Description.DescriptionName
                             }),
                             Quantity = pg.ProductQuantities
                             .Where(pq => pq.MachineId == m.MachineId && pq.SectionGroupId == msg.SectionGroupId && pq.ProductId == pg.ProductId)

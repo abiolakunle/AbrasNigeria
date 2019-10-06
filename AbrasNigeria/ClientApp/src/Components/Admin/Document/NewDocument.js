@@ -26,7 +26,7 @@ class NewDocument extends Component {
     //`${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`
 
     partNumber: "",
-    description: "",
+    descriptions: "",
     quantity: undefined,
     unitPrice: undefined,
     extendedPrice: undefined,
@@ -103,7 +103,7 @@ class NewDocument extends Component {
           if (value.length === 0) {
             this.props.clearPartNumberSuggestion();
             this.setState({
-              description: ""
+              descriptions: ""
             });
           }
           this.props.suggestPartNumber(value);
@@ -114,8 +114,8 @@ class NewDocument extends Component {
 
   handleAddRow = event => {
     event.preventDefault();
-    const { partNumber, description, quantity, unitPrice } = this.state;
-    const newRow = { partNumber, description, quantity, unitPrice };
+    const { partNumber, descriptions, quantity, unitPrice } = this.state;
+    const newRow = { partNumber, descriptions, quantity, unitPrice };
     const table = [...this.state.table, newRow];
 
     this.props.clearPartNumberSuggestion();
@@ -126,7 +126,7 @@ class NewDocument extends Component {
       () => {
         this.setState({
           partNumber: "",
-          description: "",
+          descriptions: "",
           unitPrice: "",
           quantity: ""
         });
@@ -251,7 +251,7 @@ class NewDocument extends Component {
             <tr>
               <th scope="col">#</th>
               <th scope="col">Part Number</th>
-              <th scope="col">Description</th>
+              <th scope="col">Descriptions</th>
               <th scope="col">Quantity</th>
               <th scope="col">Unit Price</th>
               <th scope="col">Extended Price</th>
@@ -263,7 +263,7 @@ class NewDocument extends Component {
                 <tr key={index}>
                   <th scope="row">{index + 1}</th>
                   <td>{item.partNumber}</td>
-                  <td>{item.description}</td>
+                  <td>{item.descriptions}</td>
                   <td>{(item.quantity * 1).toLocaleString()}</td>
                   <td>{(item.unitPrice * 1).toLocaleString()}</td>
                   <td>{(item.unitPrice * item.quantity).toLocaleString()}</td>
@@ -337,8 +337,8 @@ class NewDocument extends Component {
                           event.preventDefault();
                           this.setState({
                             partNumber: item.partNumber,
-                            description: item.categories
-                              .map(category => category.categoryName)
+                            descriptions: item.descriptions
+                              .map(description => description.descriptionName)
                               .join(" | ")
                           });
                         }}
@@ -352,11 +352,11 @@ class NewDocument extends Component {
             </div>
             <div className="col-auto">
               <input
-                name="description"
-                value={this.state.description}
+                name="descriptions"
+                value={this.state.descriptions}
                 type="text"
                 className="form-control mb-2"
-                placeholder="Description"
+                placeholder="Descriptions"
                 onChange={this.handleChange}
               />
             </div>

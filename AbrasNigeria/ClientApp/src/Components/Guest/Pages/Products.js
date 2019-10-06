@@ -12,7 +12,7 @@ import HeaderFooter from "../Shared/HeaderFooter";
 export default class products extends Component {
   state = {
     partNumber: "",
-    category: "",
+    description: "",
     section: "",
     sectionGroup: "",
     machine: "",
@@ -22,7 +22,7 @@ export default class products extends Component {
     paging: {},
     partNumberSuggestions: [],
     brandSuggestions: [],
-    categorySuggestions: [],
+    descriptionSuggestions: [],
     sectionSuggestions: [],
     sectionGroupSuggestions: []
   };
@@ -77,7 +77,7 @@ export default class products extends Component {
 
     let brandsUrl = `/api/brand/search?searchQuery=${this.state.brand}`;
 
-    let categoriesUrl = `/api/category/search?searchQuery=${this.state.category}`;
+    let descriptionsUrl = `/api/description/search?searchQuery=${this.state.description}`;
 
     let sectionsUrl = `/api/section/search?searchQuery=${this.state.section}`;
 
@@ -99,10 +99,10 @@ export default class products extends Component {
             brandSuggestions: resp.data
           });
           break;
-        case "category":
-          resp = await axios.get(categoriesUrl);
+        case "description":
+          resp = await axios.get(descriptionsUrl);
           this.setState({
-            categorySuggestions: resp.data
+            descriptionSuggestions: resp.data
           });
           break;
         case "section":
@@ -182,11 +182,11 @@ export default class products extends Component {
                         //set the value from clicked suggestion to inputs
                         this.setState({
                           ...this.state,
-                          category: item.categoryName
+                          description: item.descriptionName
                         });
                       }}
                     >
-                      {item.categoryName}
+                      {item.descriptionName}
                     </button>
                   );
 
@@ -239,7 +239,7 @@ export default class products extends Component {
 
     let {
       partNumber,
-      category,
+      description,
       section,
       sectionGroup,
       machine,
@@ -248,7 +248,7 @@ export default class products extends Component {
 
     let queryData = {
       partNumber,
-      category,
+      description,
       section,
       sectionGroup,
       machine,
@@ -310,8 +310,8 @@ export default class products extends Component {
               <input
                 type="text"
                 placeholder="eg. Bolt shoe"
-                name="category"
-                value={this.state.category}
+                name="description"
+                value={this.state.description}
                 onChange={this.onFormChanged}
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
@@ -320,7 +320,7 @@ export default class products extends Component {
               />
               <React.Fragment>
                 {this.renderSuggestions(
-                  this.state.categorySuggestions,
+                  this.state.descriptionSuggestions,
                   "CATEGORY"
                 )}
               </React.Fragment>
@@ -425,11 +425,11 @@ export default class products extends Component {
                     <hr />
                     <div className="d-flex justify-content-between">
                       <p className="mb-1 pb-1">
-                        <b>Category: </b>{" "}
-                        {product.categories.map((category, index) => {
+                        <b>Description: </b>{" "}
+                        {product.descriptions.map((description, index) => {
                           return (
                             <span key={index}>{`${index > 0 ? " | " : ""} ${
-                              category.categoryName
+                              description.descriptionName
                             }`}</span>
                           );
                         })}

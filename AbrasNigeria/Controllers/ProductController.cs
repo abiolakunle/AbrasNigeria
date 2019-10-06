@@ -14,13 +14,13 @@ namespace AbrasNigeria.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IDescriptionRepository _descriptionRepository;
         private readonly IBrandRepository _brandRepository;
 
-        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository)
+        public ProductController(IProductRepository productRepository, IDescriptionRepository categoryRepository, IBrandRepository brandRepository)
         {
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
+            _descriptionRepository = categoryRepository;
             _brandRepository = brandRepository;
         }
 

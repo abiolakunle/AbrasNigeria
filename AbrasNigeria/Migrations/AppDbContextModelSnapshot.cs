@@ -25,7 +25,7 @@ namespace AbrasNigeria.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Descriptions");
 
                     b.Property<string>("Name");
 
@@ -55,31 +55,25 @@ namespace AbrasNigeria.Migrations
                     b.ToTable("CartItems");
                 });
 
-            modelBuilder.Entity("AbrasNigeria.Models.Category", b =>
+            modelBuilder.Entity("AbrasNigeria.Models.Descriptions", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("DescriptionId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BrandId");
-
                     b.Property<int?>("CartItemId");
 
-                    b.Property<string>("CategoryName");
-
-                    b.Property<string>("Description");
+                    b.Property<string>("DescriptionName");
 
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("ThumbUrl");
 
-                    b.HasKey("CategoryId");
-
-                    b.HasIndex("BrandId");
+                    b.HasKey("DescriptionId");
 
                     b.HasIndex("CartItemId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Descriptions");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.Document", b =>
@@ -113,7 +107,7 @@ namespace AbrasNigeria.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Descriptions");
 
                     b.Property<int>("DocumentId");
 
@@ -138,7 +132,7 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<int?>("BrandId");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Descriptions");
 
                     b.Property<string>("ImageUrl");
 
@@ -222,7 +216,7 @@ namespace AbrasNigeria.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Descriptions");
 
                     b.Property<string>("MachineTypeName");
 
@@ -270,8 +264,6 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<int?>("BrandId");
 
-                    b.Property<string>("Description");
-
                     b.Property<string>("Detail");
 
                     b.Property<string>("ImageUrl");
@@ -295,19 +287,19 @@ namespace AbrasNigeria.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("AbrasNigeria.Models.ProductCategory", b =>
+            modelBuilder.Entity("AbrasNigeria.Models.ProductDescription", b =>
                 {
                     b.Property<int>("ProductId");
 
-                    b.Property<int>("CategoryId");
+                    b.Property<int>("DescriptionId");
 
-                    b.Property<int>("ProductCategoryId");
+                    b.Property<int>("ProductDescriptionId");
 
-                    b.HasKey("ProductId", "CategoryId");
+                    b.HasKey("ProductId", "DescriptionId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("DescriptionId");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("ProductDescription");
                 });
 
             modelBuilder.Entity("AbrasNigeria.Models.ProductMachine", b =>
@@ -416,7 +408,7 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<int?>("BrandId");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Descriptions");
 
                     b.Property<string>("ImageUrl");
 
@@ -439,7 +431,7 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<int?>("BrandId");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Descriptions");
 
                     b.Property<string>("ImageUrl");
 
@@ -479,9 +471,7 @@ namespace AbrasNigeria.Migrations
 
                     b.Property<string>("Brand");
 
-                    b.Property<string>("Category");
-
-                    b.Property<string>("Description");
+                    b.Property<string>("Descriptions");
 
                     b.Property<string>("Detail");
 
@@ -553,12 +543,8 @@ namespace AbrasNigeria.Migrations
                         .HasForeignKey("OrderId");
                 });
 
-            modelBuilder.Entity("AbrasNigeria.Models.Category", b =>
+            modelBuilder.Entity("AbrasNigeria.Models.Descriptions", b =>
                 {
-                    b.HasOne("AbrasNigeria.Models.Brand")
-                        .WithMany("Categories")
-                        .HasForeignKey("BrandId");
-
                     b.HasOne("AbrasNigeria.Models.CartItem")
                         .WithMany("Categories")
                         .HasForeignKey("CartItemId");
@@ -647,15 +633,15 @@ namespace AbrasNigeria.Migrations
                         .HasForeignKey("SectionId");
                 });
 
-            modelBuilder.Entity("AbrasNigeria.Models.ProductCategory", b =>
+            modelBuilder.Entity("AbrasNigeria.Models.ProductDescription", b =>
                 {
-                    b.HasOne("AbrasNigeria.Models.Category", "Category")
-                        .WithMany("ProductCategories")
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("AbrasNigeria.Models.Descriptions", "Descriptions")
+                        .WithMany("ProductDescriptions")
+                        .HasForeignKey("DescriptionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AbrasNigeria.Models.Product", "Product")
-                        .WithMany("ProductCategories")
+                        .WithMany("ProductDescription")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

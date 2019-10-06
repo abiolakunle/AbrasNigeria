@@ -78,7 +78,7 @@ namespace AbrasNigeria
             services.AddScoped<ExcelPartBookToDb>();
 
             services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IDescriptionRepository, DescriptionRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
             services.AddTransient<IMachineRepository, MachineRepository>();
             services.AddTransient<ISectionGroupRepository, SectionGroupRepository>();

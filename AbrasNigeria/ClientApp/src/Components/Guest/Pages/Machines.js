@@ -58,17 +58,17 @@ export default class Machines extends Component {
             {/* @*
             <div className="card-footer">
               <a
-                asp-controller="Category"
+                asp-controller="Description"
                 asp-action="Update"
-                asp-route-id="@category.CategoryId"
+                asp-route-id="@description.DescriptionId"
                 className="btn btn-dark col-md-3"
               >
                 Edit
               </a>
               <a
-                asp-controller="Category"
+                asp-controller="Description"
                 asp-action="Delete"
-                asp-route-id="@category.CategoryId"
+                asp-route-id="@description.DescriptionId"
                 className="btn btn-primary col-md-3"
               >
                 Delete

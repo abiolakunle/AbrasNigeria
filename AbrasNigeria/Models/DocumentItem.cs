@@ -13,7 +13,7 @@ namespace AbrasNigeria.Models
 
         public string PartNumber { get; set; }
 
-        public string Description { get; set; }
+        public string Descriptions { get; set; }
 
         public int Quantity { get; set; }
 

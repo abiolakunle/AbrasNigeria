@@ -23,7 +23,6 @@ export const getStock = () => {
       .get(api, requestOptions)
       .then(({ data }) => {
         dispatch(success(GET_STOCK_SUCCESS, data));
-        console.log("data", data);
       })
       .catch(({ message }) => {
         dispatch(failure(GET_STOCK_FAILURE, message));

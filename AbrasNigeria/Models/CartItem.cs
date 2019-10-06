@@ -9,7 +9,7 @@ namespace AbrasNigeria.Models
     {
         public CartItem()
         {
-            Categories = new HashSet<Category>();
+            Categories = new HashSet<Description>();
         }
         public int CartItemId { get; set; }
 
@@ -17,7 +17,7 @@ namespace AbrasNigeria.Models
 
         public string PartNumber { get; set; }
 
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<Description> Categories { get; set; }
 
         public int Quantity { get; set; }
     }

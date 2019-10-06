@@ -14,6 +14,7 @@ namespace AbrasNigeria.Data.Utils
         public static void DoMigration(IApplicationBuilder app)
         {
             AppDbContext context = app.ApplicationServices.GetRequiredService<AppDbContext>();
+            //context.Database.EnsureDeleted();
             context.Database.Migrate();
         }
 

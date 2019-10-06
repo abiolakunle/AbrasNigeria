@@ -13,7 +13,7 @@ import SideNavbar from "../Shared/SideNavbar";
 class CreateStockProduct extends Component {
   state = {
     partNumber: "",
-    categories: [],
+    descriptions: [],
     brand: "",
     imageUrl: "",
     thumbUrl: ""
@@ -34,7 +34,7 @@ class CreateStockProduct extends Component {
         }
       }
     );
-    const { partNumber, categories, brand } = this.state;
+    const { partNumber, descriptions, brand } = this.state;
     return (
       <SideNavbar>
         <React.Fragment>
@@ -71,10 +71,10 @@ class CreateStockProduct extends Component {
                           event.preventDefault();
                           this.setState({
                             partNumber: item.partNumber,
-                            categories: item.categories.map(
-                              (category, index) => {
+                            descriptions: item.descriptions.map(
+                              (description, index) => {
                                 return `${index > 0 ? " | " : ""} ${
-                                  category.categoryName
+                                  description.descriptionName
                                 }`;
                               }
                             ),
@@ -93,9 +93,9 @@ class CreateStockProduct extends Component {
               <input
                 type="text"
                 className="form-control"
-                placeholder="categories"
-                name="categories"
-                value={categories}
+                placeholder="descriptions"
+                name="descriptions"
+                value={descriptions}
                 onChange={this.handleChange}
                 required
               />
@@ -140,8 +140,8 @@ class CreateStockProduct extends Component {
   };
 
   sendStockProduct = () => {
-    const { partNumber, categories, brand, thumbUrl, imageUrl } = this.state;
-    const product = { partNumber, categories, brand, thumbUrl, imageUrl };
+    const { partNumber, descriptions, brand, thumbUrl, imageUrl } = this.state;
+    const product = { partNumber, descriptions, brand, thumbUrl, imageUrl };
 
     const requestOptions = {
       method: "POST",
@@ -173,7 +173,7 @@ class CreateStockProduct extends Component {
           if (value.length === 0) {
             this.props.clearPartNumberSuggestion();
             this.setState({
-              categories: []
+              descriptions: []
             });
           }
           this.props.suggestPartNumber(value);

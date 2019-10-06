@@ -23,7 +23,7 @@ namespace AbrasNigeria.Data.DTO
 
         public IEnumerable<MachineDTO> Machines { get; set; }
 
-        public IEnumerable<CategoryDTO> Categories { get; set; }
+        public IEnumerable<DescriptionDTO> Descriptions { get; set; }
 
         public IEnumerable<SectionGroupDTO> SectionGroups { get; set; }
 

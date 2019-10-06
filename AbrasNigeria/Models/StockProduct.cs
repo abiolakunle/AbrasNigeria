@@ -16,13 +16,11 @@ namespace AbrasNigeria.Models
 
         public string PartNumber { get; set; }
 
-        public string Category { get; set; }
+        public string Descriptions { get; set; }
 
         public string Brand { get; set; }
 
         public decimal Price { get; set; }
-
-        public string Description { get; set; }
 
         public string Detail { get; set; }
 

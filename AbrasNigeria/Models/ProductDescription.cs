@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace AbrasNigeria.Models
 {
-    public class ProductCategory
+    public class ProductDescription
     {
-        public int ProductCategoryId { get; set; }
+        public int ProductDescriptionId { get; set; }
 
         public int ProductId { get; set; }
         public Product Product { get; set; }
 
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public int DescriptionId { get; set; }
+        public Description Description { get; set; }
     }
 }

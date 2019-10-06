@@ -20,19 +20,19 @@ namespace AbrasNigeria.Data.Repositories
         {
             return _context.Products
                 .Where(p => p.Brand.Name.Contains(filter.Brand))
-                .Where(p => p.ProductCategories.Contains(p.ProductCategories.Where(pc => pc.Category.CategoryName.Contains(filter.Category)).FirstOrDefault()))
+                .Where(p => p.ProductDescription.Contains(p.ProductDescription.Where(pc => pc.Description.DescriptionName.Contains(filter.Description)).FirstOrDefault()))
                 .Where(p => p.PartNumber.Contains(filter.PartNumber))
                 .Where(p => p.Section.SectionName.Contains(filter.Section))
                 .Where(p => p.ProductSectionGroups.Contains(p.ProductSectionGroups.Where(psg => psg.SectionGroup.SectionGroupName.Contains(filter.SectionGroup)).FirstOrDefault()))
                 .Where(p => p.ProductMachines.Contains(p.ProductMachines.Where(pm => pm.Machine.ModelName.Contains(filter.Machine)).FirstOrDefault()))
-                //.Include(p => p.Category)
+                //.Include(p => p.Descriptions)
                 .Select(p => new ProductDTO
                 {
                     ProductId = p.ProductId,
                     PartNumber = p.PartNumber,
-                    Categories = p.ProductCategories.Select(pcs => new CategoryDTO
+                    Descriptions = p.ProductDescription.Select(pcs => new DescriptionDTO
                     {
-                        CategoryName = pcs.Category.CategoryName
+                        DescriptionName = pcs.Description.DescriptionName
                     })
                 });
         }
@@ -45,9 +45,9 @@ namespace AbrasNigeria.Data.Repositories
                 {
                     ProductId = p.ProductId,
                     PartNumber = p.PartNumber,
-                    Categories = p.ProductCategories.Select(pc => new CategoryDTO
+                    Descriptions = p.ProductDescription.Select(pc => new DescriptionDTO
                     {
-                        CategoryName = pc.Category.CategoryName
+                        DescriptionName = pc.Description.DescriptionName
                     }),
                     Brand = p.Brand.Name,
                     Section = p.Section.SectionName,
@@ -77,9 +77,9 @@ namespace AbrasNigeria.Data.Repositories
                 .Select(p => new ProductDTO
                 {
                     PartNumber = p.PartNumber,
-                    Categories = p.ProductCategories.Select(pc => new CategoryDTO
+                    Descriptions = p.ProductDescription.Select(pc => new DescriptionDTO
                     {
-                        CategoryName = pc.Category.CategoryName
+                        DescriptionName = pc.Description.DescriptionName
                     }),
                     Brand = p.Brand.Name
                 });

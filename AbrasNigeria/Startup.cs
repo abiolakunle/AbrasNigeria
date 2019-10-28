@@ -6,21 +6,16 @@ using AbrasNigeria.Data.Repositories;
 using AbrasNigeria.Data.Services;
 using AbrasNigeria.Data.Utils;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Tokens;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AbrasNigeria
 {
@@ -64,12 +59,20 @@ namespace AbrasNigeria
             if (HostingEnvironment.IsDevelopment())
             {
                 services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-                Configuration["ConnectionStrings:TestConnection"]
+                Configuration["ConnectionStrings:DevAppDbConnection"]
+                ));
+
+                services.AddDbContext<PartsBookDbContext>(options => options.UseSqlServer(
+                Configuration["ConnectionStrings:DevPartsDbConnection"]
                 ));
             }
             else
             {
                 services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+                Configuration["ConnectionStrings:ProdAppDbConnection"]
+                ));
+
+                services.AddDbContext<PartsBookDbContext>(options => options.UseSqlServer(
                 Configuration["ConnectionStrings:RemoteConnection"]
                 ));
             }
@@ -92,7 +95,7 @@ namespace AbrasNigeria
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IUserService userService)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {

@@ -3,6 +3,7 @@ import { CartConsumer } from "../../../Contexts/CartContext";
 
 const AddToCartBtn = props => {
   const { product } = props;
+  const { partNumber, descriptions } = product;
 
   return (
     <CartConsumer>
@@ -10,17 +11,12 @@ const AddToCartBtn = props => {
         const { syncWithCart, addToCart } = contextValue;
         return (
           <div>
-            {!syncWithCart(product.partNumber) ? (
+            {!syncWithCart(partNumber) ? (
               <button
                 className="btn btn-light badge badge-pill p-2"
                 role="link"
                 onClick={() => {
-                  addToCart({
-                    productId: product.productId,
-                    partNumber: product.partNumber,
-                    descriptions: product.descriptions,
-                    quantity: 1
-                  });
+                  addToCart({ partNumber, descriptions, quantity: 1 });
                 }}
               >
                 Add to cart <span className="fas fa-plus-circle" />
@@ -30,10 +26,7 @@ const AddToCartBtn = props => {
                 className="btn btn-light badge badge-pill p-2"
                 role="link"
                 onClick={() => {
-                  addToCart({
-                    partNumber: product.partNumber,
-                    descriptions: product.descriptions
-                  });
+                  addToCart({ partNumber });
                 }}
               >
                 Remove from cart <span className="fas fa-minus-circle" />

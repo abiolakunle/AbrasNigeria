@@ -4,95 +4,37 @@ using System.Linq;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Models;
 using AbrasNigeria.Data.DbContexts;
-using System.Threading.Tasks;
-using AbrasNigeria.Data.DTO;
-using AbrasNigeria.Data.Extensions;
 
 namespace AbrasNigeria.Data.Repositories
 {
     public class MachineRepository : Repository<Machine>, IMachineRepository
     {
-        public MachineRepository(AppDbContext context) : base(context)
+        public MachineRepository(PartsBookDbContext context) : base(context)
         {
         }
 
-        public async Task<IEnumerable<MachineDTO>> LoadAllWithBrand()
+        public IEnumerable<Machine> LoadAllWithBrand()
         {
-            //return await _context.Machines.Include(m => m.Brand).ToListAsync();
-            return await _context.Machines
-                .Select(m => new MachineDTO
-                {
-                    MachineId = m.MachineId,
-                    ModelName = m.ModelName,
-                    SerialNumber = m.SerialNumber,
-                    BrandName = m.Brand.Name,
-                }).ToListAsync();
+            return _table
+                .Include(m => m.Brand);
         }
 
-
-        public MachineDTO LoadWithBrandSection(int id)
+        public Machine LoadWithBrandSection(long id)
         {
-            return _context.Machines.Where(m => m.MachineId == id).Select(m => new MachineDTO
-            {
-                ModelName = m.ModelName,
-                SerialNumber = m.SerialNumber,
-                BrandName = m.Brand.Name,
-                Sections = m.MachineSections.Where(s => s.MachineId == m.MachineId).Select(s => new SectionDTO
-                {
-                    SectionName = s.Section.SectionName,
-                    SectionGroups = m.MachineSectionGroups
-                    .Where(msg => msg.MachineId == m.MachineId && msg.SectionGroup.Section.SectionId == s.Section.SectionId)
-                    .Select(msg => new SectionGroupDTO
-                    {
-                        SectionGroupName = msg.SectionGroup.SectionGroupName,
-                        Section = msg.SectionGroup.Section.SectionName,
-
-                        //this Took me three day to wrap my head around, got solution here https://stackoverflow.com/questions/11285045/intersect-two-lists-with-different-objects/11285117#11285117  Raphaël Althaus
-                        //selecting products that are in this productsection which also belong to this machine
-                        Products = msg.SectionGroup.ProductSectionGroups.Select(psg => psg.Product)
-                        .Where(p => m.ProductMachines.Select(pm => pm.ProductId).Contains(p.ProductId)).Select(pg => new ProductDTO
-                        {
-                            PartNumber = pg.PartNumber,
-                            Descriptions = pg.ProductDescription.Select(pc => new DescriptionDTO
-                            {
-                                DescriptionName = pc.Description.DescriptionName
-                            }),
-                            Quantity = pg.ProductQuantities
-                            .Where(pq => pq.MachineId == m.MachineId && pq.SectionGroupId == msg.SectionGroupId && pq.ProductId == pg.ProductId)
-                            .FirstOrDefault().Quantity.Value,
-
-                            SerialNo = pg.SectionGroupSerialNos
-                            .Where(pss => pss.ProductId == pg.ProductId && pss.SectionGroupId == msg.SectionGroupId && pss.MachineId == m.MachineId)
-                            .FirstOrDefault().SerialNo.Value,
-
-                            Remark = pg.ProductMachineRemarks.Where(pmr => pmr.ProductId == pg.ProductId && pmr.MachineId == m.MachineId)
-                            .FirstOrDefault().Remark.Value
-                        })
-                    })
-                })
-            }).FirstOrDefault();
+            return _table.Where(m => m.MachineId == id)
+                .Include(m => m.Brand)
+                .Include(m => m.Sections).ThenInclude(m => m.Section)
+                .Include(m => m.SectionGroups).ThenInclude(m => m.SectionGroup)
+                .Include(m => m.SectionGroupProducts)
+                .ThenInclude(mp => mp.Product)
+                .ThenInclude(p => p.Descriptions)
+                .ThenInclude(p => p.Description)
+                .FirstOrDefault();
         }
 
-        public IEnumerable<MachineDTO> Search(string searchQuery)
+        public IEnumerable<Machine> Search(string searchQuery)
         {
-            //return _context.Machines
-            //     .Where(m => m.MachineSectionGroups
-            //     .Contains(m.MachineSectionGroups.Where(ms => ms.Machine.ModelName.Contains(searchQuery)).FirstOrDefault()))
-            //     .Select(m => new MachineDTO
-            //     {
-            //         BrandName = m.Brand.Name,
-            //         ModelName = m.ModelName,
-            //         SerialNumber = m.SerialNumber,
-            //     });
-
-            return _context.Machines
-                .Where(m => m.ModelName.Contains(searchQuery))
-                .Select(m => new MachineDTO
-                {
-                    BrandName = m.Brand.Name,
-                    ModelName = m.ModelName,
-                    SerialNumber = m.SerialNumber,
-                }); ;
+            return _table.Where(m => m.ModelName.Contains(searchQuery));
         }
     }
 }

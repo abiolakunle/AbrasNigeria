@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AbrasNigeria.Models
+﻿namespace AbrasNigeria.Models
 {
     public class MachineSection
     {
         //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int MachineSectionId { get; set; }
+        public long MachineSectionId { get; set; }
 
-        public int MachineId { get; set; }
+        public long MachineId { get; set; }
         public Machine Machine { get; set; }
 
-        public int SectionId { get; set; }
+        public long SectionId { get; set; }
         public Section Section { get; set; }
     }
 }

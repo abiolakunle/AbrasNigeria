@@ -22,8 +22,8 @@ namespace AbrasNigeria.Data.Repositories
 
         public IEnumerable<StockProductDTO> LoadAllWithHistory()
         {
-            IEnumerable<StockProductDTO> products = _context.StockProducts
-                 .Include(s => s.StockProductHistories)
+            IEnumerable<StockProductDTO> products = _table
+                 .Include(s => s.Histories)
                  .Select(p => _mapper.Map<StockProductDTO>(p));
 
             return products;
@@ -31,18 +31,18 @@ namespace AbrasNigeria.Data.Repositories
 
         public void AddHistory(StockProductHistory productHistory)
         {
-            StockProduct product = _context.StockProducts
+            StockProduct product = _table
                 .Where(p => p.StockProductId == productHistory.StockProductId)
                 .FirstOrDefault();
-            product.StockProductHistories.Add(productHistory);
-            _context.Update(product);
+            product.Histories.Add(productHistory);
+            _table.Update(product);
         }
 
-        public StockProduct LoadWithHistory(int id)
+        public StockProduct LoadWithHistory(long id)
         {
-            return _context.StockProducts
+            return _table
                 .Where(p => p.StockProductId == id)
-                .Include(p => p.StockProductHistories).FirstOrDefault();
+                .Include(p => p.Histories).FirstOrDefault();
         }
 
         //public void AddStockHistory(int productId, StockProductHistory productHistory)

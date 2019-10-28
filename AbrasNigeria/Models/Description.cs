@@ -7,10 +7,10 @@ namespace AbrasNigeria.Models
     {
         public Description()
         {
-            ProductDescriptions = new HashSet<ProductDescription>();
+            Products = new HashSet<ProductDescription>();
         }
 
-        public int DescriptionId { get; set; }
+        public long DescriptionId { get; set; }
 
         public string DescriptionName { get; set; }
 
@@ -18,7 +18,7 @@ namespace AbrasNigeria.Models
 
         public string ThumbUrl { get; set; }
 
-        public virtual ICollection<ProductDescription> ProductDescriptions { get; set; }
+        public ICollection<ProductDescription> Products { get; set; }
 
     }
 }

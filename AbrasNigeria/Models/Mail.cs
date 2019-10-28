@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AbrasNigeria.Models
+﻿namespace AbrasNigeria.Models
 {
     public class Mail
     {
@@ -13,6 +8,6 @@ namespace AbrasNigeria.Models
 
         public string Message { get; set; }
 
-        public int AttachmentId { get; set; }
+        public long AttachmentId { get; set; }
     }
 }

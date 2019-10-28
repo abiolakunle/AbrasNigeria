@@ -8,12 +8,10 @@ namespace AbrasNigeria.Data.Interfaces
 {
     public interface IProductRepository : IRepository<Product>
     {
-        ProductDTO FindWithProp(int productId);
+        IEnumerable<Product> Search(string searchQuery);
 
-        IEnumerable<ProductDTO> Search(string searchQuery);
+        IEnumerable<Product> Filter(FilterProductsDTO query);
 
-        IEnumerable<ProductDTO> Filter(FilterProductsDTO query);
-
-
+        Product FindByPartNumber(string partNumber);
     }
 }

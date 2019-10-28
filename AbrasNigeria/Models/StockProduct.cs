@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AbrasNigeria.Models
 {
@@ -9,10 +6,10 @@ namespace AbrasNigeria.Models
     {
         public StockProduct()
         {
-            StockProductHistories = new HashSet<StockProductHistory>();
+            Histories = new HashSet<StockProductHistory>();
         }
 
-        public int StockProductId { get; set; }
+        public long StockProductId { get; set; }
 
         public string PartNumber { get; set; }
 
@@ -28,6 +25,6 @@ namespace AbrasNigeria.Models
 
         public string ThumbUrl { get; set; }
 
-        public ICollection<StockProductHistory> StockProductHistories { get; set; }
+        public ICollection<StockProductHistory> Histories { get; set; }
     }
 }

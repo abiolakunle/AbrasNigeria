@@ -9,13 +9,13 @@ namespace AbrasNigeria.Data.Repositories
 {
     public class SectionRepository : Repository<Section>, ISectionRepository
     {
-        public SectionRepository(AppDbContext context) : base(context)
+        public SectionRepository(PartsBookDbContext context) : base(context)
         {
         }
 
         public IEnumerable<SectionDTO> Search(string searchQuery)
         {
-            return _context.Sections
+            return _table
                  .Where(s => s.SectionName.Contains(searchQuery))
                  .Select(s => new SectionDTO
                  {

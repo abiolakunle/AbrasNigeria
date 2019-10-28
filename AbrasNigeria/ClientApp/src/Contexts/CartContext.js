@@ -29,8 +29,8 @@ export default class CartProvider extends Component {
           cartItems: data
         });
       })
-      .then(error => {
-        console.error("Error", error);
+      .catch(error => {
+        console.error("axios error", error);
       });
   }
   render() {
@@ -54,10 +54,10 @@ export default class CartProvider extends Component {
     axios
       .post(apiUrl, this.state.cartItems)
       .then(response => {
-        console.info(response.data);
+        console.info("axios success", response.data);
       })
       .catch(error => {
-        console.error(error);
+        console.error("axios error", error);
       });
   };
 

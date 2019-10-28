@@ -411,33 +411,30 @@ export default class products extends Component {
       <React.Fragment>
         <div className="row">
           {this.state.products.map((product, index) => {
+            let { partNumber, descriptions } = product;
+            descriptions = descriptions
+              .map(description => description.descriptionName)
+              .join(" | ");
             return (
               <div key={index} className="col-md-4 mb-3">
                 <div className="card shadow-sm">
                   <div className="card-body">
-                    <Link to={`/guest/product/${product.productId}`}>
+                    <Link to={`/guest/product/${partNumber}`}>
                       <h5>
                         <span>Part number: </span>
-                        {product.partNumber}
+                        {partNumber}
                       </h5>
                     </Link>
 
                     <hr />
                     <div className="d-flex justify-content-between">
                       <p className="mb-1 pb-1">
-                        <b>Description: </b>{" "}
-                        {product.descriptions.map((description, index) => {
-                          return (
-                            <span key={index}>{`${index > 0 ? " | " : ""} ${
-                              description.descriptionName
-                            }`}</span>
-                          );
-                        })}
+                        <b>Description(s): </b> {descriptions}
                       </p>
                     </div>
 
                     <div className="d-flex justify-content-right">
-                      <AddToCartBtn product={product} />
+                      <AddToCartBtn product={{ partNumber, descriptions }} />
                     </div>
                   </div>
                 </div>

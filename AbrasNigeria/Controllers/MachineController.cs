@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using AbrasNigeria.Data.Utils;
 using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Models;
+using AutoMapper;
+using AbrasNigeria.Data.Extensions;
 
 namespace AbrasNigeria.Controllers
 {
@@ -17,15 +19,15 @@ namespace AbrasNigeria.Controllers
     {
         private readonly IMachineRepository _machineRepository;
 
-        public MachineController(IMachineRepository machineRepository)
+        public MachineController(IMachineRepository machineRepository, IMapper mapper)
         {
             _machineRepository = machineRepository;
         }
 
         [HttpGet("[action]")]
-        public async Task<JsonResult> List(int page)
+        public JsonResult List(int page)
         {
-            IEnumerable<MachineDTO> machines = await _machineRepository.LoadAllWithBrand();
+            IEnumerable<Machine> machines = _machineRepository.LoadAllWithBrand();
 
             PagingInfo pagingInfo = new PagingInfo
             {
@@ -37,13 +39,13 @@ namespace AbrasNigeria.Controllers
 
             HttpContext.Response.Headers.Add("Paging", JsonConvert.SerializeObject(pagingInfo));
 
-            return Json(machines, JsonHelper.SerializerSettings);
+            return Json(machines.ToDTO(), JsonHelper.SerializerSettings);
         }
 
         [HttpGet("[action]")]
-        public JsonResult Machine(int id)
+        public JsonResult Machine(long id)
         {
-            MachineDTO machine = _machineRepository.LoadWithBrandSection(id);
+            MachineDTO machine = _machineRepository.LoadWithBrandSection(id).ToDTO();
 
             return Json(machine, JsonHelper.SerializerSettings);
         }
@@ -51,7 +53,7 @@ namespace AbrasNigeria.Controllers
         [HttpGet("[action]")]
         public JsonResult Search(string searchQuery)
         {
-            IEnumerable<MachineDTO> machines = _machineRepository.Search(searchQuery);
+            IEnumerable<MachineDTO> machines = _machineRepository.Search(searchQuery).ToDTO();
 
             return Json(machines, JsonHelper.SerializerSettings);
         }

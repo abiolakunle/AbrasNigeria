@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AbrasNigeria.Models
 {
     public class StockProductHistory
     {
-        public int StockProductHistoryId { get; set; }
+        public long StockProductHistoryId { get; set; }
 
-        public int StockProductId { get; set; }
+        public long StockProductId { get; set; }
 
         public int AddedQuantity { get; set; }
 

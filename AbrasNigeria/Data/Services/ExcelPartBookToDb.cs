@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,13 +14,360 @@ namespace AbrasNigeria.Data.Services
 {
     public class ExcelPartBookToDb
     {
-        private readonly AppDbContext _dbContext;
+        private readonly PartsBookDbContext _dbContext;
         private readonly IHostingEnvironment _environment;
 
-        public ExcelPartBookToDb(AppDbContext dbContext, IHostingEnvironment environment)
+        public ExcelPartBookToDb(PartsBookDbContext dbContext, IHostingEnvironment environment)
         {
             _dbContext = dbContext;
             _environment = environment;
+        }
+
+
+        public async Task CopyToDbNew(IFormFile masterFile)
+        {
+            //Generate full filepath and save file
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), _environment.WebRootPath, "uploads/" + masterFile.FileName);
+
+            using (var bits = new FileStream(filePath, FileMode.Create))
+            {
+                await masterFile.CopyToAsync(bits);
+            }
+
+            //create new file object from file path
+            FileInfo file = new FileInfo(filePath);
+
+            //Install-Package EPPlus.Core -Version 1.5.4
+            using (ExcelPackage package = new ExcelPackage(file))
+            {
+                //get file as worksheet object
+                ExcelWorksheet workSheet = package.Workbook.Worksheets["Sheet1"];
+
+                //get master table line objects with properties of excel table columns
+                HashSet<MasterTableLine> masterLines = SheetToTableLine(workSheet);
+
+                //delete file
+                file.Delete();
+
+                //Relationship HashSets
+                HashSet<MachineSection> memMachineSections = new HashSet<MachineSection>();
+                HashSet<MachineSectionGroup> memMachineSectionGroups = new HashSet<MachineSectionGroup>();
+                HashSet<ProductSectionGroup> memProductSectionGroups = new HashSet<ProductSectionGroup>();
+                HashSet<ProductDescription> memProductDescriptions = new HashSet<ProductDescription>();
+
+                //sort out some relationships (in memory)
+                foreach (MasterTableLine line in masterLines.Reverse())
+                {
+                    if (!memMachineSections.Any(ms => ms.Machine.ModelName == line.ModelName && ms.Section.SectionName == line.Section))
+                    {
+                        memMachineSections.Add(new MachineSection
+                        {
+                            Machine = new Machine { ModelName = line.ModelName },
+                            Section = new Section { SectionName = line.Section }
+                        });
+                    }
+                    Console.WriteLine($"ms Length {memMachineSections.Count()}");
+
+                    if (!memMachineSectionGroups.Any(msg => msg.Machine.ModelName == line.ModelName && msg.SectionGroup.SectionGroupName == line.SectionGroup))
+                    {
+                        memMachineSectionGroups.Add(new MachineSectionGroup
+                        {
+                            Machine = new Machine { ModelName = line.ModelName },
+                            SectionGroup = new SectionGroup { SectionGroupName = line.SectionGroup }
+                        });
+                    }
+                    Console.WriteLine($"psg Length {memMachineSectionGroups.Count()}");
+
+                    if (!memProductSectionGroups.Any(psg => psg.Product.PartNumber == line.PartNumber && psg.SectionGroup.SectionGroupName == line.SectionGroup))
+                    {
+                        memProductSectionGroups.Add(new ProductSectionGroup
+                        {
+                            Product = new Product { PartNumber = line.PartNumber },
+                            SectionGroup = new SectionGroup { SectionGroupName = line.SectionGroup }
+                        });
+                    }
+                    Console.WriteLine($"ps Length {memProductSectionGroups.Count()}");
+
+                    if (!memProductDescriptions.Any(pd => pd.Product.PartNumber == line.PartNumber && pd.Description.DescriptionName == line.Description))
+                    {
+                        memProductDescriptions.Add(new ProductDescription
+                        {
+                            Product = new Product { PartNumber = line.PartNumber },
+                            Description = new Description { DescriptionName = line.Description }
+                        });
+                    }
+                    Console.WriteLine($"ps Length {memProductSectionGroups.Count()}");
+                }
+
+                string prevBrand = null;
+                string prevMachine = null;
+                string prevSection = null;
+                string prevSectionGroup = null;
+                string prevDescription = null;
+                string prevProduct = null;
+
+                //hold current entity
+                Brand brand = null;
+                Machine machine = null;
+                Section section = null;
+                SectionGroup sectionGroup = null;
+                Description description = null;
+                Product product = null;
+
+                //get data to db
+                foreach (var line in masterLines)
+                {
+                    Stopwatch sw = Stopwatch.StartNew();
+
+                    //add brand
+                    if (line.Brand != "")
+                    {
+                        Console.WriteLine($"PrevBrand = {prevBrand} CurrentBrand = {line.Brand}");
+
+                        if (prevBrand != line.Brand)
+                        {
+                            Console.WriteLine("About to get Brand");
+                            brand = _dbContext.Brands.FirstOrDefault(b => b.Name == line.Brand);
+                            if (brand == null)
+                            {
+                                _dbContext.Brands.Add(new Brand
+                                {
+                                    Name = line.Brand
+                                });
+                                _dbContext.SaveChanges();
+                                Console.WriteLine("Added brand");
+                                brand = _dbContext.Brands.Where(b => b.Name == line.Brand).FirstOrDefault();
+                            }
+                            prevBrand = line.Brand;
+                        }
+                    }
+
+                    //add machine model
+                    if (line.ModelName != "")
+                    {
+                        Console.WriteLine($"PrevMach = {prevMachine} CurrentMach = {line.ModelName}");
+
+                        if (prevMachine != line.ModelName)
+                        {
+                            machine = _dbContext.Machines.Where(m => m.ModelName == line.ModelName).FirstOrDefault();
+
+                            if (machine == null)
+                            {
+                                _dbContext.Machines.Add(new Machine
+                                {
+                                    ModelName = line.ModelName,
+                                    SerialNumber = line.MachineSerialNumber,
+                                    Brand = brand
+                                });
+                                _dbContext.SaveChanges();
+                                Console.WriteLine("Added machine");
+                                machine = _dbContext.Machines.Where(m => m.ModelName == line.ModelName).FirstOrDefault();
+                            }
+                            prevMachine = line.ModelName;
+                        }
+                    }
+
+                    //add Section
+                    if (line.Section != "")
+                    {
+
+                        if (prevSection != line.Section)
+                        {
+                            section = _dbContext.Sections.Where(s => s.SectionName == line.Section).FirstOrDefault();
+
+                            if (section == null)
+                            {
+                                _dbContext.Sections.Add(new Section
+                                {
+                                    SectionName = line.Section
+                                });
+                                _dbContext.SaveChanges();
+                                Console.WriteLine("Added section");
+                                section = _dbContext.Sections.Where(s => s.SectionName == line.Section).FirstOrDefault();
+                            }
+                            prevSection = line.Section;
+                        }
+                    }
+
+                    //add SectionGroup
+                    if (line.SectionGroup != "")
+                    {
+                        if (prevSectionGroup != line.SectionGroup)
+                        {
+                            sectionGroup = _dbContext.SectionGroups.Where(s => s.SectionGroupName == line.SectionGroup).FirstOrDefault();
+
+                            if (sectionGroup == null)
+                            {
+                                _dbContext.SectionGroups.Add(new SectionGroup
+                                {
+                                    SectionGroupName = line.SectionGroup,
+                                    Section = section
+                                });
+                                _dbContext.SaveChanges();
+                                Console.WriteLine("Added sectiongroup");
+                                sectionGroup = _dbContext.SectionGroups.Where(s => s.SectionGroupName == line.SectionGroup).FirstOrDefault();
+                            }
+                            prevSectionGroup = line.SectionGroup;
+                        }
+                    }
+
+                    //add description
+                    if (line.Description != "")
+                    {
+                        if (prevDescription != line.Description)
+                        {
+                            description = _dbContext.Descriptions.Where(c => c.DescriptionName == line.Description).FirstOrDefault();
+
+                            if (description == null)
+                            {
+                                _dbContext.Descriptions.Add(new Description
+                                {
+                                    DescriptionName = line.Description,
+                                });
+                                _dbContext.SaveChanges();
+                                Console.WriteLine("Added description");
+                                description = _dbContext.Descriptions.Where(c => c.DescriptionName == line.Description).FirstOrDefault();
+                            }
+
+                            prevDescription = line.Description;
+                        }
+                    }
+
+                    //add partnumber
+                    if (line.PartNumber != "")
+                    {
+                        if (prevProduct != line.PartNumber)
+                        {
+                            product = _dbContext.Products.FirstOrDefault(p => p.PartNumber == line.PartNumber);
+
+                            if (product == null)
+                            {
+                                _dbContext.Products.Add(new Product
+                                {
+                                    PartNumber = line.PartNumber,
+                                    Brand = brand,
+                                    Section = section,
+                                });
+                                _dbContext.SaveChanges();
+                                Console.WriteLine("Added product");
+                                product = _dbContext.Products.Where(p => p.PartNumber == line.PartNumber).FirstOrDefault();
+                            }
+                            prevProduct = line.PartNumber;
+                        }
+
+                    }
+
+
+                    //Sort out many to many relationships
+
+                    //ProductMachine relationship
+                    bool machineSectionGroupProductBool = _dbContext
+                        .Set<MachineSectionGroupProduct>()
+                        .Any(pm => pm.ProductId == product.ProductId && pm.MachineId == machine.MachineId && pm.SectionGroupId == sectionGroup.SectionGroupId);
+
+                    if (!machineSectionGroupProductBool)
+                    {
+                        //product.MachineSectionGroups.Add(machineSectionGroupProduct);
+                        machine.SectionGroupProducts.Add(new MachineSectionGroupProduct
+                        {
+                            Product = product,
+                            SectionGroup = sectionGroup,
+                            Machine = machine,
+                        });
+                        _dbContext.SaveChanges();
+                    }
+
+                    //ProductDescription relationship
+                    var prodDesc = memProductDescriptions
+                        .FirstOrDefault(pd => pd.Product.PartNumber == line.PartNumber && pd.Description.DescriptionName == line.Description);
+                    if (prodDesc != null)
+                    {
+                        bool productDescriptionBool = _dbContext
+                            .Set<ProductDescription>()
+                            .Any(pc => pc.ProductId == product.ProductId && pc.DescriptionId == description.DescriptionId);
+
+                        if (!productDescriptionBool)
+                        {
+                            product.Descriptions.Add(new ProductDescription
+                            {
+                                Product = product,
+                                Description = description
+                            });
+                            _dbContext.SaveChanges();
+                        }
+                        memProductDescriptions.Remove(prodDesc);
+                    }
+
+
+                    //ProductSectionGroup relationship
+                    var proSectGrp = memProductSectionGroups
+                        .FirstOrDefault(psg => psg.Product.PartNumber == line.PartNumber && psg.SectionGroup.SectionGroupName == line.SectionGroup);
+                    if (proSectGrp != null)
+                    {
+                        bool productSectionGroupBool = _dbContext
+                            .Set<ProductSectionGroup>()
+                            .Any(psg => psg.SectionGroupId == sectionGroup.SectionGroupId && psg.ProductId == product.ProductId);
+
+                        if (!productSectionGroupBool)
+                        {
+                            product.SectionGroups.Add(new ProductSectionGroup
+                            {
+                                Product = product,
+                                SectionGroup = sectionGroup
+                            });
+                            _dbContext.SaveChanges();
+                        }
+                        memProductSectionGroups.Remove(proSectGrp);
+                    }
+
+                    //MachineSection relationship
+                    var mcSect = memMachineSections
+                        .FirstOrDefault(ms => ms.Machine.ModelName == line.ModelName && ms.Section.SectionName == line.Section);
+                    if (mcSect != null)
+                    {
+                        bool machineSectionBool = _dbContext
+                        .Set<MachineSection>()
+                        .Any(m => m.MachineId == machine.MachineId && m.SectionId == section.SectionId);
+
+                        if (!machineSectionBool)
+                        {
+                            machine.Sections.Add(new MachineSection
+                            {
+                                Section = section,
+                                Machine = machine
+                            });
+                            _dbContext.SaveChanges();
+                        }
+                        memMachineSections.Remove(mcSect);
+                    }
+
+                    //MachineSectionGroup relationship
+                    var mcSectGrp = memMachineSectionGroups
+                        .FirstOrDefault(msg => msg.Machine.ModelName == line.ModelName && msg.SectionGroup.SectionGroupName == line.SectionGroup);
+                    if (mcSectGrp != null)
+                    {
+                        bool machineSectionGroupBool = _dbContext
+                        .Set<MachineSectionGroup>()
+                        .Any(m => m.MachineId == machine.MachineId && m.SectionGroupId == sectionGroup.SectionGroupId);
+
+                        Console.WriteLine($"machSectBool: {!machineSectionGroupBool}");
+
+                        if (!machineSectionGroupBool)
+                        {
+                            machine.SectionGroups.Add(new MachineSectionGroup
+                            {
+                                SectionGroup = sectionGroup,
+                                Machine = machine
+                            });
+                            _dbContext.SaveChanges();
+                        }
+                        memMachineSectionGroups.Remove(mcSectGrp);
+                    }
+
+                    Console.WriteLine($"Queries Time: {sw.ElapsedMilliseconds} ms");
+
+                }
+            }
         }
 
         public async Task CopyToDb(IFormFile masterFile)
@@ -50,37 +398,40 @@ namespace AbrasNigeria.Data.Services
                 //cycle count
                 int count = 0;
 
-                //string prevBrand = null;
-                //string prevMachine = null;
-                //string prevSection = null;
+                string prevBrand = null;
+                string prevMachine = null;
+                string prevSection = null;
                 //string prevSectionGroup = null;
                 //string prevCategory = null;
                 //string prevProduct = null;
-                //string prevQuantity = null;
-                //string prevSerial = null;
-                //string prevRemark = null;
 
                 //get data to db
                 foreach (var line in masterLines)
                 {
-                    Console.WriteLine("Cycle" + count++);
+                    Console.WriteLine("Cycle" + count);
                     DateTime startTime = DateTime.Now;
 
                     if (line.Brand != "")
                     {
-                        Brand brand = _dbContext.Brands.Where(b => b.Name == line.Brand).FirstOrDefault();
+                        Console.WriteLine($"PrevBrand = {prevBrand} CurrentBrand = {line.Brand}");
 
-                        if (brand == null)
+                        if (prevBrand != line.Brand)
                         {
-                            brand = new Brand
+                            Console.WriteLine("About to get Brand");
+                            Brand brand = _dbContext.Brands.FirstOrDefault(b => b.Name == line.Brand);
+                            if (brand == null)
                             {
-                                Name = line.Brand
-                            };
+                                brand = new Brand
+                                {
+                                    Name = line.Brand
+                                };
 
-                            _dbContext.Brands.Add(brand);
-                            _dbContext.SaveChanges();
-                            Console.WriteLine("Added brand");
-                            brand = _dbContext.Brands.Where(b => b.Name == line.Brand).FirstOrDefault();
+                                _dbContext.Brands.Add(brand);
+                                _dbContext.SaveChanges();
+                                Console.WriteLine("Added brand");
+                                //brand = _dbContext.Brands.Where(b => b.Name == line.Brand).FirstOrDefault();
+                            }
+                            prevBrand = line.Brand;
                         }
 
                         //Install - Package FlexLabs.EntityFrameworkCore.Upsert - Version 2.1.2
@@ -88,37 +439,47 @@ namespace AbrasNigeria.Data.Services
 
                         if (line.ModelName != "")
                         {
-                            Machine machine = _dbContext.Machines.Where(m => m.ModelName == line.ModelName).FirstOrDefault();
+                            Console.WriteLine($"PrevMach = {prevMachine} CurrentMach = {line.ModelName}");
 
-                            if (machine == null)
+                            if (prevMachine != line.ModelName)
                             {
-                                machine = new Machine
+                                Machine machine = _dbContext.Machines.Where(m => m.ModelName == line.ModelName).FirstOrDefault();
+
+                                if (machine == null)
                                 {
-                                    ModelName = line.ModelName,
-                                    SerialNumber = line.MachineSerialNumber,
-                                    Brand = brand
-                                };
-                                _dbContext.Machines.Add(machine);
-                                _dbContext.SaveChanges();
-                                Console.WriteLine("Added machine");
-                                machine = _dbContext.Machines.Where(m => m.ModelName == line.ModelName).FirstOrDefault();
+                                    machine = new Machine
+                                    {
+                                        ModelName = line.ModelName,
+                                        SerialNumber = line.MachineSerialNumber,
+                                        Brand = _dbContext.Brands.FirstOrDefault(b => b.Name == line.Brand)
+                                    };
+                                    _dbContext.Machines.Add(machine);
+                                    _dbContext.SaveChanges();
+                                    Console.WriteLine("Added machine");
+                                    //machine = _dbContext.Machines.Where(m => m.ModelName == line.ModelName).FirstOrDefault();
+                                }
+
+                                prevMachine = line.ModelName;
                             }
 
                             if (line.Section != "")
                             {
                                 Section section = _dbContext.Sections.Where(s => s.SectionName == line.Section).FirstOrDefault();
 
-                                if (section == null)
+                                if (prevSection == line.Section)
                                 {
-                                    section = new Section
+                                    if (section == null)
                                     {
-                                        SectionName = line.Section
-                                    };
+                                        section = new Section
+                                        {
+                                            SectionName = line.Section
+                                        };
 
-                                    _dbContext.Sections.Add(section);
-                                    _dbContext.SaveChanges();
-                                    Console.WriteLine("Added section");
-                                    section = _dbContext.Sections.Where(s => s.SectionName == line.Section).FirstOrDefault();
+                                        _dbContext.Sections.Add(section);
+                                        _dbContext.SaveChanges();
+                                        Console.WriteLine("Added section");
+                                        section = _dbContext.Sections.Where(s => s.SectionName == line.Section).FirstOrDefault();
+                                    }
                                 }
 
                                 if (line.SectionGroup != "")
@@ -136,7 +497,7 @@ namespace AbrasNigeria.Data.Services
                                         _dbContext.SectionGroups.Add(sectionGroup);
                                         _dbContext.SaveChanges();
                                         Console.WriteLine("Added sectiongroup");
-                                        _dbContext.SectionGroups.Where(s => s.SectionGroupName == line.SectionGroup).FirstOrDefault();
+                                        //_dbContext.SectionGroups.Where(s => s.SectionGroupName == line.SectionGroup).FirstOrDefault();
                                     }
 
                                     //_dbContext.SectionGroups.Upsert(sectionGroup).On(s => new { s.SectionGroupName }).Run();
@@ -154,238 +515,128 @@ namespace AbrasNigeria.Data.Services
                                             _dbContext.Descriptions.Add(description);
                                             _dbContext.SaveChanges();
                                             Console.WriteLine("Added description");
-                                            description = _dbContext.Descriptions.Where(c => c.DescriptionName == line.Description).FirstOrDefault();
+                                            //description = _dbContext.Descriptions.Where(c => c.DescriptionName == line.Description).FirstOrDefault();
                                         }
 
                                         //_dbContext.Descriptions.Upsert(description).On(s => new { s.DescriptionName }).Run();
 
                                         if (line.PartNumber != "")
                                         {
-                                            Product product = _dbContext.Products.Where(p => p.PartNumber == line.PartNumber).FirstOrDefault();
+                                            Product product = _dbContext.Products.FirstOrDefault(p => p.PartNumber == line.PartNumber);
 
                                             if (product == null)
                                             {
                                                 product = new Product
                                                 {
                                                     PartNumber = line.PartNumber,
-                                                    Brand = brand,
+                                                    Brand = _dbContext.Brands.FirstOrDefault(b => b.Name == line.Brand),
                                                     Section = section,
-                                                    Remarks = line.Remark
                                                 };
                                                 _dbContext.Products.Add(product);
                                                 _dbContext.SaveChanges();
                                                 Console.WriteLine("Added product");
-                                                product = _dbContext.Products.Where(p => p.PartNumber == line.PartNumber).FirstOrDefault();
+                                                //product = _dbContext.Products.Where(p => p.PartNumber == line.PartNumber).FirstOrDefault();
                                             }
 
                                             //_dbContext.Products.Upsert(product).On(s => new { s.PartNumber }).Run();
 
-                                            if (line.Quantity != "")
+                                            //Sort out many to many relationships
+                                            Machine machine = _dbContext.Machines.Where(m => m.ModelName == line.ModelName).FirstOrDefault();
+
+                                            //ProductSectionGroup relationship
+                                            ProductSectionGroup productSectionGroup = _dbContext
+                                                .Set<ProductSectionGroup>()
+                                                .Where(psg => psg.SectionGroupId == sectionGroup.SectionGroupId && psg.ProductId == product.ProductId)
+                                                .FirstOrDefault();
+
+                                            if (productSectionGroup == null)
                                             {
-                                                Quantity quantity = _dbContext.Quantities.Where(q => q.Value == line.Quantity).FirstOrDefault();
-
-                                                if (quantity == null)
+                                                productSectionGroup = new ProductSectionGroup
                                                 {
-                                                    quantity = new Quantity
-                                                    {
-                                                        Value = line.Quantity
-                                                    };
-                                                    _dbContext.Quantities.Add(quantity);
-                                                    _dbContext.SaveChanges();
-                                                    Console.WriteLine("Added quantity");
-                                                    quantity = _dbContext.Quantities.Where(q => q.Value == line.Quantity).FirstOrDefault();
-                                                }
-
-
-                                                if (line.SerialNo != "")
-                                                {
-                                                    SerialNo serialNo = _dbContext.SerialNos.Where(sn => sn.Value == line.SerialNo).FirstOrDefault();
-
-                                                    if (serialNo == null)
-                                                    {
-                                                        serialNo = new SerialNo
-                                                        {
-                                                            Value = line.SerialNo
-                                                        };
-                                                        _dbContext.SerialNos.Add(serialNo);
-                                                        _dbContext.SaveChanges();
-                                                        Console.WriteLine("Added serialNo");
-                                                        serialNo = _dbContext.SerialNos.Where(sn => sn.Value == serialNo.Value).FirstOrDefault();
-                                                    }
-
-
-                                                    brand.Machines.Add(machine);
-                                                    brand.Products.Add(product);
-                                                    brand.SectionGroups.Add(sectionGroup);
-                                                    brand.Sections.Add(section);
-                                                    section.SectionGroups.Add(sectionGroup);
-
-                                                    //ProductSectionGroup relationship
-                                                    ProductSectionGroup productSectionGroup = _dbContext
-                                                        .Set<ProductSectionGroup>()
-                                                        .Where(psg => psg.SectionGroupId == sectionGroup.SectionGroupId && psg.ProductId == product.ProductId)
-                                                        .FirstOrDefault();
-
-                                                    if (productSectionGroup == null)
-                                                    {
-                                                        productSectionGroup = new ProductSectionGroup
-                                                        {
-                                                            Product = product,
-                                                            SectionGroup = sectionGroup
-                                                        };
-                                                        product.ProductSectionGroups.Add(productSectionGroup);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //ProductMachine relationship
-                                                    ProductMachine productMachine = _dbContext
-                                                        .Set<ProductMachine>()
-                                                        .Where(pm => pm.ProductId == product.ProductId && pm.MachineId == machine.MachineId)
-                                                        .FirstOrDefault();
-
-                                                    if (productMachine == null)
-                                                    {
-                                                        productMachine = new ProductMachine
-                                                        {
-                                                            Product = product,
-                                                            Machine = machine
-                                                        };
-                                                        product.ProductMachines.Add(productMachine);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //MachineSection relationship
-                                                    MachineSection machineSection = _dbContext
-                                                    .Set<MachineSection>()
-                                                    .Where(m => m.MachineId == machine.MachineId && m.SectionId == section.SectionId)
-                                                    .FirstOrDefault();
-
-                                                    if (machineSection == null)
-                                                    {
-                                                        machineSection = new MachineSection
-                                                        {
-                                                            Section = section,
-                                                            Machine = machine
-                                                        };
-                                                        machine.MachineSections.Add(machineSection);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //MachineSectionGroup relationship
-                                                    MachineSectionGroup machineSectionGroup = _dbContext
-                                                    .Set<MachineSectionGroup>()
-                                                    .Where(m => m.MachineId == machine.MachineId && m.SectionGroupId == sectionGroup.SectionGroupId)
-                                                    .FirstOrDefault();
-
-                                                    if (machineSectionGroup == null)
-                                                    {
-                                                        machineSectionGroup = new MachineSectionGroup
-                                                        {
-                                                            SectionGroup = sectionGroup,
-                                                            Machine = machine
-                                                        };
-                                                        machine.MachineSectionGroups.Add(machineSectionGroup);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //ProductDescription relationship
-                                                    ProductDescription productDescription = _dbContext
-                                                        .Set<ProductDescription>()
-                                                        .Where(pc => pc.ProductId == product.ProductId && pc.DescriptionId == description.DescriptionId)
-                                                        .FirstOrDefault();
-
-                                                    if (productDescription == null)
-                                                    {
-                                                        productDescription = new ProductDescription
-                                                        {
-                                                            Product = product,
-                                                            Description = description
-                                                        };
-                                                        product.ProductDescription.Add(productDescription);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //MachineProductSectionGroupQuantity relationship
-                                                    MachineProductSectionGroupQuantity productQuantity = _dbContext
-                                                        .Set<MachineProductSectionGroupQuantity>()
-                                                        .Where(pq => pq.ProductId == product.ProductId && pq.MachineId == machine.MachineId && pq.SectionGroupId == sectionGroup.SectionGroupId)
-                                                        .FirstOrDefault();
-
-                                                    if (productQuantity == null)
-                                                    {
-                                                        productQuantity = new MachineProductSectionGroupQuantity
-                                                        {
-                                                            Product = product,
-                                                            Quantity = quantity,
-                                                            Machine = machine,
-                                                            SectionGroup = sectionGroup
-                                                        };
-                                                        product.ProductQuantities.Add(productQuantity);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //ProductSectionGroupSerialNo relationship
-                                                    ProductSectionGroupSerialNo productSectionGroupSerial = _dbContext
-                                                        .Set<ProductSectionGroupSerialNo>()
-                                                        .Where(pss => pss.ProductId == product.ProductId && pss.SectionGroupId == sectionGroup.SectionGroupId && pss.MachineId == machine.MachineId)
-                                                        .FirstOrDefault();
-
-                                                    if (productSectionGroupSerial == null)
-                                                    {
-                                                        productSectionGroupSerial = new ProductSectionGroupSerialNo
-                                                        {
-                                                            Product = product,
-                                                            SectionGroup = sectionGroup,
-                                                            Machine = machine,
-                                                            SerialNo = serialNo
-                                                        };
-                                                        product.SectionGroupSerialNos.Add(productSectionGroupSerial);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    if (line.Remark != "")
-                                                    {
-                                                        Remark remark = _dbContext.Remarks.Where(r => r.Value == line.Remark).FirstOrDefault();
-
-                                                        if (remark == null)
-                                                        {
-                                                            remark = new Remark
-                                                            {
-                                                                Value = line.Remark
-                                                            };
-                                                            _dbContext.Remarks.Add(remark);
-                                                            _dbContext.SaveChanges();
-                                                        }
-
-                                                        Console.WriteLine("Added remark");
-                                                        remark = _dbContext.Remarks.Where(r => r.Value == remark.Value).FirstOrDefault();
-
-                                                        //ProductMachineRemark relationship
-                                                        ProductMachineRemark productMachineRemark = _dbContext
-                                                            .Set<ProductMachineRemark>()
-                                                            .Where(pmr => pmr.ProductId == product.ProductId && pmr.MachineId == machine.MachineId)
-                                                            .FirstOrDefault();
-
-                                                        if (productMachineRemark == null)
-                                                        {
-                                                            productMachineRemark = new ProductMachineRemark
-                                                            {
-                                                                Product = product,
-                                                                Machine = machine,
-                                                                Remark = remark
-                                                            };
-                                                            product.ProductMachineRemarks.Add(productMachineRemark);
-                                                            _dbContext.SaveChanges();
-                                                        }
-                                                    }
-                                                }
+                                                    Product = product,
+                                                    SectionGroup = sectionGroup
+                                                };
+                                                product.SectionGroups.Add(productSectionGroup);
+                                                _dbContext.SaveChanges();
                                             }
+
+                                            //ProductMachine relationship
+                                            MachineSectionGroupProduct productMachine = _dbContext
+                                                .Set<MachineSectionGroupProduct>()
+                                                .Where(pm => pm.ProductId == product.ProductId && pm.MachineId == machine.MachineId)
+                                                .FirstOrDefault();
+
+                                            if (productMachine == null)
+                                            {
+                                                productMachine = new MachineSectionGroupProduct
+                                                {
+                                                    Product = product,
+                                                    SectionGroup = sectionGroup,
+                                                    Machine = machine,
+                                                };
+                                                product.MachineSectionGroups.Add(productMachine);
+                                                _dbContext.SaveChanges();
+                                            }
+
+                                            //MachineSection relationship
+                                            MachineSection machineSection = _dbContext
+                                            .Set<MachineSection>()
+                                            .Where(m => m.MachineId == machine.MachineId && m.SectionId == section.SectionId)
+                                            .FirstOrDefault();
+
+                                            if (machineSection == null)
+                                            {
+                                                machineSection = new MachineSection
+                                                {
+                                                    Section = section,
+                                                    Machine = machine
+                                                };
+                                                machine.Sections.Add(machineSection);
+                                                _dbContext.SaveChanges();
+                                            }
+
+                                            //MachineSectionGroup relationship
+                                            MachineSectionGroup machineSectionGroup = _dbContext
+                                            .Set<MachineSectionGroup>()
+                                            .Where(m => m.MachineId == machine.MachineId && m.SectionGroupId == sectionGroup.SectionGroupId)
+                                            .FirstOrDefault();
+
+                                            if (machineSectionGroup == null)
+                                            {
+                                                machineSectionGroup = new MachineSectionGroup
+                                                {
+                                                    SectionGroup = sectionGroup,
+                                                    Machine = machine
+                                                };
+                                                machine.SectionGroups.Add(machineSectionGroup);
+                                                _dbContext.SaveChanges();
+                                            }
+
+                                            //ProductDescription relationship
+                                            ProductDescription productDescription = _dbContext
+                                                .Set<ProductDescription>()
+                                                .Where(pc => pc.ProductId == product.ProductId && pc.DescriptionId == description.DescriptionId)
+                                                .FirstOrDefault();
+
+                                            if (productDescription == null)
+                                            {
+                                                productDescription = new ProductDescription
+                                                {
+                                                    Product = product,
+                                                    Description = description
+                                                };
+                                                product.Descriptions.Add(productDescription);
+                                                _dbContext.SaveChanges();
+                                            }
+
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                    count++;
+
                     Console.WriteLine("Ended dbOpration");
                     DateTime endTime = DateTime.Now;
                     TimeSpan cycleTime = endTime - startTime;
@@ -405,410 +656,6 @@ namespace AbrasNigeria.Data.Services
         private void Save()
         {
             _dbContext.SaveChanges();
-        }
-
-
-        public async Task CopyToDbOld(IFormFile masterFile)
-        {
-            //Generate full filepath and save file
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), _environment.WebRootPath, "uploads/" + masterFile.FileName);
-
-            using (var bits = new FileStream(filePath, FileMode.Create))
-            {
-                await masterFile.CopyToAsync(bits);
-            }
-
-            //create new file object from file path
-            FileInfo file = new FileInfo(filePath);
-
-            //Install-Package EPPlus.Core -Version 1.5.4
-            using (ExcelPackage package = new ExcelPackage(file))
-            {
-                //get file as worksheet object
-                ExcelWorksheet workSheet = package.Workbook.Worksheets["Sheet1"];
-
-                //get master table line objects with properties of excel table columns
-                HashSet<MasterTableLine> masterLines = SheetToTableLine(workSheet);
-
-                //delete file
-                file.Delete();
-
-                //cycle count
-                int count = 0;
-
-                //get data to db
-                foreach (var line in masterLines)
-                {
-                    Console.WriteLine("Cycle" + count++);
-
-                    if (line.Brand != "")
-                    {
-                        Brand brand = new Brand
-                        {
-                            Name = line.Brand
-                        };
-
-                        Brand dbBrand = _dbContext.Brands.Where(b => b.Name == brand.Name).FirstOrDefault();
-                        if (dbBrand == null)
-                        {
-                            _dbContext.Brands.Add(brand);
-                            _dbContext.SaveChanges();
-                        }
-                        //Install - Package FlexLabs.EntityFrameworkCore.Upsert - Version 2.1.2
-                        //_dbContext.Upsert(brand).On(b => new { b.Name }).Run();
-                        Console.WriteLine("Added brand");
-                        brand = _dbContext.Brands.Where(b => b.Name == line.Brand).FirstOrDefault();
-
-                        if (line.ModelName != "")
-                        {
-                            Machine machine = new Machine
-                            {
-                                ModelName = line.ModelName,
-                                SerialNumber = line.MachineSerialNumber,
-                                Brand = brand
-                            };
-
-                            Machine dbMachine = _dbContext.Machines.Where(m => m.ModelName == machine.ModelName).FirstOrDefault();
-
-                            if (dbMachine == null)
-                            {
-                                _dbContext.Machines.Add(machine);
-                                _dbContext.SaveChanges();
-
-                            }
-
-                            // _dbContext.Upsert(machine).On(m => new { m.ModelName }).Run();
-                            Console.WriteLine("Added machine");
-                            machine = _dbContext.Machines.Where(m => m.ModelName == line.ModelName).FirstOrDefault();
-
-
-                            if (line.Section != "")
-                            {
-                                Section section = new Section
-                                {
-                                    SectionName = line.Section
-                                };
-
-                                Section dbSection = _dbContext.Sections.Where(s => s.SectionName == section.SectionName).FirstOrDefault();
-
-                                if (dbSection == null)
-                                {
-                                    _dbContext.Sections.Add(section);
-                                    _dbContext.SaveChanges();
-
-                                }
-
-                                //_dbContext.Sections.Upsert(section).On(s => new { s.SectionName }).Run();
-                                Console.WriteLine("Added section");
-                                section = _dbContext.Sections.Where(s => s.SectionName == line.Section).FirstOrDefault();
-
-                                if (line.SectionGroup != "")
-                                {
-                                    SectionGroup sectionGroup = new SectionGroup
-                                    {
-                                        SectionGroupName = line.SectionGroup,
-                                        Section = section
-                                    };
-
-                                    SectionGroup dbSectionGroup = _dbContext.SectionGroups
-                                        .Where(s => s.SectionGroupName == sectionGroup.SectionGroupName)
-                                        .FirstOrDefault();
-
-                                    if (dbSectionGroup == null)
-                                    {
-                                        _dbContext.SectionGroups.Add(sectionGroup);
-                                        _dbContext.SaveChanges();
-
-                                    }
-
-                                    //_dbContext.SectionGroups.Upsert(sectionGroup).On(s => new { s.SectionGroupName }).Run();
-                                    Console.WriteLine("Added sectiongroup");
-                                    sectionGroup = _dbContext.SectionGroups.Where(sg => sg.SectionGroupName == sectionGroup.SectionGroupName).FirstOrDefault();
-
-                                    if (line.Description != "")
-                                    {
-                                        Description description = new Description
-                                        {
-                                            DescriptionName = line.Description,
-                                        };
-
-                                        Description dbDescription = _dbContext.Descriptions.Where(c => c.DescriptionName == description.DescriptionName).FirstOrDefault();
-
-                                        if (dbDescription == null)
-                                        {
-                                            _dbContext.Descriptions.Add(description);
-                                            _dbContext.SaveChanges();
-
-                                        }
-
-                                        //_dbContext.Descriptions.Upsert(description).On(s => new { s.DescriptionName }).Run();
-                                        Console.WriteLine("Added description");
-                                        description = _dbContext.Descriptions.Where(s => s.DescriptionName == description.DescriptionName).FirstOrDefault();
-
-                                        //brand.Descriptions.Add(description);
-
-
-                                        if (line.PartNumber != "")
-                                        {
-                                            Product product = new Product
-                                            {
-                                                PartNumber = line.PartNumber,
-                                                Brand = brand,
-                                                //Descriptions = description,
-                                                Section = section,
-                                                //Quantity = line.Quantity,
-                                                Remarks = line.Remark
-                                            };
-
-                                            Product dbProduct = _dbContext.Products.Where(p => p.PartNumber == product.PartNumber).FirstOrDefault();
-
-                                            if (dbProduct == null)
-                                            {
-                                                _dbContext.Products.Add(product);
-                                                _dbContext.SaveChanges();
-                                            }
-
-                                            //_dbContext.Products.Upsert(product).On(s => new { s.PartNumber }).Run();
-                                            Console.WriteLine("Added product");
-                                            product = _dbContext.Products.Where(p => p.PartNumber == product.PartNumber).FirstOrDefault();
-
-
-                                            if (line.Quantity != "")
-                                            {
-                                                Quantity quantity = new Quantity
-                                                {
-                                                    Value = line.Quantity
-                                                };
-
-                                                Quantity dbQuantity = _dbContext.Quantities.Where(q => q.Value == quantity.Value).FirstOrDefault();
-
-                                                if (dbQuantity == null)
-                                                {
-                                                    _dbContext.Quantities.Add(quantity);
-                                                    _dbContext.SaveChanges();
-                                                }
-
-                                                Console.WriteLine("Added quantity");
-                                                quantity = _dbContext.Quantities.Where(q => q.Value == quantity.Value).FirstOrDefault();
-
-                                                if (line.SerialNo != "")
-                                                {
-                                                    SerialNo serialNo = new SerialNo
-                                                    {
-                                                        Value = line.SerialNo
-                                                    };
-
-                                                    SerialNo dbSerialNo = _dbContext.SerialNos.Where(sn => sn.Value == serialNo.Value).FirstOrDefault();
-
-                                                    if (dbSerialNo == null)
-                                                    {
-                                                        _dbContext.SerialNos.Add(serialNo);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    Console.WriteLine("Added serialNo");
-                                                    serialNo = _dbContext.SerialNos.Where(sn => sn.Value == serialNo.Value).FirstOrDefault();
-
-
-
-
-                                                    brand.Machines.Add(machine);
-
-                                                    brand.Products.Add(product);
-
-                                                    brand.SectionGroups.Add(sectionGroup);
-
-                                                    brand.Sections.Add(section);
-
-                                                    section.SectionGroups.Add(sectionGroup);
-
-                                                    //description.Products.Add(product);
-
-                                                    _dbContext.SaveChanges();
-
-                                                    //ProductSectionGroup relationship
-                                                    ProductSectionGroup productSectionGroup = new ProductSectionGroup
-                                                    {
-                                                        Product = product,
-                                                        SectionGroup = sectionGroup
-                                                    };
-
-                                                    ProductSectionGroup dbProductSectionGroup = _dbContext
-                                                        .Set<ProductSectionGroup>()
-                                                        .Where(psg => psg.SectionGroupId == sectionGroup.SectionGroupId && psg.ProductId == product.ProductId)
-                                                        .FirstOrDefault();
-
-                                                    if (dbProductSectionGroup == null)
-                                                    {
-                                                        product.ProductSectionGroups.Add(productSectionGroup);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //ProductMachine relationship
-                                                    ProductMachine productMachine = new ProductMachine
-                                                    {
-                                                        Product = product,
-                                                        Machine = machine
-                                                    };
-
-                                                    ProductMachine dbProductMachine = _dbContext
-                                                        .Set<ProductMachine>()
-                                                        .Where(pm => pm.ProductId == product.ProductId && pm.MachineId == machine.MachineId)
-                                                        .FirstOrDefault();
-
-                                                    if (dbProductMachine == null)
-                                                    {
-                                                        product.ProductMachines.Add(productMachine);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //MachineSection relationship
-                                                    MachineSection machineSection = new MachineSection
-                                                    {
-                                                        Section = section,
-                                                        Machine = machine
-                                                    };
-
-                                                    MachineSection dbMachineSection = _dbContext
-                                                        .Set<MachineSection>()
-                                                        .Where(m => m.MachineId == machine.MachineId && m.SectionId == section.SectionId)
-                                                        .FirstOrDefault();
-
-                                                    if (dbMachineSection == null)
-                                                    {
-                                                        machine.MachineSections.Add(machineSection);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //MachineSectionGroup relationship
-                                                    MachineSectionGroup machineSectionGroup = new MachineSectionGroup
-                                                    {
-                                                        SectionGroup = sectionGroup,
-                                                        Machine = machine
-                                                    };
-
-                                                    MachineSectionGroup dbMachineSectionGroup = _dbContext
-                                                        .Set<MachineSectionGroup>()
-                                                        .Where(m => m.MachineId == machine.MachineId && m.SectionGroupId == sectionGroup.SectionGroupId)
-                                                        .FirstOrDefault();
-
-                                                    if (dbMachineSectionGroup == null)
-                                                    {
-                                                        machine.MachineSectionGroups.Add(machineSectionGroup);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //ProductDescription relationship
-                                                    ProductDescription productDescription = new ProductDescription
-                                                    {
-                                                        Product = product,
-                                                        Description = description
-                                                    };
-
-                                                    ProductDescription dbProductDescription = _dbContext
-                                                        .Set<ProductDescription>()
-                                                        .Where(pc => pc.ProductId == product.ProductId && pc.DescriptionId == description.DescriptionId)
-                                                        .FirstOrDefault();
-
-                                                    if (dbProductDescription == null)
-                                                    {
-                                                        product.ProductDescription.Add(productDescription);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-                                                    //MachineProductSectionGroupQuantity relationship
-                                                    MachineProductSectionGroupQuantity productQuantity = new MachineProductSectionGroupQuantity
-                                                    {
-                                                        Product = product,
-                                                        Quantity = quantity,
-                                                        Machine = machine,
-                                                        SectionGroup = sectionGroup
-                                                    };
-
-                                                    MachineProductSectionGroupQuantity dbProductQuantity = _dbContext
-                                                        .Set<MachineProductSectionGroupQuantity>()
-                                                        .Where(pq => pq.ProductId == product.ProductId && pq.MachineId == machine.MachineId && pq.SectionGroupId == sectionGroup.SectionGroupId)
-                                                        .FirstOrDefault();
-
-                                                    if (dbProductQuantity == null)
-                                                    {
-                                                        product.ProductQuantities.Add(productQuantity);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-
-                                                    //ProductSectionGroupSerialNo relationship
-                                                    ProductSectionGroupSerialNo productSectionGroupSerial = new ProductSectionGroupSerialNo
-                                                    {
-                                                        Product = product,
-                                                        SectionGroup = sectionGroup,
-                                                        Machine = machine,
-                                                        SerialNo = serialNo
-                                                    };
-
-                                                    ProductSectionGroupSerialNo dbProductSectionGroupSerial = _dbContext
-                                                        .Set<ProductSectionGroupSerialNo>()
-                                                        .Where(pss => pss.ProductId == product.ProductId && pss.SectionGroupId == sectionGroup.SectionGroupId && pss.MachineId == machine.MachineId)
-                                                        .FirstOrDefault();
-
-                                                    if (dbProductSectionGroupSerial == null)
-                                                    {
-                                                        product.SectionGroupSerialNos.Add(productSectionGroupSerial);
-                                                        _dbContext.SaveChanges();
-                                                    }
-
-
-                                                    if (line.Remark != "")
-                                                    {
-                                                        Remark remark = new Remark
-                                                        {
-                                                            Value = line.Remark
-                                                        };
-
-                                                        Remark dbRemark = _dbContext.Remarks.Where(r => r.Value == remark.Value).FirstOrDefault();
-
-                                                        if (dbRemark == null)
-                                                        {
-                                                            _dbContext.Remarks.Add(remark);
-                                                            _dbContext.SaveChanges();
-                                                        }
-
-                                                        Console.WriteLine("Added remark");
-                                                        remark = _dbContext.Remarks.Where(r => r.Value == remark.Value).FirstOrDefault();
-
-                                                        //ProductMachineRemark relationship
-                                                        ProductMachineRemark productMachineRemark = new ProductMachineRemark
-                                                        {
-                                                            Product = product,
-                                                            Machine = machine,
-                                                            Remark = remark
-                                                        };
-
-                                                        ProductMachineRemark dbProductMachineRemark = _dbContext
-                                                            .Set<ProductMachineRemark>()
-                                                            .Where(pmr => pmr.ProductId == product.ProductId && pmr.MachineId == machine.MachineId)
-                                                            .FirstOrDefault();
-
-                                                        if (dbProductMachineRemark == null)
-                                                        {
-                                                            product.ProductMachineRemarks.Add(productMachineRemark);
-                                                            _dbContext.SaveChanges();
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    Console.WriteLine("Ended dbOpration");
-                }
-                _dbContext.SaveChanges();
-
-                Console.WriteLine("End of request");
-            }
         }
 
 

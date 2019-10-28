@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 
 namespace AbrasNigeria.Models
 {
@@ -10,12 +8,10 @@ namespace AbrasNigeria.Models
         {
             Products = new HashSet<Product>();
             Machines = new HashSet<Machine>();
-            Sections = new HashSet<Section>();
-            SectionGroups = new HashSet<SectionGroup>();
         }
 
         //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int BrandId { get; set; }
+        public long BrandId { get; set; }
 
         //[JsonProperty(PropertyName = "Name")]
         public string Name { get; set; }
@@ -26,8 +22,5 @@ namespace AbrasNigeria.Models
 
         public ICollection<Machine> Machines { get; set; }
 
-        public ICollection<Section> Sections { get; set; }
-
-        public ICollection<SectionGroup> SectionGroups { get; set; }
     }
 }

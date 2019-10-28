@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AbrasNigeria.Models
 {
     public class Order
     {
-        public int OrderId { get; set; }
+        public long OrderId { get; set; }
 
         public Order()
         {

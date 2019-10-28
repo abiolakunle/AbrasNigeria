@@ -71,13 +71,9 @@ class CreateStockProduct extends Component {
                           event.preventDefault();
                           this.setState({
                             partNumber: item.partNumber,
-                            descriptions: item.descriptions.map(
-                              (description, index) => {
-                                return `${index > 0 ? " | " : ""} ${
-                                  description.descriptionName
-                                }`;
-                              }
-                            ),
+                            descriptions: item.descriptions
+                              .map(description => description.descriptionName)
+                              .join(" | "),
                             brand: item.brand
                           });
                         }}
@@ -147,6 +143,8 @@ class CreateStockProduct extends Component {
       method: "POST",
       headers: { ...authHeader(), "Content-Type": "application/json" }
     };
+
+    console.log("Product", product);
 
     axios
       .post("/api/stock/createproduct/", product, requestOptions)

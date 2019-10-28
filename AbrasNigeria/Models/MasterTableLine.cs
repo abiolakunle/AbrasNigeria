@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AbrasNigeria.Models
+﻿namespace AbrasNigeria.Models
 {
     public class MasterTableLine
     {

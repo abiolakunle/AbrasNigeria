@@ -34,5 +34,12 @@ namespace AbrasNigeria.Controllers
             return Json(cartItems, JsonHelper.SerializerSettings);
         }
 
+        [HttpDelete("[action]")]
+        public ActionResult Clear()
+        {
+            _cart.Clear();
+            return Ok();
+        }
+
     }
 }

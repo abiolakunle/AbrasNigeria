@@ -21,19 +21,14 @@ namespace AbrasNigeria.Data.Repositories
 
         public IEnumerable<Document> LoadAllWithItems()
         {
-            IEnumerable<Document> documents = _context.Documents;
-            foreach (var quotation in documents)
-            {
-                quotation.Table = _context.DocumentItems
-                    .Where(item => item.DocumentId == quotation.DocumentId).ToList();
-            }
+            IEnumerable<Document> documents = _table.Include(d => d.Table);
 
             return documents;
         }
 
         public DocumentDTO LoadWithItems(int id)
         {
-            var document = _context.Documents
+            var document = _table
                  .Where(q => q.DocumentId == id)
                  .Include(q => q.Table).FirstOrDefault();
 
@@ -44,7 +39,7 @@ namespace AbrasNigeria.Data.Repositories
 
         public override void Update(Document document)
         {
-            _context.Upsert(document).On(m => new { m.DocumentNo }).Run();
+            _table.Upsert(document).On(m => new { m.DocumentNo }).Run();
             Save();
         }
 

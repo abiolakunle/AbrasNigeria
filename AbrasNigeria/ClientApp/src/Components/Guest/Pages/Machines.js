@@ -117,7 +117,7 @@ export default class Machines extends Component {
               name="modelName"
               value={this.state.modelName}
               type="text"
-              onChange={this.onFormChanged}
+              onChange={this.handleChange}
             />
             <div
               className="dropdown-menu pre-scrollable"
@@ -156,8 +156,8 @@ export default class Machines extends Component {
     );
   }
 
-  onFormChanged = event => {
-    //handles change event for filter form.
+  handleChange = event => {
+    //handles change event for form.
     let eventName = event.target.name;
     let eventValue = event.target.value;
     this.setState(
@@ -178,9 +178,9 @@ export default class Machines extends Component {
           this.state.modelName //part number as search query
         }`
       )
-      .then(response => {
+      .then(({ data }) => {
         this.setState({
-          modelNameSuggestions: response.data
+          modelNameSuggestions: data
         });
       })
       .catch(error => {

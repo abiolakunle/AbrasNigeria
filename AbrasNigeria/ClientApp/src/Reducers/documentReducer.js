@@ -5,6 +5,9 @@ import {
   UPDATE_DOC_SUCCESS,
   UPDATE_DOC_FAILURE,
   UPDATE_DOC_REQUEST,
+  DELETE_DOC_REQUEST,
+  DELETE_DOC_SUCCESS,
+  DELETE_DOC_FAILURE,
   GET_DOC_REQUEST,
   GET_DOC_SUCCESS,
   GET_DOC_FAILURE,
@@ -16,6 +19,8 @@ import {
 const initialState = {
   isCreating: false,
   isCreated: false,
+  isDeleting: false,
+  isDeleted: false,
   error: false,
   message: null,
   isLoading: false,
@@ -107,6 +112,27 @@ const documentReducer = (state = initialState, action) => {
     case GET_DOCS_FAILURE:
       return {
         ...state,
+        error: true
+      };
+
+    case DELETE_DOC_REQUEST:
+      return {
+        ...state,
+        isDeleting: true
+      };
+    case DELETE_DOC_SUCCESS:
+      return {
+        ...state,
+        isDeleted: true,
+        isDeleting: false,
+        documents: action.payload
+      };
+
+    case DELETE_DOC_FAILURE:
+      return {
+        ...state,
+        isDeleting: false,
+        isDeleted: false,
         error: true
       };
     default:

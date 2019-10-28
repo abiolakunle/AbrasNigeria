@@ -10,7 +10,7 @@ namespace AbrasNigeria.Data.Interfaces
     public interface IStockProductRepository : IRepository<StockProduct>
     {
         IEnumerable<StockProductDTO> LoadAllWithHistory();
-        StockProduct LoadWithHistory(int id);
+        StockProduct LoadWithHistory(long id);
         void AddHistory(StockProductHistory productHistory);
     }
 }

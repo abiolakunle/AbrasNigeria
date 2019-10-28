@@ -20,26 +20,21 @@ export default class Product extends Component {
   }
 
   render() {
-    const { productId, partNumber, descriptions, brand } = this.state;
-    const product = { productId, partNumber, descriptions };
-
+    let { partNumber, descriptions, brand } = this.state;
+    descriptions = descriptions
+      .map(description => description.descriptionName)
+      .join(" | ");
     return (
       <HeaderFooter>
         <React.Fragment>
           <div>
             <span className="badge badge-dark">Part number</span>
             <h3>{partNumber}</h3>
-            <AddToCartBtn product={product} />
+            <AddToCartBtn product={{ partNumber, descriptions }} />
             <hr />
             <p>
-              <span className="font-weight-bold">Descriptions: </span>
-              {descriptions.map((description, index) => {
-                return (
-                  <span key={index}>{`${index > 0 ? " | " : ""} ${
-                    description.descriptionName
-                  }`}</span>
-                );
-              })}
+              <span className="font-weight-bold">Description(s): </span>
+              {descriptions}
             </p>
             <p>
               <span className="font-weight-bold">Brand: </span>
@@ -53,7 +48,7 @@ export default class Product extends Component {
   }
 
   loadProduct = () => {
-    let apiUrl = `/api/product/product?productid=${this.props.match.params.id}`;
+    let apiUrl = `/api/product/product?partNumber=${this.props.match.params.id}`;
 
     axios
       .get(apiUrl)
@@ -121,7 +116,7 @@ export default class Product extends Component {
           >
             {machines.map((machine, index) => {
               return (
-                <div Key={index}>
+                <div key={index}>
                   <span className="badge badge-dark badge-pill p-1 mr-1 mb-2">
                     {index + 1}
                   </span>{" "}
@@ -138,7 +133,7 @@ export default class Product extends Component {
           >
             {sectionGroups.map((sectionGroup, index) => {
               return (
-                <div Key={index}>
+                <div key={index}>
                   <span className="badge badge-dark badge-pill p-1 mr-1 mb-2">
                     {index + 1}
                   </span>{" "}

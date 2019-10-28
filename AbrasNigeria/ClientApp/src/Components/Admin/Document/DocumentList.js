@@ -3,18 +3,27 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import LoadingOverlay from "react-loading-overlay";
-import { getDocuments } from "../../../Actions/documentActions";
+import { getDocuments, deleteDocument } from "../../../Actions/documentActions";
 
 import SideNavbar from "../Shared/SideNavbar";
 
 class DocumentList extends Component {
   render() {
-    const { documents, isLoaded, isLoading } = this.props;
+    const {
+      documents,
+      isLoaded,
+      isLoading,
+      isDeleted,
+      isDeleting
+    } = this.props;
+
+    isDeleted && window.location.reload();
+
     return (
       <React.Fragment>
         <SideNavbar>
           <LoadingOverlay
-            active={isLoading && !isLoaded}
+            active={(isLoading && !isLoaded) || isDeleting}
             spinner
             text="Loading Documents"
           >
@@ -52,11 +61,23 @@ class DocumentList extends Component {
                             </span>
                           </div>
                           <div className="col-md-1">
-                            <Link
-                              to={`/admin/document/edit/${document.documentId}`}
-                            >
-                              <span class="far fa-edit text-secondary"></span>
-                            </Link>
+                            <div className="row">
+                              <Link
+                                to={`/admin/document/edit/${document.documentId}`}
+                              >
+                                <span class="far fa-edit fa-2x text-secondary"></span>
+                              </Link>
+                              <button
+                                onClick={() => {
+                                  this.handleDeleteDocument(
+                                    document.documentId
+                                  );
+                                }}
+                                className="btn btn-white p-0"
+                              >
+                                <span class="far fa-times-circle fa-2x text-secondary"></span>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </li>
@@ -71,22 +92,35 @@ class DocumentList extends Component {
     );
   }
 
+  handleDeleteDocument = id => {
+    this.props.deleteDocument(id);
+  };
+
   componentDidMount() {
     this.props.getDocuments();
   }
 }
 
 const mapStateToProps = ({ documentReducer }) => {
-  const { documents, isLoading, isLoaded } = documentReducer;
+  const {
+    documents,
+    isLoading,
+    isLoaded,
+    isDeleting,
+    isDeleted
+  } = documentReducer;
   return {
     documents,
+    isDeleting,
+    isDeleted,
     isLoaded,
     isLoading
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getDocuments: () => dispatch(getDocuments())
+    getDocuments: () => dispatch(getDocuments()),
+    deleteDocument: id => dispatch(deleteDocument(id))
   };
 };
 

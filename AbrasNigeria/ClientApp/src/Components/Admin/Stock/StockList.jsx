@@ -33,7 +33,7 @@ class StockList extends Component {
                 stockProductId,
                 partNumber,
                 descriptions,
-                quantity
+                stockProductHistories
               } = stockProduct;
               console.log("stock", stockProduct);
 
@@ -59,7 +59,12 @@ class StockList extends Component {
                           Current quantity:
                         </span>
                         <span className="badge badge-primary badge-pill ml-2">
-                          {quantity}
+                          {stockProductHistories.reduce(
+                            (prev, { addedQuantity, removedQuantity }) => {
+                              return prev + addedQuantity - removedQuantity;
+                            },
+                            0
+                          )}
                         </span>
                       </div>
                     </div>
@@ -93,9 +98,9 @@ class StockList extends Component {
     console.log("Sent", data);
     axios
       .post(api, { ...data }, requestOptions)
-      .then(response => {
+      .then(({ data }) => {
         this.setState({
-          stockProducts: response.data
+          stockProducts: data
         });
       })
       .catch(error => {

@@ -9,13 +9,16 @@ namespace AbrasNigeria.Data.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected readonly AppDbContext _context;
+        protected readonly IDbContext _context;
+        protected readonly DbSet<T> _table;
 
         protected void Save() => _context.SaveChanges();
 
-        public Repository(AppDbContext context)
+        public Repository(IDbContext context)
         {
             _context = context;
+            _table = _context.Set<T>();
+
         }
 
         public int Count(Func<T, bool> predicate)

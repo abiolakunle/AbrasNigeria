@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AbrasNigeria.Models
+﻿namespace AbrasNigeria.Models
 {
     public class DocumentItem
     {
-        public int Id { get; set; }
+        public long DocumentItemId { get; set; }
 
-        public int DocumentId { get; set; }
+        public long DocumentId { get; set; }
 
         public string PartNumber { get; set; }
 

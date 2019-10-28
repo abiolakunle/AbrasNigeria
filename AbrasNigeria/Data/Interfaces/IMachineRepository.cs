@@ -7,8 +7,8 @@ namespace AbrasNigeria.Data.Interfaces
 {
     public interface IMachineRepository : IRepository<Machine>
     {
-        Task<IEnumerable<MachineDTO>> LoadAllWithBrand();
-        MachineDTO LoadWithBrandSection(int id);
-        IEnumerable<MachineDTO> Search(string searchQuery);
+        IEnumerable<Machine> LoadAllWithBrand();
+        Machine LoadWithBrandSection(long id);
+        IEnumerable<Machine> Search(string searchQuery);
     }
 }

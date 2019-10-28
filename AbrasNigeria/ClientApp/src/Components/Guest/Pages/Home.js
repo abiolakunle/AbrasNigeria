@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { Image } from "cloudinary-react";
+import { Image, Transformation } from "cloudinary-react";
 
 import { getStock } from "../../../Actions/stockActions";
 import AddToCartBtn from "../Partials/AddToCartBtn";
@@ -18,6 +19,7 @@ import Attachment from "../images/rsz_attachments.png";
 import undercarriage2 from "../images/undercarriage2.jpg";
 
 import HeaderFooter from "../Shared/HeaderFooter";
+import shuffleArray from "../../../Utils/shuffleArray";
 
 class Home extends Component {
   render() {
@@ -29,13 +31,19 @@ class Home extends Component {
           <BigCarousel />
           <MatrixCarousel>
             {stockItems.map((item, index) => {
-              const { partNumber, descriptions } = item;
+              const { partNumber, descriptions, brand } = item;
               return (
                 <div key={index} className="card row pb-2">
-                  <Image publicId={item.imageUrl} height="200" crop="scale" />
+                  <Image publicId={item.imageUrl} height="250">
+                    <Transformation height="357" width="165" crop="mfit" />
+                  </Image>
                   <hr />
                   <span>
-                    {partNumber}
+                    <Link to={`/guest/product/${partNumber}`}>
+                      {partNumber}
+                    </Link>
+                    <br />
+                    {brand}
                     <br />
                     {descriptions}
                   </span>
@@ -228,7 +236,9 @@ const SectionsList = () => {
 };
 
 const MatrixCarousel = ({ children }) => {
+  shuffleArray(children);
   const stockMatrix = convertToMatrix(children, 4);
+
   return (
     <React.Fragment>
       <div className="container text-center my-3">
@@ -258,15 +268,12 @@ const MatrixCarousel = ({ children }) => {
             })}
           </div>
           <a
-            className="carousel-control-prev"
+            className="carousel-control-prev w-40"
             href="#recipeCarousel"
             role="button"
             data-slide="prev"
           >
-            <span
-              className="carousel-control-prev-icon"
-              aria-hidden="true"
-            ></span>
+            <span class="fas fa-chevron-circle-left text-dark fa-3x"></span>
             <span className="sr-only">Previous</span>
           </a>
           <a
@@ -275,10 +282,7 @@ const MatrixCarousel = ({ children }) => {
             role="button"
             data-slide="next"
           >
-            <span
-              className="carousel-control-next-icon"
-              aria-hidden="true"
-            ></span>
+            <span class="fas fa-chevron-circle-right text-dark fa-3x"></span>
             <span className="sr-only">Next</span>
           </a>
         </div>

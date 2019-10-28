@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 import NumInWords from "../../../Utils/NumInWords";
+import { createPdfFile } from "../../../Utils/htmlToPdf";
+import dataStringToUintArray from "../../../Utils/dataStringToUintArray";
 
 import { authHeader } from "../../../Helpers/authHeader";
 
@@ -14,7 +15,7 @@ import Cummins from "../../../Images/c_cummins.png";
 import Volvo from "../../../Images/c_volvo.png";
 import logo from "../../../Images/Abras logo red.png";
 
-import PrintPage from "../../Shared/PrintPage";
+import PrintPageArea from "../../Shared/PrintPageArea";
 import PrintBtn from "../../Shared/PrintBtn";
 
 class ViewDocument extends Component {
@@ -81,7 +82,13 @@ class ViewDocument extends Component {
     return (
       <React.Fragment>
         <PrintBtn id={documentNo} label={"Download Document"} />
-        <PrintPage id={documentNo}>
+        <button
+          className="btn text-white grey darken-2"
+          onClick={() => this.sendDocument(documentNo)}
+        >
+          Send to mail
+        </button>
+        <PrintPageArea id={documentNo}>
           <React.Fragment>
             <link
               rel="stylesheet"
@@ -153,7 +160,7 @@ class ViewDocument extends Component {
             )}
             <RenderFooter />
           </React.Fragment>
-        </PrintPage>
+        </PrintPageArea>
       </React.Fragment>
     );
   }
@@ -169,41 +176,37 @@ class ViewDocument extends Component {
     });
     return total;
   };
+
+  sendDocument = id => {
+    const apiUrl = "/api/document/send";
+
+    const requestOptions = {
+      headers: { ...authHeader(), "Content-Type": "multipart/form-data" }
+    };
+
+    createPdfFile(id).then(binString => {
+      const u8arr = dataStringToUintArray(binString);
+
+      const file = new File([u8arr], `${id}.pdf`, { type: "application/pdf" });
+
+      const form = new FormData();
+      form.append("document", file);
+
+      axios
+        .post(apiUrl, form, requestOptions)
+        .then(({ data }) => {
+          console.log("axios success", data);
+        })
+        .catch(error => {
+          console.error("axios error", error);
+        });
+    });
+  };
 }
 
-const RenderHeader = ({ quoteNumber }) => {
+const RenderHeader = () => {
   return (
     <React.Fragment>
-      <div className="dropdown float-left">
-        <button
-          className="btn blue-grey lighten-5 "
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <span className="fas fa-angle-down " />
-        </button>
-        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <Link to={`/send/${quoteNumber}`}>
-            <div className="dropdown-item">
-              <span className="far fa-envelope"> Send via mail</span>
-            </div>
-          </Link>
-          <Link to="/admin/document/list">
-            <div className="dropdown-item">
-              <span>Document list</span>
-            </div>
-          </Link>
-          <Link to="/admin/document/new">
-            <div className="dropdown-item">
-              <span>New Document</span>
-            </div>
-          </Link>
-        </div>
-      </div>
-
       <div className="container-fluid">
         <div className="d-flex justify-content-center mt-3">
           <img src={logo} width="50px" height="50px" alt="abras" />
@@ -240,7 +243,7 @@ const RenderHeader = ({ quoteNumber }) => {
             <p className="row my-1">
               <span className="font-weight-bold mr-1">Addresses:</span>
               {"  "}
-              10, Ajiboye Street, Ketu, Alapere, Lagos. <br /> 41 Ifeloju
+              10, Ajiboye Street, Ketu, Alapere, Lagos. <br /> 41, Ifeloju
               Street, Obada-Oko, Abeokuta
             </p>
           </div>

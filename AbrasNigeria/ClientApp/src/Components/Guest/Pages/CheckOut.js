@@ -9,11 +9,10 @@ export default class CheckOut extends Component {
   state = {
     companyName: "",
     address: "",
-    state: "",
     city: "",
     cityState: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     note: ""
   };
 
@@ -137,20 +136,33 @@ export default class CheckOut extends Component {
   };
 
   onSubmit = cartItems => {
-    let apiUrl = "/order/addorder";
+    let apiUrl = "/api/order/addorder";
 
-    let Order = {
+    let order = {
       ...this.state,
       cartItems
     };
 
     axios
-      .post(apiUrl, Order)
-      .then(response => {
-        console.log(response);
+      .post(apiUrl, order)
+      .then(() => {
+        this.clearCart();
       })
       .catch(error => {
-        console.error(error);
+        console.error("axios error", error);
+      });
+  };
+
+  clearCart = () => {
+    let apiUrl = "/api/cart/clear";
+
+    axios
+      .delete(apiUrl)
+      .then(() => {
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error("axios error", error);
       });
   };
 }

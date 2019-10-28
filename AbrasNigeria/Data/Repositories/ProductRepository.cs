@@ -1,88 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Models;
 using AbrasNigeria.Data.DbContexts;
 using AbrasNigeria.Data.DTO;
-using System.Threading.Tasks;
 
 namespace AbrasNigeria.Data.Repositories
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {
-        public ProductRepository(AppDbContext context) : base(context)
-        {
-        }
+        public ProductRepository(PartsBookDbContext context) : base(context) { }
 
-        public IEnumerable<ProductDTO> Filter(FilterProductsDTO filter)
+        public IEnumerable<Product> Filter(FilterProductsDTO filter)
         {
-            return _context.Products
+            return _table
+                .Include(p => p.Descriptions).ThenInclude(d => d.Description)
                 .Where(p => p.Brand.Name.Contains(filter.Brand))
-                .Where(p => p.ProductDescription.Contains(p.ProductDescription.Where(pc => pc.Description.DescriptionName.Contains(filter.Description)).FirstOrDefault()))
+                .Where(p => p.Descriptions.Contains(p.Descriptions.Where(pc => pc.Description.DescriptionName.Contains(filter.Description)).FirstOrDefault()))
                 .Where(p => p.PartNumber.Contains(filter.PartNumber))
                 .Where(p => p.Section.SectionName.Contains(filter.Section))
-                .Where(p => p.ProductSectionGroups.Contains(p.ProductSectionGroups.Where(psg => psg.SectionGroup.SectionGroupName.Contains(filter.SectionGroup)).FirstOrDefault()))
-                .Where(p => p.ProductMachines.Contains(p.ProductMachines.Where(pm => pm.Machine.ModelName.Contains(filter.Machine)).FirstOrDefault()))
-                //.Include(p => p.Descriptions)
-                .Select(p => new ProductDTO
-                {
-                    ProductId = p.ProductId,
-                    PartNumber = p.PartNumber,
-                    Descriptions = p.ProductDescription.Select(pcs => new DescriptionDTO
-                    {
-                        DescriptionName = pcs.Description.DescriptionName
-                    })
-                });
+                .Where(p => p.SectionGroups.Contains(p.SectionGroups.Where(psg => psg.SectionGroup.SectionGroupName.Contains(filter.SectionGroup)).FirstOrDefault()))
+                .Where(p => p.MachineSectionGroups.Contains(p.MachineSectionGroups.Where(pm => pm.Machine.ModelName.Contains(filter.Machine)).FirstOrDefault()));
         }
 
-        public ProductDTO FindWithProp(int productId)
+
+        public Product FindByPartNumber(string partNumber)
         {
-            return _context.Products
-                .Where(p => p.ProductId == productId)
-                .Select(p => new ProductDTO
-                {
-                    ProductId = p.ProductId,
-                    PartNumber = p.PartNumber,
-                    Descriptions = p.ProductDescription.Select(pc => new DescriptionDTO
-                    {
-                        DescriptionName = pc.Description.DescriptionName
-                    }),
-                    Brand = p.Brand.Name,
-                    Section = p.Section.SectionName,
-
-                    Machines = p.ProductMachines
-                    .Where(pm => pm.Product.ProductMachines
-                    .Contains(p.ProductMachines.Where(pd => pd.ProductId == p.ProductId).FirstOrDefault()))
-                    .Select(m => new MachineDTO
-                    {
-                        ModelName = m.Machine.ModelName
-                    }),
-
-                    SectionGroups = p.ProductSectionGroups
-                    .Where(psg => psg.Product.ProductSectionGroups
-                    .Contains(p.ProductSectionGroups.Where(_psg => _psg.ProductId == p.ProductId).FirstOrDefault()))
-                    .Select(sg => new SectionGroupDTO
-                    {
-                        SectionGroupName = sg.SectionGroup.SectionGroupName,
-                    })
-                }).FirstOrDefault();
+            return _table
+                .Include(p => p.Brand)
+                .Include(p => p.Descriptions).ThenInclude(d => d.Description)
+                .Include(p => p.SectionGroups).ThenInclude(sg => sg.SectionGroup)
+                .Include(p => p.MachineSectionGroups).ThenInclude(msg => msg.Machine)
+                .Where(p => p.PartNumber == partNumber)
+                .FirstOrDefault();
         }
 
-        public IEnumerable<ProductDTO> Search(string searchQuery)
+        public IEnumerable<Product> Search(string searchQuery)
         {
-            return _context.Products
-                .Where(p => p.PartNumber.Contains(searchQuery))
-                .Select(p => new ProductDTO
-                {
-                    PartNumber = p.PartNumber,
-                    Descriptions = p.ProductDescription.Select(pc => new DescriptionDTO
-                    {
-                        DescriptionName = pc.Description.DescriptionName
-                    }),
-                    Brand = p.Brand.Name
-                });
+            return _table
+                .Include(p => p.Descriptions).ThenInclude(d => d.Description)
+                .Where(p => p.PartNumber.Contains(searchQuery));
         }
     }
 }

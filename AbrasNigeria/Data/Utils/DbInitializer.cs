@@ -2,10 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AbrasNigeria.Data.Utils
 {
@@ -13,9 +9,14 @@ namespace AbrasNigeria.Data.Utils
     {
         public static void DoMigration(IApplicationBuilder app)
         {
-            AppDbContext context = app.ApplicationServices.GetRequiredService<AppDbContext>();
+            AppDbContext appDbContext = app.ApplicationServices.GetRequiredService<AppDbContext>();
+            PartsBookDbContext partsBookDbContext = app.ApplicationServices.GetRequiredService<PartsBookDbContext>();
+
             //context.Database.EnsureDeleted();
-            context.Database.Migrate();
+            //appDbContext.Database.EnsureCreated();
+            //partsBookDbContext.Database.EnsureCreated();
+
+            appDbContext.Database.Migrate();
         }
 
     }

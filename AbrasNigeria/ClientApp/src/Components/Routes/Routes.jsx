@@ -92,7 +92,7 @@ const Routes = () => {
         path="/guest/product/:id"
         component={withTitle({ component: Product, title: "Product" })}
       />
-      <GuestPrivateRoute
+      <Route
         exact
         path="/guest/cart"
         component={withTitle({ component: Cart, title: "Cart" })}

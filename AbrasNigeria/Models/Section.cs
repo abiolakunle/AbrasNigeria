@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AbrasNigeria.Models
 {
@@ -10,11 +7,11 @@ namespace AbrasNigeria.Models
         public Section()
         {
             SectionGroups = new HashSet<SectionGroup>();
-            MachineSections = new HashSet<MachineSection>();
-            MachineSectionGroups = new HashSet<MachineSectionGroup>();
+            Sections = new HashSet<MachineSection>();
+            Machines = new HashSet<MachineSectionGroup>();
         }
 
-        public int SectionId { get; set; }
+        public long SectionId { get; set; }
 
         public string SectionName { get; set; }
 
@@ -26,9 +23,9 @@ namespace AbrasNigeria.Models
 
         public ICollection<SectionGroup> SectionGroups { get; set; }
 
-        public ICollection<MachineSection> MachineSections { get; set; }
+        public ICollection<MachineSection> Sections { get; set; }
 
-        public ICollection<MachineSectionGroup> MachineSectionGroups { get; set; }
+        public ICollection<MachineSectionGroup> Machines { get; set; }
 
     }
 }

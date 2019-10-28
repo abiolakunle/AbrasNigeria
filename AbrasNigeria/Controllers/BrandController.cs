@@ -1,6 +1,7 @@
 ﻿using AbrasNigeria.Data.DTO;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Data.Utils;
+using AbrasNigeria.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

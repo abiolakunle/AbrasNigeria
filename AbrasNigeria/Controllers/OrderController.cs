@@ -20,14 +20,20 @@ namespace AbrasNigeria.Controllers
         [HttpPost("[action]")]
         public ActionResult AddOrder([FromBody]Order order)
         {
-            SendMail(order);
 
-            //set order date and number
+            if (ModelState.IsValid)
+            {
+                //set order date and number
+                order.OrderNo = "CAN" + DateTime.Now.ToString("yyMMddHHmmss");
 
-            order.OrderNo = "CAN" + DateTime.Now.ToString("yyMMddHHmmss");
-
-            _orderRepository.Create(order);
-            return Ok();
+                SendMail(order);
+                _orderRepository.Create(order);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [NonAction]
@@ -57,14 +63,16 @@ namespace AbrasNigeria.Controllers
 
             foreach (var item in order.CartItems)
             {
-                itemRow = $"<tr><td>{item.PartNumber}</td><td>{item.Categories}</td><td>{item.Quantity}</td></tr>";
+                itemRow = $"<tr><td>{item.PartNumber}</td><td>{item.Descriptions}</td><td>{item.Quantity}</td></tr>";
                 tableRows += itemRow;
             }
 
             string table = $"<table><tbody>{tableRows}</table></tbody>";
+            string details = $"Order number: {order.OrderNo} <br/> Company name: {order.CompanyName} <br/> Email: {order.Email} <br/> Phone number: {order.PhoneNumber} " +
+                $"<br/> Addresss: {order.Address} , {order.City}, {order.CityState} ";
+            string note = $"<b>Note: </b> <br/> {order.Note}";
 
-            bodyBuilder.HtmlBody = $"{table}";
-            bodyBuilder.TextBody = "Hello World!";
+            bodyBuilder.HtmlBody = $"{details}<br/><br/>{table} <br/><br/> {note}";
 
             message.Body = bodyBuilder.ToMessageBody();
 

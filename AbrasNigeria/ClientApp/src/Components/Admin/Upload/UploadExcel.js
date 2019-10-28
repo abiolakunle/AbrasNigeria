@@ -57,7 +57,6 @@ export default class UploadExcel extends Component {
       ...state,
       selectedFile: file
     });
-    console.log(this.state.selectedFile);
   };
 
   onFormSubmit = event => {
@@ -82,6 +81,7 @@ export default class UploadExcel extends Component {
     for (var i = 0; i < state.selectedFile.length; i++) {
       var element = state.selectedFile[i];
       form.append("masterFile", element);
+      console.log("File", element);
     }
 
     let url = "/api/ExcelToDb/UploadExcel";

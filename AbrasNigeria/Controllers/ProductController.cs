@@ -1,4 +1,5 @@
 ﻿using AbrasNigeria.Data.DTO;
+using AbrasNigeria.Data.Extensions;
 using AbrasNigeria.Data.Interfaces;
 using AbrasNigeria.Data.Models;
 using AbrasNigeria.Data.Utils;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AbrasNigeria.Controllers
 {
@@ -14,22 +14,19 @@ namespace AbrasNigeria.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
-        private readonly IDescriptionRepository _descriptionRepository;
-        private readonly IBrandRepository _brandRepository;
 
-        public ProductController(IProductRepository productRepository, IDescriptionRepository categoryRepository, IBrandRepository brandRepository)
+        public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            _descriptionRepository = categoryRepository;
-            _brandRepository = brandRepository;
+
         }
 
         [HttpGet("[action]")]
-        public JsonResult Product(int productId)
+        public JsonResult Product(string partNumber)
         {
-            ProductDTO products = _productRepository.FindWithProp(productId);
+            ProductDTO product = _productRepository.FindByPartNumber(partNumber).ToDTO();
 
-            return Json(products, JsonHelper.SerializerSettings);
+            return Json(product, JsonHelper.SerializerSettings);
             //return Json(products);
         }
 
@@ -41,7 +38,7 @@ namespace AbrasNigeria.Controllers
             if (searchQuery.Length == 0)
                 products = Enumerable.Empty<ProductDTO>();
             else
-                products = _productRepository.Search(searchQuery);
+                products = _productRepository.Search(searchQuery).ToDTO();
 
             return Json(products, JsonHelper.SerializerSettings);
         }
@@ -49,7 +46,7 @@ namespace AbrasNigeria.Controllers
         [HttpPost("[action]")]
         public JsonResult Filter([FromBody]FilterProductsDTO data)
         {
-            IEnumerable<ProductDTO> products = _productRepository.Filter(data);
+            IEnumerable<ProductDTO> products = _productRepository.Filter(data).ToDTO();
 
             PagingInfo pagingInfo = new PagingInfo
             {
@@ -65,6 +62,8 @@ namespace AbrasNigeria.Controllers
 
             return Json(products, JsonHelper.SerializerSettings);
         }
+
+
     }
 }
 

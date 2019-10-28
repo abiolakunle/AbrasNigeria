@@ -23,6 +23,7 @@ namespace AbrasNigeria.Controllers
             _stockProductRepository = storeProductRepository;
         }
 
+
         [HttpPost("[action]")]
         public ActionResult CreateProduct([FromBody] StockProduct storeProduct)
         {
@@ -30,6 +31,7 @@ namespace AbrasNigeria.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("[action]")]
         public JsonResult Products()
         {
@@ -38,8 +40,9 @@ namespace AbrasNigeria.Controllers
             return Json(products, JsonHelper.SerializerSettings);
         }
 
+        [AllowAnonymous]
         [HttpGet("[action]")]
-        public JsonResult Product(int id)
+        public JsonResult Product(long id)
         {
             StockProduct product = _stockProductRepository.LoadWithHistory(id);
 
@@ -54,7 +57,7 @@ namespace AbrasNigeria.Controllers
                 .Find(p => p.StockProductId == productHistory.StockProductId)
                 .FirstOrDefault();
 
-            product.StockProductHistories.Add(productHistory);
+            product.Histories.Add(productHistory);
 
             _stockProductRepository.Update(product);
 

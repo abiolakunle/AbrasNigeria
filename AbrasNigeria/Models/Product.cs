@@ -1,7 +1,4 @@
-﻿
-
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AbrasNigeria.Models
 {
@@ -9,47 +6,25 @@ namespace AbrasNigeria.Models
     {
         public Product()
         {
-            ProductMachines = new HashSet<ProductMachine>();
-            ProductSectionGroups = new HashSet<ProductSectionGroup>();
-            ProductDescription = new HashSet<ProductDescription>();
-            ProductQuantities = new HashSet<MachineProductSectionGroupQuantity>();
-            SectionGroupSerialNos = new HashSet<ProductSectionGroupSerialNo>();
-            ProductMachineRemarks = new HashSet<ProductMachineRemark>();
-
+            MachineSectionGroups = new HashSet<MachineSectionGroupProduct>();
+            SectionGroups = new HashSet<ProductSectionGroup>();
+            Descriptions = new HashSet<ProductDescription>();
         }
 
-        public int ProductId { get; set; }
+        public long ProductId { get; set; }
 
         public string PartNumber { get; set; }
 
-        public decimal Price { get; set; }
+        public long BrandId { get; set; }
+        public Brand Brand { get; set; }
 
-        public string Detail { get; set; }
+        public long SectionId { get; set; }
+        public Section Section { get; set; }
 
-        public string ImageUrl { get; set; }
+        public ICollection<MachineSectionGroupProduct> MachineSectionGroups { get; set; }
 
-        public string ThumbUrl { get; set; }
+        public ICollection<ProductDescription> Descriptions { get; set; }
 
-        //public string Quantity { get; set; }
-
-        public virtual Brand Brand { get; set; }
-
-        public string Remarks { get; set; }
-
-        //public virtual SectionGroup SectionGroup { get; set; }
-
-        public virtual Section Section { get; set; }
-
-        public ICollection<ProductSectionGroupSerialNo> SectionGroupSerialNos { get; set; }
-
-        public ICollection<MachineProductSectionGroupQuantity> ProductQuantities { get; set; }
-
-        public ICollection<ProductMachineRemark> ProductMachineRemarks { get; set; }
-
-        public ICollection<ProductMachine> ProductMachines { get; set; }
-
-        public ICollection<ProductDescription> ProductDescription { get; set; }
-
-        public ICollection<ProductSectionGroup> ProductSectionGroups { get; set; }
+        public ICollection<ProductSectionGroup> SectionGroups { get; set; }
     }
 }

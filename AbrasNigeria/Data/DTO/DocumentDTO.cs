@@ -11,7 +11,7 @@ namespace AbrasNigeria.Data.DTO
         {
             Date = DateTime.Now;
         }
-        public int DocumentId { get; set; }
+        public long DocumentId { get; set; }
 
         public string DocumentNo { get; set; }
 

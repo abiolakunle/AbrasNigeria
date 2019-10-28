@@ -11,7 +11,7 @@ namespace AbrasNigeria.Models
         {
 
         }
-        public int DocumentId { get; set; }
+        public long DocumentId { get; set; }
 
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public string DocumentNo { get; set; }

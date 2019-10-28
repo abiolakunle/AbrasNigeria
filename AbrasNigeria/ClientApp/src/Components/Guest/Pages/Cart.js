@@ -75,12 +75,7 @@ export default class Cart extends Component {
       <form
         autoComplete="off"
         onSubmit={event => {
-          event.preventDefault();
-          addToCart({
-            partNumber: this.state.partNumber,
-            descriptions: this.state.descriptions,
-            quantity: this.state.quantity
-          });
+          this.handleAddToCart(event, addToCart);
         }}
       >
         <div className="badge badge-dark p-2 mb-1">
@@ -119,12 +114,9 @@ export default class Cart extends Component {
                         event.preventDefault();
                         this.setState({
                           partNumber: item.partNumber,
-                          description: item.descriptions.map(
-                            (description, index) =>
-                              ` ${index > 0 ? " | " : ""}${
-                                description.descriptionName
-                              }  `
-                          )
+                          descriptions: item.descriptions
+                            .map(description => description.descriptionName)
+                            .join(" | ")
                         });
                       }}
                     >
@@ -189,6 +181,17 @@ export default class Cart extends Component {
     );
   };
 
+  handleAddToCart = (event, addToCart) => {
+    event.preventDefault();
+    let { partNumber, descriptions, quantity } = this.state;
+
+    addToCart({ partNumber, descriptions, quantity });
+    this.setState({
+      partNumber: "",
+      descriptions: ""
+    });
+  };
+
   loadSuggestions = () => {
     //load suggestions from server and update component state
     axios
@@ -209,22 +212,17 @@ export default class Cart extends Component {
 
   renderCartLine = (cartItem, index, changeQuantity) => {
     return (
-      <React.Fragment Key={index}>
+      <React.Fragment key={index}>
         <tr className="row">
           <th className="col-md-1" scope="row">
             {index}
           </th>
           <td className="col-md-3">
-            <Link to={`/guest/product/${cartItem.productId}`}>
+            <Link to={`/guest/product/${cartItem.partNumber}`}>
               {cartItem.partNumber}
             </Link>{" "}
           </td>
-          <td className="col-md-3">
-            {cartItem.descriptions.map(
-              (description, index) =>
-                ` ${index > 0 ? " | " : ""}${description.descriptionName}  `
-            )}
-          </td>
+          <td className="col-md-3">{cartItem.descriptions}</td>
           <td className="col-md-2">
             <input
               className="form-control mw-25"

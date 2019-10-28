@@ -1,13 +1,11 @@
-﻿using System;
+﻿using AbrasNigeria.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AbrasNigeria.Data.DTO
 {
     public class StockProductDTO
     {
-        public int StockProductId { get; set; }
+        public long StockProductId { get; set; }
 
         public string PartNumber { get; set; }
 
@@ -23,6 +21,6 @@ namespace AbrasNigeria.Data.DTO
 
         public string ThumbUrl { get; set; }
 
-        public int Quantity { get; set; }
+        public IEnumerable<StockProductHistory> StockProductHistories { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import AddToCartBtn from "../Partials/AddToCartBtn";
@@ -65,36 +66,32 @@ export default class Machine extends Component {
                                   <th scope="col">#</th>
                                   <th scope="col">Part Number</th>
                                   <th scope="col">Descriptions</th>
-                                  <th scope="col">Quantity</th>
-                                  <th scope="col">Serial No.</th>
-                                  <th scope="col">Remark</th>
                                   <th scope="col">Cart</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {sectionGroup.products.map((product, index) => {
+                                  let { partNumber, descriptions } = product;
+                                  descriptions = descriptions
+                                    .map(
+                                      description => description.descriptionName
+                                    )
+                                    .join(" | ");
                                   return (
                                     <tr>
                                       <th scope="row">{index + 1}</th>
-                                      <td>{product.partNumber}</td>
                                       <td>
-                                        {product.descriptions.map(
-                                          (description, index) => {
-                                            return (
-                                              <span key={index}>{` ${
-                                                index > 0 ? " | " : ""
-                                              }${
-                                                description.descriptionName
-                                              }  `}</span>
-                                            );
-                                          }
-                                        )}
+                                        <Link
+                                          to={`/guest/product/${partNumber}`}
+                                        >
+                                          {partNumber}
+                                        </Link>
                                       </td>
-                                      <td>{product.quantity}</td>
-                                      <td>{product.serialNo}</td>
-                                      <td>{product.remark}</td>
+                                      <td>{descriptions}</td>
                                       <td>
-                                        <AddToCartBtn product={product} />
+                                        <AddToCartBtn
+                                          product={{ partNumber, descriptions }}
+                                        />
                                       </td>
                                     </tr>
                                   );

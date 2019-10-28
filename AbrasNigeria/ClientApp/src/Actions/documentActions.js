@@ -10,6 +10,9 @@ import {
   UPDATE_DOC_REQUEST,
   UPDATE_DOC_SUCCESS,
   UPDATE_DOC_FAILURE,
+  DELETE_DOC_REQUEST,
+  DELETE_DOC_SUCCESS,
+  DELETE_DOC_FAILURE,
   GET_DOC_REQUEST,
   GET_DOC_SUCCESS,
   GET_DOC_FAILURE,
@@ -28,7 +31,7 @@ export const createDocument = document => {
     dispatch(request(CREATE_DOC_REQUEST));
 
     axios
-      .post("/api/document/createdocument", document, requestOptions)
+      .post("/api/document/create", document, requestOptions)
       .then(() => {
         dispatch(success(CREATE_DOC_SUCCESS, `created`));
       })
@@ -44,7 +47,7 @@ export const updateDocument = document => {
     dispatch(request(UPDATE_DOC_REQUEST));
 
     axios
-      .post("/api/document/createdocument", document, requestOptions)
+      .post("/api/document/create", document, requestOptions)
       .then(() => {
         dispatch(success(UPDATE_DOC_SUCCESS, `updated`));
       })
@@ -80,6 +83,21 @@ export const getDocument = id => {
       })
       .catch(error => {
         dispatch(failure(GET_DOC_FAILURE, error));
+        console.log(error);
+      });
+  };
+};
+
+export const deleteDocument = id => {
+  return dispatch => {
+    dispatch(request(DELETE_DOC_REQUEST));
+    axios
+      .delete(`/api/document/delete?id=${id}`, requestOptions)
+      .then(({ data }) => {
+        dispatch(success(DELETE_DOC_SUCCESS));
+      })
+      .catch(error => {
+        dispatch(failure(DELETE_DOC_FAILURE, error));
         console.log(error);
       });
   };

@@ -7,15 +7,15 @@ using System.Linq;
 
 namespace AbrasNigeria.Data.Repositories
 {
-    public class BrandRepository : Repository<Brand>, IBrandRepository
+    public class BrandRepository : PartsBookRepository<Brand>, IBrandRepository
     {
-        public BrandRepository(AppDbContext context) : base(context)
+        public BrandRepository(PartsBookDbContext context) : base(context)
         {
         }
 
         public IEnumerable<BrandDTO> Search(string searchQuery)
         {
-            return _context.Brands
+            return _table
                 .Where(b => b.Name.Contains(searchQuery))
                 .Select(b => new BrandDTO
                 {
